@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faAddressCard, faCreditCard, faMoneyBill1 } from '@fortawesome/free-regular-svg-icons'
 import { Link } from 'react-router-dom'
+import { useAuthStore } from '../../hooks/useAuthStore'
 
 const navigation = [
   { name: 'Clients', route: '/client', icon: faAddressCard },
@@ -15,9 +16,16 @@ const navigation = [
 
 
 export const Navbar = () => {
+  const { logout, name } = useAuthStore();
+
   const classNames = (...classes) => {
     return classes.filter(Boolean).join(' ')
   }
+
+  const handleLogout = () => {
+    logout()
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -71,8 +79,9 @@ export const Navbar = () => {
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
                   <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm">
+                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm items-center">
                       <span className="sr-only">Open user menu</span>
+                      <p className='text-white mr-2 font-medium'>{name}</p>
                       <FontAwesomeIcon icon={faUser} className="min-h-[25px] text-white" />
                     </Menu.Button>
                   </div>
@@ -91,6 +100,7 @@ export const Navbar = () => {
                           <a
                             href="#"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            onClick={handleLogout}
                           >
                             Sign out
                           </a>

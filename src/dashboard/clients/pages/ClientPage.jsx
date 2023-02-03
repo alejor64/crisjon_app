@@ -7,8 +7,6 @@ import { tdList } from "./clients"
 const thList = ['Name', 'Address', 'City', 'Phone', 'Created Date']
 const rowsToShow = ['id', 'name', 'address', 'city', 'phone', 'created_at']
 
-
-
 export const ClientPage = () => {
 
   return (
