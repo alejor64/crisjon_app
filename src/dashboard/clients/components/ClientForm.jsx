@@ -1,40 +1,51 @@
-import { Link } from "react-router-dom"
-import { faRectangleList } from "@fortawesome/free-regular-svg-icons"
+import { useImperativeHandle, forwardRef, useState } from "react"
 import { Form, InputLabelContainer, Button } from "../../../components/form"
-import { useEffect, useState } from "react"
 
-export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
-  const [checkboxValue, setcheckboxValue] = useState(false)
-
-  useEffect(() => {
-    if(client?.favorite){
-      setcheckboxValue(client.favorite)
-    }
-  }, [client])
+export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, onSubmit }, _ref) => {
+  const createdAtDefaultValue = new Date().toISOString().split('T')[0]
+  const [favorite, setFavorite] = useState(client?.favorite || false)
+  const [name, setName] = useState(client?.name || "")
+  const [phone, setPhone] = useState(client?.phone || "")
+  const [address, setAddress] = useState(client?.address || "")
+  const [email, setEmail] = useState(client?.email || "")
+  const [city, setCity] = useState(client?.city || "")
+  const [state, setState] = useState(client?.state || "")
+  const [fein, setFein] = useState(client?.fein || "")
+  const [sst, setSst] = useState(client?.sst || "")
+  const [taxtIdNumber, setTaxtIdNumber] = useState(client?.taxIdNumber || "")
+  const [zipCode, setZipCode] = useState(client?.zipCode || "")
+  const [createdAt, setCreatedAt] = useState(client?.createdAt || createdAtDefaultValue)
   
   const onChange = () => {
-    setcheckboxValue(!checkboxValue)
+    setFavorite(!favorite)
   }
-  
+
+  useImperativeHandle(_ref, () => ({
+    getFormState: () => {
+      return { name, phone, address, email, city, state, fein, sst, favorite, taxtIdNumber, zipCode, createdAt }
+    }
+  }))
 
   return (
-    <Form title={title}>
+    <Form title={title} onSubmit={onSubmit}>
       <div className="flex mb-7">
         <InputLabelContainer
           type="text"
           text="Name"
           placeholder="Crisjon"
           name="name"
-          inputValue={ client?.name ? client.name : "" }
+          inputValue={name}
+          setInputValue={setName}
           required={true}
         />
         <InputLabelContainer
           type="number"
           text="Phone"
-          placeholder="3146418090"
+          placeholder="13127959303"
           name="phone"
           css="ml-3"
-          inputValue={ client?.phone? client.phone : "" }
+          inputValue={phone}
+          setInputValue={setPhone}
           required={true}
         />
       </div>
@@ -44,7 +55,8 @@ export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
           text="Address"
           placeholder="5 South Wabash Avenue"
           name="address"
-          inputValue={ client?.address? client.address : "" }
+          inputValue={address}
+          setInputValue={setAddress}
           required={true}
         />
         <InputLabelContainer
@@ -53,7 +65,8 @@ export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
           placeholder="example@example.com"
           name="email"
           css="ml-3"
-          inputValue={ client?.email? client.email : "" }
+          inputValue={email}
+          setInputValue={setEmail}
         />
       </div>
       <div className="flex mb-7">
@@ -62,7 +75,9 @@ export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
           text="City"
           placeholder="Chicago"
           name="city"
-          inputValue={ client?.city? client.city : "" }
+          inputValue={city}
+          setInputValue={setCity}
+          required={true}
         />
         <InputLabelContainer
           type="text"
@@ -70,15 +85,19 @@ export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
           placeholder="Illinois"
           name="state"
           css="ml-3"
-          inputValue={ client?.state? client.state : "" }
+          inputValue={state}
+          setInputValue={setState}
+          required={true}
         />
       </div>
       <div className="flex mb-7">
         <InputLabelContainer
           type="number"
           text="FEIN"
+          placeholder="123456789"
           name="fein"
-          inputValue={ client?.fein? client.fein : "" }
+          inputValue={fein}
+          setInputValue={setFein}
         />
         <InputLabelContainer
           type="number"
@@ -86,7 +105,8 @@ export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
           placeholder="123456789"
           name="SST"
           css="ml-3"
-          inputValue={ client?.sst ? client.sst : "" }
+          inputValue={sst}
+          setInputValue={setSst}
         />
       </div>
       <div className="flex mb-7">
@@ -94,43 +114,37 @@ export const ClientForm = ({ buttonIcon, buttonText, title, client }) => {
           type="number"
           text="Tax ID Number"
           placeholder="147852369"
-          name="tax_id_number"
-          inputValue={ client?.tax_id_number ? client.tax_id_number : "" }
+          name="taxIdNumber"
+          inputValue={taxtIdNumber}
+          setInputValue={setTaxtIdNumber}
         />
       </div>
       <div className="flex mb-7">
         <InputLabelContainer
           type="number"
           text="Zip Code"
-          placeholder="050035"
-          name="zip_code"
-          inputValue={ client?.zip_code ? client.zip_code : "" }
+          placeholder="60603"
+          name="zipCode"
+          inputValue={zipCode}
+          setInputValue={setZipCode}
+          required={true}
         />
         <InputLabelContainer
           type="date"
           text="Created Date"
-          name="created_at"
+          name="createdAt"
           css="ml-3"
-          inputValue={ client?.created_at ? client.created_at : "" }
+          inputValue={createdAt}
+          setInputValue={setCreatedAt}
         />
       </div>
       <div className="flex mb-7">
-        <input type="checkbox" id="favorite" checked={ checkboxValue } onChange={ onChange } />
+        <input type="checkbox" id="favorite" checked={ favorite } onChange={ onChange } />
         <span className='ml-1'>Mark as favorite</span>
       </div>
       <div className="px-4 py-3 flex justify-around sm:px-6">
         <Button text={buttonText} icon={buttonIcon} />
-        {
-          client && (
-            <Link
-              to={`../../../order/client/${client.id}`}
-              relative="path"
-            >
-              <Button text={`See ${client.name} orders`} icon={faRectangleList} />
-            </Link>
-          )
-        }
       </div>
     </Form>
   )
-}
+})

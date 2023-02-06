@@ -1,33 +1,33 @@
-import { useEffect, useState } from "react"
+import { useImperativeHandle, useState, forwardRef } from "react"
 import { Form, InputLabelContainer, SelectInputContainer, Button } from "../../../components/form"
 
-export const UserForm = ({title, buttonText, buttonIcon, user}) => {
-  const [roleValue, setRoleValue] = useState("")
+export const UserForm = forwardRef(({title, buttonText, buttonIcon, user, onSubmit, createNew = false}, _ref) => {
 
-  const onChangeValue = (e, setValue) => {
-    setValue(e.target.value)
-  }
+  const [name, setName] = useState(user?.name || "")
+  const [email, setEmail] = useState(user?.email || "")
+  const [role, setRole] = useState(user?.role || "")
+  const [password, setPassword] = useState("")
 
-  const setValue = (key, setValue) => {
-    if(user?.[key]){
-      setValue(user[key])
+  useImperativeHandle(_ref, () => ({
+    getFormState: () => {
+      if(createNew){
+        return { name, email, role, password }
+      }
+      return { name, email, role }
     }
-  }
-
-  useEffect(() => {
-    setValue('role', setRoleValue)
-  }, [])
-  
+  }))
 
   return (
-    <Form title={title}>
+    <Form title={title} onSubmit={onSubmit}>
       <div className="flex mb-7">
         <InputLabelContainer
           type="text"
           text="Name"
           placeholder="Santiago"
           name="name"
-          inputValue={user?.name ? user.name : ""}
+          inputValue={name}
+          setInputValue={setName}
+          required={true}
         />
         <InputLabelContainer
           type="text"
@@ -35,22 +35,39 @@ export const UserForm = ({title, buttonText, buttonIcon, user}) => {
           placeholder="example@example.com"
           name="email"
           css="ml-3"
-          inputValue={user?.email ? user.email : ""}
+          inputValue={email}
+          setInputValue={setEmail}
+          required={true}
         />
       </div>
-      <SelectInputContainer
-        name="role"
-        text="Role"
-        value={roleValue}
-        onChange={(e) => onChangeValue(e, setRoleValue)}
-      >
-        <option value="">-- Select role --</option>
-        <option value="User">User</option>
-        <option value="Admin">Admin</option>
-      </SelectInputContainer>
+      <div className="flex mb-5">
+        <SelectInputContainer
+          name="role"
+          text="Role"
+          value={role}
+          setValue={setRole}
+          required={true}
+        >
+          <option value="">-- Select role --</option>
+          <option value="USER">User</option>
+          <option value="ADMIN">Admin</option>
+        </SelectInputContainer>
+        {
+          createNew &&
+          <InputLabelContainer
+            type="password"
+            text="Password"
+            name="password"
+            css="ml-3"
+            inputValue={password}
+            setInputValue={setPassword}
+            required={true}
+          />
+        }
+      </div>
       <div className="px-4 py-3 text-center sm:px-6">
         <Button text={buttonText} icon={buttonIcon} />
       </div>
     </Form>
   )
-}
+})

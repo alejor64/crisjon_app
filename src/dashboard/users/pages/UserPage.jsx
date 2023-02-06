@@ -1,13 +1,28 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getUsers } from '../../../api/users'
+import { USERS } from '../../../utils/constants'
+import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 
 import { tdList } from "./users"
 
 const thList = ['Name', 'Email', 'Role', 'Created Date']
-const rowsToShow = ['id', 'name', 'email', 'role', 'created_at']
+const rowsToShow = ['id', 'name', 'email', 'role', 'createdAt']
 
 export const UserPage = () => {
+  const usersInSS = JSON.parse(sessionStorage.getItem(USERS) || '[]')
+  const [users, setUsers] = useState(usersInSS)
+
+  useEffect(() => {
+    if(!users.length){
+      getUsers()
+        .then(response => setUsers(response))
+    }
+  }, [])
+  
+
   return (
     <DashboardLayout>
       <div className="flex flex-col">
@@ -18,9 +33,9 @@ export const UserPage = () => {
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               {
-                tdList.length
-                ? <Table thList={thList} tdList={tdList} route="user" rowsToShow={rowsToShow} />
-                : <h2>Cargando usuarios</h2>
+                users.length > 0
+                ? <Table thList={thList} tdList={users} route="user" rowsToShow={rowsToShow} />
+                : <NotItemsFound text="users" />
               }
             </div>
           </div>

@@ -28,7 +28,7 @@ const TrTable = ({row, odd, route, rowsToShow}) => {
   }
   const navigate = useNavigate()
   const onClick = () => {
-    navigate(`/${route}/edit/${row.id}`)
+    navigate(`/${route}/edit/${row._id}`)
   }
 
   return (
@@ -122,7 +122,7 @@ export const Table = ({thList, tdList, route, rowsToShow}) => {
             <tbody>
               {
                 rowsInTable.map((td, idx) => (
-                  <TrTable key={td.id} row={td} odd={!(idx % 2)} route={route} rowsToShow={rowsToShow} />
+                  <TrTable key={td._id} row={td} odd={!(idx % 2)} route={route} rowsToShow={rowsToShow} />
                 ))
               }
             </tbody>

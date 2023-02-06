@@ -1,5 +1,9 @@
 
-export const Select = ({children, name, value, onChange, required = false}) => {
+export const Select = ({children, name, value, required = false, setValue}) => {
+  const onChange = (e) => {
+    setValue(e.target.value);
+  }
+
   return (
     <select
       name={name}

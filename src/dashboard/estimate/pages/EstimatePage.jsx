@@ -7,7 +7,7 @@ export const EstimatePage = () => {
 const tdList = [
   {
     id: '1a2b',
-    created_at: new Date().toLocaleDateString(),
+    createdAt: new Date().toLocaleDateString(),
     client: 'Crisjon',
     order: 'Something',
     price: '3146'

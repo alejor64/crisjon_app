@@ -1,9 +1,9 @@
 import { useState } from "react"
 
 export const SumOfPrice = ({orderList}) => {
-  const totalOrders = orderList.filter(item => !item.payment_date)
+  const totalOrders = orderList.filter(item => !item.paymentDate)
   const totalOrdersPrice = totalOrders.reduce((accumulator, currentValue) => {
-    const price = parseFloat(currentValue.price.replace("$", "")) || 0
+    const price = parseFloat(currentValue.price) || 0
     return accumulator + price
   }, 0)
 

@@ -4,16 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faDownload } from "@fortawesome/free-solid-svg-icons"
 
 import { tdList as clients } from "../../../clients/pages/clients";
+import { CLIENTS } from "../../../../utils/constants";
 
 export const OrderPDF = ({orderInfo}) => {
   const orderPDF = useRef()
   const [isMouseHover, setIsMouseHover] = useState(false)
 
-  const client = clients.find(client => client.name === orderInfo.client)
+  const clientsInSS = JSON.parse(sessionStorage.getItem(CLIENTS))
+  const client = clientsInSS.find(client => client.name === orderInfo.clientName)
+  console.log('orderInfo', orderInfo)
 
   const generatePDF = useReactToPrint({
     content: () => orderPDF.current,
-    documentTitle: `order_${orderInfo.client}_${orderInfo.name.replace(' ', '-')}`,
+    documentTitle: `order_${client.name}_${orderInfo.name.replace(' ', '-')}`,
   })
 
   const onMouseEnter = () => {
@@ -66,15 +69,15 @@ export const OrderPDF = ({orderInfo}) => {
               <div className="text-end">
                 <p>Order info</p>
                 <p>Date: {new Date().toDateString()}</p>
-                <p>ID: {orderInfo?.cadNumber}</p>
+                <p>ID: {orderInfo.jobId}</p>
               </div>
             </div>
           </div>
           <div className="mb-[90px]">
-            <h3 className="text-3xl mb-3">{orderInfo?.client}</h3>
+            <h3 className="text-3xl mb-3">{client.name}</h3>
             <div>
               <p>{client.address}</p>
-              <p>{`${client.city}, ${client.state}, ${client.zip_code}`}</p>
+              <p>{`${client.city}, ${client.state}, ${client.zipCode}`}</p>
               <p>Phone: {client.phone}</p>
             </div>
           </div>
@@ -120,7 +123,7 @@ export const OrderPDF = ({orderInfo}) => {
               </div>
             </div>
             <div>
-              <strong>Description:</strong> {orderInfo.description}
+              <strong>Description:</strong> {orderInfo?.description}
             </div>
           </div>
           <div className="flex justify-between">
@@ -131,7 +134,7 @@ export const OrderPDF = ({orderInfo}) => {
             </div>
             <div>
               <p>___________________________________</p>
-              <p>Client: {orderInfo?.client}</p>
+              <p>Client: {client.name}</p>
               <p>Phone: {client.phone}</p>
             </div>
           </div>

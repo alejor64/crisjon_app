@@ -8,3 +8,8 @@ export const CHECKING = 'checking'
 
 //LOCAL_STORAGE
 export const TOKEN = 'crisjon_token'
+export const CLIENTS = 'clients'
+export const ORDERS = 'orders'
+export const USERS = 'users'
+export const SERVICES = 'services'
+export const ITEMS = 'items'

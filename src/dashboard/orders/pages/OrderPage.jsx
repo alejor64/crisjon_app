@@ -1,20 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getOrders } from '../../../api/orders'
+import { ORDERS } from '../../../utils/constants'
+import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 import { OrderFilters, SumOfPrice, Toggle } from "../components"
 
-import { tdList } from "./orders"
-
-const thList = ['Client', 'CAD number', 'Name', 'Created Date', 'Job name', 'Service', 'Satus', 'Price']
-const rowsToShow = ['id', 'client', 'cad_number', 'name', 'created_at', 'client_job_name', 'service', 'status', 'price']
+const thList = ['Client', 'CAD Number', 'Name', 'Created Date', 'Service', 'Satus', 'Price']
+const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'createdAt', 'service', 'status', 'price']
 
 export const OrderPage = () => {
   const today = new Date()
   const previous = new Date()
   const lastMonth = new Date(previous.setDate(1))
 
-  const [orderList, setOrderList] = useState(tdList || [])
+  const ordersInLS = JSON.parse(sessionStorage.getItem(ORDERS) || '[]')
+  const [orders, setOrders] = useState(ordersInLS)
   const [endDateValue, setEndDateValue] = useState(today.toISOString().split("T")[0])
   const [startDate, setStartDate] = useState(lastMonth.toISOString().split("T")[0])
   const [checkedValue, setCheckedValue] = useState(false)
@@ -24,8 +26,16 @@ export const OrderPage = () => {
   const [clientValue, setClientValue] = useState("")
   const [error, setError] = useState(false)
 
+  useEffect(() => {
+    if(!orders.length) {
+      getOrders()
+        .then( response => setOrders(response.orders))
+    }
+  }, [])
+  
+
   const onClick = () => {
-    let ordersFiltered = tdList
+    let ordersFiltered = ordersInLS
     if(startDate && endDateValue && startDate > endDateValue) {
       setError(true)
     }else{
@@ -40,16 +50,16 @@ export const OrderPage = () => {
         setShowTotalPriceSum(false)
       }
       if(startDate){
-        ordersFiltered = ordersFiltered.filter(order => order.created_at >= startDate)
+        ordersFiltered = ordersFiltered.filter(order => order.createdAt >= startDate)
       }
       if(endDateValue){
-        ordersFiltered = ordersFiltered.filter(order => order.created_at <= endDateValue)
+        ordersFiltered = ordersFiltered.filter(order => order.createdAt <= endDateValue)
       }
       if(clientValue){
-        ordersFiltered = ordersFiltered.filter(order => order.client === clientValue)
+        ordersFiltered = ordersFiltered.filter(order => order.clientName === clientValue)
       }
     }
-    setOrderList(ordersFiltered)
+    setOrders(ordersFiltered)
   }
 
   return (
@@ -84,14 +94,14 @@ export const OrderPage = () => {
           }
           {
             showTotalPriceSum &&
-              <SumOfPrice orderList={orderList} />
+              <SumOfPrice orderList={orders} />
           }
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               {
-                orderList.length
-                ? <Table thList={thList} tdList={orderList} route="order" rowsToShow={rowsToShow} />
-                : <h2>No hay ordenes</h2>
+                orders.length
+                ? <Table thList={thList} tdList={orders} route="order" rowsToShow={rowsToShow} />
+                : <NotItemsFound text="orders" />
               }
             </div>
           </div>

@@ -1,13 +1,28 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getAllClients } from '../../../api/clients'
+import { CLIENTS } from '../../../utils/constants'
+import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 
 import { tdList } from "./clients"
 
-const thList = ['Name', 'Address', 'City', 'Phone', 'Created Date']
-const rowsToShow = ['id', 'name', 'address', 'city', 'phone', 'created_at']
-
 export const ClientPage = () => {
+  const thList = ['Name', 'Address', 'City', 'Phone', 'Created Date']
+  const rowsToShow = ['id', 'name', 'address', 'city', 'phone', 'createdAt']
+  const [clients, setClients] = useState([])
+
+  useEffect(() => {
+    const clientsInLS = JSON.parse(sessionStorage.getItem(CLIENTS))
+    if(clientsInLS){
+      setClients(clientsInLS)
+    }else{
+      getAllClients()
+        .then(response => setClients(response.clients))
+    }
+  }, [])
+  
 
   return (
     <DashboardLayout>
@@ -19,9 +34,9 @@ export const ClientPage = () => {
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               {
-                tdList.length
-                ? <Table thList={thList} tdList={tdList} route="client" rowsToShow={rowsToShow} />
-                : <h2>No hay clientes</h2>
+                clients.length
+                ? <Table thList={thList} tdList={clients} route="client" rowsToShow={rowsToShow} />
+                : <NotItemsFound text="clients" />
               }
             </div>
           </div>

@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
 import { Button, Form, InputLabelContainer } from "../../components/form"
-import { startLoginWithEmailAndPassword } from '../../store/auth/thunks'
 import { CHECKING } from '../../utils/constants'
 import { useAuthStore } from '../../hooks'
 
@@ -13,7 +12,6 @@ export const LoginPage = () => {
   const [userPassword, setUserPassword] = useState("")
   const { status, errorMessages } = useSelector( state => state.auth )
   const isAuthenticated = useMemo(() => status === CHECKING, [status])
-  const dispatch = useDispatch()
 
   const onClick = () => {
     setShow(!show)

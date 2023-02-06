@@ -1,6 +1,10 @@
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons"
+import Swal from 'sweetalert2'
+import { getOrdersById, updateOrder } from "../../../api/orders"
+import { prepareDatePropertyInObject, updateValueInSS } from "../../../utils/functions"
+import { ORDERS } from "../../../utils/constants"
 import { DashboardLayout } from "../../layout"
 import { OrderForm } from "../components/OrderForm"
 import { OrderPDF } from "../components"
@@ -12,19 +16,45 @@ export const EditOrderPage = () => {
   const navigate = useNavigate()
   const [showPDF, setShowPDF] = useState(false)
   const [orderInfo, setOrderInfo] = useState({})
-  const childRef = useRef()
+  const [order, setOrder] = useState({})
+  const formRef = useRef()
+
+  useEffect(() => {
+    getOrdersById(orderId)
+      .then(response => setOrder(response))
+  }, [])
+  
 
   const goBackClic = () => {
     navigate(-1)
   }
 
   const generatePDF = () => {
-    const childState = childRef.current.getFormState()
+    const childState = formRef.current.getFormState()
     setOrderInfo(childState)
     setShowPDF(!showPDF)
   }
 
-  const order = tdList.find(order => order.id === orderId)
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const childState = formRef.current.getFormState()
+    console.log('childState', childState)
+    const { msn, order } = await updateOrder(orderId, childState)
+    console.log('msn', msn)
+    order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
+    order.deliveredDate = prepareDatePropertyInObject(order, 'deliveredDate')
+    order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')
+    order.dueDate = prepareDatePropertyInObject(order, 'dueDate')
+    order.paymentDate = prepareDatePropertyInObject(order, 'paymentDate')
+    updateValueInSS(ORDERS, order)
+    Swal.fire({
+      title: 'Success!',
+      text: msn,
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500
+    }).then((result) => navigate(-1))
+  }
 
   return (
     <DashboardLayout>
@@ -44,18 +74,23 @@ export const EditOrderPage = () => {
           </p>
         </div>
         {
-          showPDF
-          ? <OrderPDF orderInfo={orderInfo} />
-          : <OrderForm
-              title="Edit order"
-              buttonText="Edit oder"
-              buttonIcon={faPenToSquare}
-              edit={true}
-              order={order}
-              ref={childRef}
-            />
+          order._id &&
+            <>
+              {
+                showPDF
+                ? <OrderPDF orderInfo={orderInfo} />
+                : <OrderForm
+                    title="Edit order"
+                    buttonText="Edit oder"
+                    buttonIcon={faPenToSquare}
+                    edit={true}
+                    order={order}
+                    ref={formRef}
+                    onSubmit={onSubmit}
+                  />
+              }
+            </>
         }
-        
       </div>
     </DashboardLayout>
   )

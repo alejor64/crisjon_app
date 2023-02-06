@@ -1,12 +1,37 @@
-import { useState } from "react"
+import { useEffect } from "react"
 import { Filter } from "../../../../components/filter"
-import { Checkbox, InputLabelContainer, Label, Select } from "../../../../components/form"
+import { Checkbox, InputLabelContainer, Label, Select, SelectInputContainer } from "../../../../components/form"
+import { CLIENTS } from "../../../../utils/constants"
+
+const ClientsOptions = ({client, setClient}) => {
+  const clientsOPtions = JSON.parse(sessionStorage.getItem(CLIENTS) || "[]")
+
+  useEffect(() => {
+    if(client){
+      setClient(client)
+    }
+  }, [client])
+  
+
+  return (
+    <Select
+      name="client"
+      value={client}
+      setValue={setClient}
+    >
+      <option value="">-- Client --</option>
+      {
+        clientsOPtions.map(clientOption => (
+          <option value={clientOption.name} key={clientOption._id}>
+            {clientOption.name}
+          </option>
+        ))
+      }
+    </Select>
+  )
+}
 
 export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, setReturnedCheckbox, startDate, setStartDate, endDateValue, setEndDateValue, clientValue, setClientValue, onClick, error}) => {
-
-  const onChange = (e) => {
-    setClientValue(e.target.value)
-  }
 
   return (
     <Filter onClick={onClick} error={error}>
@@ -41,11 +66,7 @@ export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, s
       </div>
       <div className="w-1/5 flex flex-col text-center">
         <Label htmlFor="client" text="Client" />
-        <Select name="clients" value={clientValue} onChange={onChange}>
-          <option className='text-center' value="">-- Select --</option>
-          <option className='text-center' valie="Alejor">Alejor</option>
-          <option className='text-center' value="Erika">Erika</option>
-        </Select>
+        <ClientsOptions name="clients" client={clientValue} setClient={setClientValue}/>
       </div>
       <div>
         <Checkbox
