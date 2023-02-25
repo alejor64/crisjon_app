@@ -27,6 +27,7 @@ export const startLoginWithToken = (tokenInLS) => {
 export const startLogout = () => {
   return async (dispatch) => {
     localStorage.clear();
+    sessionStorage.clear();
     dispatch(logout())
   }
 }
