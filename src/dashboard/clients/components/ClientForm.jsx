@@ -98,6 +98,7 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
           name="fein"
           inputValue={fein}
           setInputValue={setFein}
+          required={true}
         />
         <InputLabelContainer
           type="number"

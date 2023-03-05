@@ -12,7 +12,6 @@ export const OrderPDF = ({orderInfo}) => {
 
   const clientsInSS = JSON.parse(sessionStorage.getItem(CLIENTS))
   const client = clientsInSS.find(client => client.name === orderInfo.clientName)
-  console.log('orderInfo', orderInfo)
 
   const generatePDF = useReactToPrint({
     content: () => orderPDF.current,

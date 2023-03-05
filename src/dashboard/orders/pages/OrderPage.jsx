@@ -7,8 +7,8 @@ import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 import { OrderFilters, SumOfPrice, Toggle } from "../components"
 
-const thList = ['Client', 'CAD Number', 'Name', 'Created Date', 'Service', 'Satus', 'Price']
-const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'createdAt', 'service', 'status', 'price']
+const thList = ['Client', 'CAD Number', 'Name', 'Client Job name', 'Created Date', 'Service', 'Satus', 'Price']
+const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'clientJobName', 'createdAt', 'service', 'status', 'price']
 
 export const OrderPage = () => {
   const today = new Date()
@@ -97,6 +97,17 @@ export const OrderPage = () => {
               <SumOfPrice orderList={orders} />
           }
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
+            {
+              orders.length > 10 &&
+                <div className="p-4 flex justify-around space-x-2">
+                  <Link
+                    className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
+                    to="/order/new"
+                  >
+                    Add new order
+                  </Link>
+                </div>
+            }
             <div className="overflow-hidden">
               {
                 orders.length
@@ -106,14 +117,17 @@ export const OrderPage = () => {
             </div>
           </div>
         </div>
-        <div className="p-4 flex justify-around space-x-2">
-          <Link
-            className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
-            to="/order/new"
-          >
-            Add new order
-          </Link>
-        </div>
+        {
+          orders.length <= 10 &&
+            <div className="p-4 flex justify-around space-x-2">
+              <Link
+                className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
+                to="/order/new"
+              >
+                Add new order
+              </Link>
+            </div>
+        }
       </div>
     </DashboardLayout>
   )

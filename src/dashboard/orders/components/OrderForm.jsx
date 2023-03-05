@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from "react"
-import { Form, InputLabelContainer, SelectInputContainer, Button } from "../../../components/form"
+import { Form, InputLabelContainer, SelectInputContainer, Button, TextareaContainer } from "../../../components/form"
 import { ClientsOptions } from "./formComponents/ClientsOptions"
 import { ItemOptions } from "./formComponents/ItemOptions"
 import { ServiceOptions } from "./formComponents/ServiceOptions"
@@ -22,6 +22,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
   const [rush, setRush] = useState(order?.rush || false)
   const [done, setDone] = useState(order?.done || false)
   const [delivered, setDelivered] = useState(order?.delivered || false)
+  const [note, setNote] = useState(order?.note || "")
 
   const onChangeRush = () => {
     setRush(!rush)
@@ -55,7 +56,8 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
         rush,
         done,
         delivered,
-        jobId: order?.jobId
+        jobId: order?.jobId,
+        note,
       }
     }
   }))
@@ -189,42 +191,54 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
         </>
       )
     }
-      <div className="flex mb-7">
-        <input
-          type="checkbox"
-          id="rush"
-          name="rush_value"
-          checked={rush}
-          onChange={onChangeRush}
-        />
-        <span className='ml-1'>Mark as rush</span>
+      <div className="flex">
+        <div className="w-1/2">
+          <div className="flex mb-7">
+            <input
+              type="checkbox"
+              id="rush"
+              name="rush_value"
+              checked={rush}
+              onChange={onChangeRush}
+            />
+            <span className='ml-1'>Mark as rush</span>
+          </div>
+          {
+            edit && (
+              <>
+                <div className="flex mb-7">
+                  <input
+                    type="checkbox"
+                    id="done"
+                    name="done_value"
+                    checked={done}
+                    onChange={onChangeDone}
+                  />
+                  <span className='ml-1'>Mark as done</span>
+                </div>
+                <div className="flex mb-7">
+                  <input
+                    type="checkbox"
+                    id="returned"
+                    name="returned_value"
+                    checked={delivered}
+                    onChange={onChangedelivered}
+                  />
+                  <span className='ml-1'>Mark as delivered</span>
+                </div>
+              </>
+            )
+          }
+        </div>
+        <div className="w-1/2">
+          <TextareaContainer
+            name="note"
+            text="Note"
+            value={note}
+            setInputValue={setNote}
+          />
+        </div>
       </div>
-      {
-        edit && (
-          <>
-            <div className="flex mb-7">
-              <input
-                type="checkbox"
-                id="done"
-                name="done_value"
-                checked={done}
-                onChange={onChangeDone}
-              />
-              <span className='ml-1'>Mark as done</span>
-            </div>
-            <div className="flex mb-7">
-              <input
-                type="checkbox"
-                id="returned"
-                name="returned_value"
-                checked={delivered}
-                onChange={onChangedelivered}
-              />
-              <span className='ml-1'>Mark as delivered</span>
-            </div>
-          </>
-        )
-      }
       <div className="px-4 py-3 flex justify-around sm:px-6">
         <Button text={buttonText} icon={buttonIcon} />
         {/* {

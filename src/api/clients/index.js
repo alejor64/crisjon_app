@@ -37,7 +37,7 @@ export const getClientById = async (id) => {
     client.lastModificatedAt = prepareDatePropertyInObject(client, 'lastModificatedAt')
     return { msn, client }
   } catch (error) {
-    console.log('ERROR', error)
+    console.log('Error in getClientById', error)
   }
 }
 
@@ -64,10 +64,9 @@ export const createClient = async (client) => {
       data : clientInfo
     };
     const { data  } = await apiInstance(config)
-    console.log('data', data)
     return data
   } catch (error) {
-    console.log('createClient error', error)
+    console.log('Error in createClient', error)
   }
 }
 

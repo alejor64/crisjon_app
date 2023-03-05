@@ -48,7 +48,6 @@ const TrTable = ({row, odd, route, rowsToShow}) => {
 }
 
 const propertySearch = (property, property_value) => {
-  
   if(typeof property === 'string') {
     return property.toLowerCase().includes(property_value)
   }else if(typeof property === 'number') {
@@ -71,7 +70,7 @@ export const Table = ({thList, tdList, route, rowsToShow}) => {
       Object.keys(obj).map(key => {
         const includeProperty = propertySearch(obj[key], property_value.toLowerCase())
         if(includeProperty){
-          const valueInArray = new_array.find(property => property.id === obj.id)
+          const valueInArray = new_array.find(property => property._id === obj._id)
           if(!valueInArray){
             return new_array.push(obj)
           }
@@ -83,6 +82,7 @@ export const Table = ({thList, tdList, route, rowsToShow}) => {
   
   const onKeyUp = (e) => {
     if(e.key === 'Enter'){
+      searchValue(e.target.value, tdList)
       if(e.target.value){
         setRowsInTable(searchValue(e.target.value, tdList));
       }else {

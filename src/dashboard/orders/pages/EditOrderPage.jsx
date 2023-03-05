@@ -38,9 +38,7 @@ export const EditOrderPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault()
     const childState = formRef.current.getFormState()
-    console.log('childState', childState)
     const { msn, order } = await updateOrder(orderId, childState)
-    console.log('msn', msn)
     order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
     order.deliveredDate = prepareDatePropertyInObject(order, 'deliveredDate')
     order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')

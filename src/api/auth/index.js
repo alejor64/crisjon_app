@@ -52,7 +52,6 @@ export const reviewToken = async(tokenInLS) => {
       token,
     }
   } catch (error) {
-    console.log('ENTRA A BORRAR')
     localStorage.clear()
     return {
       ok: false,
