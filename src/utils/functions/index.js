@@ -18,7 +18,7 @@ export const prepareDatePropertyInObject = (object, property) => {
 
 export const addValueToSS = (key, value) => {
   const arrayOdDataInSS = JSON.parse(sessionStorage.getItem(key) || '[]')
-  arrayOdDataInSS.push(value)
+  arrayOdDataInSS.unshift(value)
   sessionStorage.setItem(key, JSON.stringify(arrayOdDataInSS))
 }
 
