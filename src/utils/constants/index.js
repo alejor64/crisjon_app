@@ -13,3 +13,6 @@ export const ORDERS = 'orders'
 export const USERS = 'users'
 export const SERVICES = 'services'
 export const ITEMS = 'items'
+
+//DATE FORMAT
+export const USA_DATE_FORMAT = 'MM-DD-YYYY'

@@ -1,7 +1,10 @@
+import moment from 'moment'
+import { USA_DATE_FORMAT } from '../constants'
+
 export const prepareDatePropertyInArray = (array, property) => {
   const clientsPrepared = array.map(item => {
     if(item[property]){
-      const datePrepared = new Date(item[property]).toISOString().split('T')[0]
+      const datePrepared = moment(item[property]).format(USA_DATE_FORMAT);
       item[property] = datePrepared
       return item
     }
@@ -12,7 +15,7 @@ export const prepareDatePropertyInArray = (array, property) => {
 
 export const prepareDatePropertyInObject = (object, property) => {
   if(object[property]){
-    return new Date(object[property]).toISOString().split('T')[0]
+    return moment(object[property]).format(USA_DATE_FORMAT)
   }
 }
 

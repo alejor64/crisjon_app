@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 import { getOrders } from '../../../api/orders'
-import { ORDERS } from '../../../utils/constants'
+import { ORDERS, USA_DATE_FORMAT } from '../../../utils/constants'
 import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
@@ -50,10 +51,12 @@ export const OrderPage = () => {
         setShowTotalPriceSum(false)
       }
       if(startDate){
-        ordersFiltered = ordersFiltered.filter(order => order.createdAt >= startDate)
+        const startDateFormatted = moment(startDate).format(USA_DATE_FORMAT)
+        ordersFiltered = ordersFiltered.filter(order => order.createdAt >= startDateFormatted)
       }
       if(endDateValue){
-        ordersFiltered = ordersFiltered.filter(order => order.createdAt <= endDateValue)
+        const endDateFormatted = moment(endDateValue).format(USA_DATE_FORMAT)
+        ordersFiltered = ordersFiltered.filter(order => order.createdAt <= endDateFormatted)
       }
       if(clientValue){
         ordersFiltered = ordersFiltered.filter(order => order.clientName === clientValue)
