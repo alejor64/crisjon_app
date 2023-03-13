@@ -14,8 +14,8 @@ export const ItemOptions = ({value, setValue}) => {
   
   return (
     <SelectInputContainer
-      name="service"
-      text="Service"
+      name="item"
+      text="Item"
       required={true}
       value={value}
       setValue={setValue}
