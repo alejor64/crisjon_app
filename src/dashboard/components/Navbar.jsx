@@ -3,20 +3,14 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faAddressCard, faCreditCard, faMoneyBill1 } from '@fortawesome/free-regular-svg-icons'
+import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../hooks/useAuthStore'
-
-const navigation = [
-  { name: 'Clients', route: '/client', icon: faAddressCard },
-  { name: 'Order', route: '/order', icon: faCreditCard },
-  // { name: 'Estimate', route: '/estimate', icon: faMoneyBill1 },
-  { name: 'Users', route: '/user', icon: faUser },
-]
+import { navigation } from './Nav_constants'
 
 
 export const Navbar = () => {
-  const { logout, name } = useAuthStore();
+  const { logout, name, role } = useAuthStore();
 
   const classNames = (...classes) => {
     return classes.filter(Boolean).join(' ')
@@ -58,7 +52,7 @@ export const Navbar = () => {
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
+                    {navigation(role).map((item) => (
                       <Link
                         key={item.name}
                         to={item.route}
@@ -115,7 +109,7 @@ export const Navbar = () => {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
+              {navigation(role).map((item) => (
                 <Link
                   key={item.name}
                   to={item.route}

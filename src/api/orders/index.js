@@ -48,6 +48,29 @@ export const getOrdersById = async (id) => {
   }
 }
 
+export const getOrdersDelivered = async(clientName, startDate, endDate) => {
+  try {
+    const uri = `/order/client-name/${clientName}?startDate=${startDate}&endDate=${endDate}`
+    const config = {
+      method: 'get',
+      url: uri,
+      headers: { 'Content-Type': 'application/json' }
+    }
+    const { data: { orders } } = await apiInstance(config)
+    const createdAtPrepared = prepareDatePropertyInArray(orders, 'createdAt')
+    const deliveredDatePrepared = prepareDatePropertyInArray(createdAtPrepared, 'deliveredDate')
+    return {
+      ok: true,
+      orders: deliveredDatePrepared,
+    }
+  } catch (error) {
+    return {
+      ok: false,
+      msn: 'Bad Request',
+    }
+  }
+}
+
 export const createOrder = async (body) => {
   try {    
     const config = {

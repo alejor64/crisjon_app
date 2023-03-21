@@ -41,3 +41,27 @@ export const difference = (obj1, obj2) => {
   });
   return keyFound;
 };
+
+const propertySearch = (property, property_value) => {
+  if(typeof property === 'string') {
+    return property.toLowerCase().includes(property_value)
+  }else if(typeof property === 'number') {
+    return toString(property).toLowerCase().includes(property_value)
+  }
+}
+
+export const searchValue = (property_value, array) => {
+  let new_array = [];
+  array.map(obj => {
+    Object.keys(obj).map(key => {
+      const includeProperty = propertySearch(obj[key], property_value.toLowerCase())
+      if(includeProperty){
+        const valueInArray = new_array.find(property => property._id === obj._id)
+        if(!valueInArray){
+          return new_array.push(obj)
+        }
+      }
+    })
+  })
+  return new_array;
+};

@@ -1,40 +1,11 @@
-import { useEffect } from "react"
 import { Filter } from "../../../../components/filter"
-import { Checkbox, InputLabelContainer, Label, Select, SelectInputContainer } from "../../../../components/form"
-import { CLIENTS } from "../../../../utils/constants"
+import { Checkbox, InputLabelContainer, Label } from "../../../../components/form"
+import { SelectClient } from "../../../clients/components"
 
-const ClientsOptions = ({client, setClient}) => {
-  const clientsOPtions = JSON.parse(sessionStorage.getItem(CLIENTS) || "[]")
-
-  useEffect(() => {
-    if(client){
-      setClient(client)
-    }
-  }, [client])
-  
+export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, setReturnedCheckbox, startDate, setStartDate, endDateValue, setEndDateValue, clientValue, setClientValue, onClick, errorMsn}) => {
 
   return (
-    <Select
-      name="client"
-      value={client}
-      setValue={setClient}
-    >
-      <option value="">-- Client --</option>
-      {
-        clientsOPtions.map(clientOption => (
-          <option value={clientOption.name} key={clientOption._id}>
-            {clientOption.name}
-          </option>
-        ))
-      }
-    </Select>
-  )
-}
-
-export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, setReturnedCheckbox, startDate, setStartDate, endDateValue, setEndDateValue, clientValue, setClientValue, onClick, error}) => {
-
-  return (
-    <Filter onClick={onClick} error={error}>
+    <Filter onClick={onClick} errorMsn={errorMsn}>
       <div>
         <Checkbox
           checked={doneCheckbox}
@@ -66,7 +37,7 @@ export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, s
       </div>
       <div className="w-1/5 flex flex-col text-center">
         <Label htmlFor="client" text="Client" />
-        <ClientsOptions name="clients" client={clientValue} setClient={setClientValue}/>
+        <SelectClient name="clients" client={clientValue} setClient={setClientValue} />
       </div>
       <div>
         <Checkbox

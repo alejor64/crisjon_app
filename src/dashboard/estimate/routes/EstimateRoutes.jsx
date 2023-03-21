@@ -6,7 +6,6 @@ export const EstimateRoutes = () => {
     <Routes>
       <Route path="new" element={<NewEstimatePage />} />
       <Route path="list" element={<EstimatePage />} />
-      {/* <Route path="edit/:clientId" element={<EditClientPage />} /> */}
       <Route path="/*" element={<Navigate to="/estimate/list" />} />
     </Routes>
   )

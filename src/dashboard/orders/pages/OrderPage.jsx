@@ -7,6 +7,7 @@ import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 import { OrderFilters, SumOfPrice, Toggle } from "../components"
+import { DateError } from '../../../components/filter/errors'
 
 const thList = ['Client', 'CAD Number', 'Name', 'Client Job name', 'Created Date', 'Service', 'Satus', 'Price']
 const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'clientJobName', 'createdAt', 'service', 'status', 'price']
@@ -25,7 +26,7 @@ export const OrderPage = () => {
   const [returnedCheckbox, setReturnedCheckbox] = useState(false)
   const [showTotalPriceSum, setShowTotalPriceSum] = useState(false)
   const [clientValue, setClientValue] = useState("")
-  const [error, setError] = useState(false)
+  const [errorMsn, setErrorMsn] = useState(<></>)
 
   useEffect(() => {
     if(!orders.length) {
@@ -38,9 +39,9 @@ export const OrderPage = () => {
   const onClick = () => {
     let ordersFiltered = ordersInLS
     if(startDate && endDateValue && startDate > endDateValue) {
-      setError(true)
+      setErrorMsn(<DateError/>)
     }else{
-      setError(false)
+      setErrorMsn(<></>)
       if(doneCheckbox){
         ordersFiltered = ordersFiltered.filter(order => order.done)
       }
@@ -92,7 +93,7 @@ export const OrderPage = () => {
                 clientValue={clientValue}
                 setClientValue={setClientValue}
                 onClick={onClick}
-                error={error}
+                errorMsn={errorMsn}
               />
           }
           {

@@ -241,13 +241,6 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
       </div>
       <div className="px-4 py-3 flex justify-around sm:px-6">
         <Button text={buttonText} icon={buttonIcon} />
-        {/* {
-          edit && (
-            <>
-              <Button text="Delete" icon={faTrashCan} deleteButton={true} />
-            </>
-          )
-        } */}
       </div>
     </Form>
   )

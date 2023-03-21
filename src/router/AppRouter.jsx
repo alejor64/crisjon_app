@@ -4,14 +4,15 @@ import { AuthRoutes } from "../auth/routes/AuthRoutes"
 import { ClientRoutes } from "../dashboard/clients/routes/ClientRoutes"
 import { UserRoutes } from "../dashboard/users/routes/UserRoutes"
 import { OrderRoutes } from "../dashboard/orders/routes/OrderRoutes"
+import { InvoiceRoutes } from "../dashboard/invoice/routes/InvoiceRoutes"
 import { EstimateRoutes } from "../dashboard/estimate/routes/EstimateRoutes"
-import { CHECKING, NOT_AUTHENTICATED } from "../utils/constants"
+import { ADMIN, CHECKING, NOT_AUTHENTICATED } from "../utils/constants"
 import { Loader } from "../components/loader"
 import { useAuthStore } from "../hooks"
 
 export const AppRouter = () => {
 
-  const { status, checkAuthToken } = useAuthStore()
+  const { status, role, checkAuthToken } = useAuthStore()
 
   useEffect(() => {
     checkAuthToken()
@@ -29,6 +30,7 @@ export const AppRouter = () => {
             <Route path="user/*" element={ <UserRoutes />} />
             <Route path="order/*" element={ <OrderRoutes />} />
             <Route path="estimate/*" element={ <EstimateRoutes />} />
+            <Route path="invoice/*" element={ <InvoiceRoutes />} />
             <Route path="/*" element={ <Navigate to="/client" />} />
           </>
       }

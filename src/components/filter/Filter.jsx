@@ -1,6 +1,6 @@
 import { Button } from "../form"
 
-export const Filter = ({children, onClick, error}) => {
+export const Filter = ({children, onClick, errorMsn}) => {
   return (
     <div className="flex justify-center py-2 min-w-full max-w-full sm:px-6 lg:px-8">
       <div
@@ -10,10 +10,10 @@ export const Filter = ({children, onClick, error}) => {
           {children}
         </div>
         {
-          error &&
+          errorMsn &&
             <div className="my-2" >
               <p className="text-red-500">
-                <span className="italic">End date</span> can not be lower than <span className="italic">start date</span>
+                { errorMsn }
               </p>
             </div>
         }

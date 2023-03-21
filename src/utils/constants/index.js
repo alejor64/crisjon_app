@@ -16,3 +16,9 @@ export const ITEMS = 'items'
 
 //DATE FORMAT
 export const USA_DATE_FORMAT = 'MM-DD-YYYY'
+export const DATA_PICKER_FORMAT = 'YYYY-MM-DD'
+export const MONTH = 'month'
+
+//ROLES
+export const ADMIN = 'ADMIN'
+export const USER = 'USER'
