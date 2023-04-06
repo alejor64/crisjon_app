@@ -9,7 +9,7 @@ export const InputFilter = ({route, onKeyUp}) => {
         type="text"
         name="searchClient"
         id="searchClient"
-        placeholder="name, phone, address"
+        placeholder="type something to search"
         autoComplete='off'
         css="ml-2"
         onKeyUp={onKeyUp}

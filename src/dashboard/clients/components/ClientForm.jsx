@@ -1,7 +1,11 @@
 import { useImperativeHandle, forwardRef, useState } from "react"
 import { Form, InputLabelContainer, Button } from "../../../components/form"
+import { formatCurrency } from "../../../utils/functions"
+import { useSelector } from "react-redux"
+import { ADMIN } from "../../../utils/constants"
 
 export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, onSubmit }, _ref) => {
+  const { role } = useSelector( state => state?.auth )
   const createdAtDefaultValue = new Date().toISOString().split('T')[0]
   const [favorite, setFavorite] = useState(client?.favorite || false)
   const [name, setName] = useState(client?.name || "")
@@ -13,6 +17,7 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
   const [fein, setFein] = useState(client?.fein || "")
   const [sst, setSst] = useState(client?.sst || "")
   const [taxtIdNumber, setTaxtIdNumber] = useState(client?.taxIdNumber || "")
+  const [outStandingBalance, setOutStandingBalance] = useState(client?.outstandingBalance || 0)
   const [zipCode, setZipCode] = useState(client?.zipCode || "")
   const [createdAt, setCreatedAt] = useState(client?.createdAt || createdAtDefaultValue)
   
@@ -119,6 +124,19 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
           inputValue={taxtIdNumber}
           setInputValue={setTaxtIdNumber}
         />
+        {
+          role === ADMIN &&
+            <InputLabelContainer
+              type="text"
+              text="Out Standing Balance"
+              placeholder="0"
+              name="taxIdNumber"
+              css='ml-3'
+              readOnly={true}
+              inputValue={formatCurrency(outStandingBalance)}
+              setInputValue={setOutStandingBalance}
+            />
+        }
       </div>
       <div className="flex mb-7">
         <InputLabelContainer

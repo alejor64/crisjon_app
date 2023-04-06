@@ -8,11 +8,11 @@ export const CHECKING = 'checking'
 
 //LOCAL_STORAGE
 export const TOKEN = 'crisjon_token'
-export const CLIENTS = 'clients'
-export const ORDERS = 'orders'
-export const USERS = 'users'
-export const SERVICES = 'services'
-export const ITEMS = 'items'
+export const CLIENTS = 'client'
+export const ORDERS = 'order'
+export const USERS = 'user'
+export const SERVICES = 'service'
+export const ITEMS = 'item'
 
 //DATE FORMAT
 export const USA_DATE_FORMAT = 'MM-DD-YYYY'

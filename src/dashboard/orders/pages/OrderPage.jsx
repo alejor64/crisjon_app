@@ -8,6 +8,7 @@ import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 import { OrderFilters, SumOfPrice, Toggle } from "../components"
 import { DateError } from '../../../components/filter/errors'
+import { ToggleContainer } from '../../../components/toggle'
 
 const thList = ['Client', 'CAD Number', 'Name', 'Client Job name', 'Created Date', 'Service', 'Satus', 'Price']
 const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'clientJobName', 'createdAt', 'service', 'status', 'price']
@@ -73,12 +74,11 @@ export const OrderPage = () => {
           <h2 className="text-3xl text-center my-2">
             ORDERS
           </h2>
-          <div className="flex justify-center items-center py-2 min-w-full max-w-full sm:px-6 lg:px-8">
-            <span className='mr-2'>
-              { checkedValue ? 'Hide filters' : 'Show filters' }
-            </span>
-            <Toggle checkedValue={checkedValue} setCheckedValue={setCheckedValue} />
-          </div>
+          <ToggleContainer
+            text={checkedValue ? 'Hide filters' : 'Show filters'}
+            checkedValue={checkedValue}
+            setCheckedValue={setCheckedValue}
+          />
           {
             checkedValue &&
               <OrderFilters

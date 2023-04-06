@@ -1,6 +1,6 @@
 import { Label, Input } from "./"
 
-export const InputLabelContainer = ({type, text, placeholder, name, css, inputValue, setInputValue, required}) => {
+export const InputLabelContainer = ({type, text, placeholder, name, css, inputValue, setInputValue, required, readOnly = false}) => {
   return (
     <div className={`w-full ${css}`}>
       <Label htmlFor={name} text={text} />
@@ -11,6 +11,7 @@ export const InputLabelContainer = ({type, text, placeholder, name, css, inputVa
         inputValue={inputValue}
         setInputValue={setInputValue}
         required={required}
+        readOnly={readOnly}
       />
     </div>
   )

@@ -1,16 +1,10 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Fragment, useState } from "react"
 import { searchValue } from "../../../utils/functions"
 import { InputFilter } from "./InputFilter"
 import { ThTable, TrTable } from "./index"
 
-export const Table = ({thList, tdList, route, rowsToShow}) => {
+export const Table = ({thList, tdList, route, rowsToShow, showInput = true}) => {
   const [rowsInTable, setRowsInTable] = useState(tdList)
-  const navigate = useNavigate()
-
-  const onClick = (row) => {
-    navigate(`/${route}/edit/${row._id}`)
-  }
   
   const onKeyUp = (e) => {
     if(e.key === 'Enter'){
@@ -24,11 +18,14 @@ export const Table = ({thList, tdList, route, rowsToShow}) => {
 
   return (
     <>
-      <div className="flex justify-center">
-        <InputFilter route={route} onKeyUp={onKeyUp} />
-      </div>
+      {
+        showInput &&
+        <div className="flex justify-center">
+          <InputFilter route={route} onKeyUp={onKeyUp} />
+        </div>
+      }
       <div className="overflow-x-auto">
-        <div className="container p-4 min-w-full">
+        <div className="container min-w-full">
           <table className="min-w-full border-2">
             <thead className="bg-white border-b">
               <tr>
@@ -41,14 +38,13 @@ export const Table = ({thList, tdList, route, rowsToShow}) => {
             </thead>
             <tbody>
               {
-                rowsInTable.map((td, idx) => (
+                rowsInTable.slice(0, 15).map((td, idx) => (
                   <TrTable
                     key={td._id}
                     row={td}
                     odd={!(idx % 2)}
                     route={route}
                     rowsToShow={rowsToShow}
-                    onClick={() => onClick(td)}
                   />
                 ))
               }

@@ -9,8 +9,6 @@ import { DashboardLayout } from "../../layout"
 import { OrderForm } from "../components/OrderForm"
 import { OrderPDF } from "../components"
 
-import { tdList } from "./orders"
-
 export const EditOrderPage = () => {
   const { orderId } = useParams()
   const navigate = useNavigate()

@@ -6,8 +6,6 @@ import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 
-import { tdList } from "./clients"
-
 export const ClientPage = () => {
   const thList = ['Name', 'Address', 'City', 'Phone', 'Created Date']
   const rowsToShow = ['id', 'name', 'address', 'city', 'phone', 'createdAt']

@@ -1,20 +1,28 @@
 import { useRef, useState } from "react"
-import { useReactToPrint } from "react-to-print"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faDownload } from "@fortawesome/free-solid-svg-icons"
-import { CLIENTS } from "../../../../utils/constants";
+import moment from "moment"
+import { CLIENTS, USA_DATE_FORMAT } from "../../../../utils/constants"
+import { formatCurrency } from "../../../../utils/functions"
+import { Table } from "../../../components/Table"
+import { useReactToPrint } from "react-to-print"
 
-export const OrderPDF = ({orderInfo}) => {
-  const orderPDF = useRef()
+const thList = ['Id', 'Item', 'Service', 'Delivered Date', 'Price']
+const rowsToShow = ['id', 'jobId', 'item', 'service', 'deliveredDate', 'price']
+
+export const InvoicePdf = ({invoice}) => {
+  const clients = JSON.parse(sessionStorage.getItem(CLIENTS) || '[]')
+  const client = clients.find(clientInfo => clientInfo.name === invoice.clientName)
+  const invoicePDF = useRef()
   const [isMouseHover, setIsMouseHover] = useState(false)
 
-  const clientsInSS = JSON.parse(sessionStorage.getItem(CLIENTS))
-  const client = clientsInSS.find(client => client.name === orderInfo.clientName)
-
-  const generatePDF = useReactToPrint({
-    content: () => orderPDF.current,
-    documentTitle: `order_${client.name}_${orderInfo.name.replace(' ', '-')}`,
-  })
+  const ordersWithDateFormatted = (orders) => {
+    return orders.map(order => ({
+      ...order,
+      deliveredDate: moment(order.deliveredDate).format(USA_DATE_FORMAT),
+      price: formatCurrency(order.price),
+    }))
+  }
 
   const onMouseEnter = () => {
     setIsMouseHover(true)
@@ -23,6 +31,11 @@ export const OrderPDF = ({orderInfo}) => {
   const onMouseLeave = () => {
     setIsMouseHover(false)
   }
+
+  const generatePDF = useReactToPrint({
+    content: () => invoicePDF.current,
+    documentTitle: `invoice_${invoice.number}_${client.name}`,
+  })
 
   return (
     <>
@@ -46,7 +59,7 @@ export const OrderPDF = ({orderInfo}) => {
             </div>
         }
         <div
-          ref={orderPDF}
+          ref={invoicePDF}
           className="p-[80px] flex flex-col h-full w-full relative"
         >
           <div className="absolute top-[20px] right-[350px]">
@@ -55,72 +68,42 @@ export const OrderPDF = ({orderInfo}) => {
               src="https://crisjon.com/img/Nav/L1%20with%20nb3.png"
             />
           </div>
-          <div className="mt-[20px] mb-[60px]">
-            <h3 className="text-3xl mb-3">Crisjon</h3>
+          <div className="mt-[25px] mb-[40px]">
+            <h3 className="text-2xl mb-2">CRISJON FINE JEWELRY INC.</h3>
             <div className="flex justify-between">
               <div>
                 <p>5 South Wabash Avenue - Suite 1312</p>
                 <p>Chicago, Illinois, 60603</p>
                 <p>Phone: +1(312)7959303 - +1(312)7950018</p>
+                <p>Email: crisjon3d@yahoo.com</p>
               </div>
               <div className="text-end">
-                <p>Order info</p>
-                <p>Date: {new Date().toDateString()}</p>
-                <p>ID: {orderInfo.jobId}</p>
+                <p className="font-medium underline">INVOICE {invoice.number} INFO.</p>
+                <p>Billing Date: {moment().format(USA_DATE_FORMAT)}</p>
+                <p>Previous Balance: {formatCurrency(client?.outstandingBalance)}</p>
+                <p><span className="font-medium">Total Due: </span>{formatCurrency(invoice?.totalPrice)}</p>
               </div>
             </div>
           </div>
-          <div className="mb-[90px]">
-            <h3 className="text-3xl mb-3">{client.name}</h3>
+          <div className="mb-[40px]">
+            <h3 className="text-2xl mb-2">{invoice.clientName}</h3>
             <div>
-              <p>{client.address}</p>
-              <p>{`${client.city}, ${client.state}, ${client.zipCode}`}</p>
-              <p>Phone: {client.phone}</p>
+              <p>{client?.address}</p>
+              <p>{client?.city} - {client?.zipCode || 'NOT INFO'}</p>
+              <p>FEIN {client?.fein || 'NOT INFO'} - IBT {client?.ibt || 'NOT INFO'}</p>
+              <p>STATE SALES TAX: {client?.sst || 'NOT INFO'}</p>
             </div>
           </div>
           <div className="mb-[170px]">
-            <h3 className="text-3xl mb-3">Order</h3>
-            <div className="flex justify-between">
-              <div className="w-1/2">
-                <div>
-                  <strong>Job Name:</strong> {orderInfo?.name}
-                </div>
-                <div>
-                  <strong>CAD Number:</strong> {orderInfo?.cadNumber}
-                </div>
-                <div>
-                  <strong>Service: </strong> {orderInfo?.service}
-                </div>
-                <div>
-                  <strong>Item:</strong> {orderInfo?.item}
-                </div>
-                <div>
-                  <strong>Rush:</strong> {orderInfo?.rush ? "Yes" : "No"}
-                </div>
-              </div>
-              <div className="w-1/2 pl-[30px]">
-                <div>
-                  <strong>Payment date:</strong> {orderInfo?.paymentDate}
-                </div>
-                <div>
-                  <strong>Price:</strong> {orderInfo?.price}
-                </div>
-                <div>
-                  <strong>Payment type: </strong> {orderInfo?.paymentType}
-                </div>
-                {
-                  orderInfo?.paymentType === 'check' &&
-                    <div>
-                      <strong>Check number:</strong> {orderInfo?.checkNumber}
-                    </div>
-                }
-                <div>
-                  <strong>Delivered date:</strong> {orderInfo?.deliveredDate}
-                </div>
-              </div>
-            </div>
-            <div>
-              <strong>Description:</strong> {orderInfo?.description}
+            <h3 className="text-2xl mb-3">Orders</h3>
+            <div className="w-full">
+              <Table
+                thList={thList}
+                tdList={ordersWithDateFormatted(invoice.ordersPayed)}
+                route='order'
+                rowsToShow={rowsToShow}
+                showInput={false}
+              />
             </div>
           </div>
           <div className="flex justify-between">
