@@ -29,6 +29,14 @@ export const ClientPage = () => {
           <h2 className="text-3xl text-center my-2">
             CLIENTS
           </h2>
+          <div className="py-2 flex justify-around sm:px-6">
+            <Link
+              className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
+              to="/client/new"
+            >
+              Add new client
+            </Link>
+          </div>
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               {
@@ -38,14 +46,6 @@ export const ClientPage = () => {
               }
             </div>
           </div>
-        </div>
-        <div className="px-4 py-3 flex justify-around sm:px-6">
-          <Link
-            className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
-            to="/client/new"
-          >
-            Add new client
-          </Link>
         </div>
       </div>
     </DashboardLayout>

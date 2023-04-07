@@ -90,7 +90,8 @@ export const InvoicePdf = ({invoice}) => {
             <div>
               <p>{client?.address}</p>
               <p>{client?.city} - {client?.zipCode || 'NOT INFO'}</p>
-              <p>FEIN {client?.fein || 'NOT INFO'} - IBT {client?.ibt || 'NOT INFO'}</p>
+              {/* - IBT {client?.ibt || 'NOT INFO'} */}
+              <p>FEIN {client?.fein || 'NOT INFO'}</p>
               <p>STATE SALES TAX: {client?.sst || 'NOT INFO'}</p>
             </div>
           </div>
@@ -103,6 +104,7 @@ export const InvoicePdf = ({invoice}) => {
                 route='order'
                 rowsToShow={rowsToShow}
                 showInput={false}
+                showTrash={false}
               />
             </div>
           </div>

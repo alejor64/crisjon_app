@@ -3,7 +3,7 @@ import { searchValue } from "../../../utils/functions"
 import { InputFilter } from "./InputFilter"
 import { ThTable, TrTable } from "./index"
 
-export const Table = ({thList, tdList, route, rowsToShow, showInput = true}) => {
+export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true}) => {
   const [rowsInTable, setRowsInTable] = useState(tdList)
   
   const onKeyUp = (e) => {
@@ -45,6 +45,7 @@ export const Table = ({thList, tdList, route, rowsToShow, showInput = true}) => 
                     odd={!(idx % 2)}
                     route={route}
                     rowsToShow={rowsToShow}
+                    showTrash={showTrash}
                   />
                 ))
               }

@@ -4,7 +4,7 @@ import { Form, InputLabelContainer, SelectInputContainer, Button, TextareaContai
 import { ClientsOptions } from "./formComponents/ClientsOptions"
 import { ItemOptions } from "./formComponents/ItemOptions"
 import { ServiceOptions } from "./formComponents/ServiceOptions"
-import { DATA_PICKER_FORMAT } from "../../../utils/constants"
+import { DATA_PICKER_FORMAT, USA_DATE_FORMAT } from "../../../utils/constants"
 
 const date = (order, key) => {
   if(order?.[key]) return moment(order?.[key]).format(DATA_PICKER_FORMAT)
@@ -22,9 +22,9 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
   const [dueDate, setDueDate] = useState(date(order, 'dueDate'))
   const [status, setStatus] = useState(order?.status || "")
   const [deliveredDate, setDeliveredDate] = useState(date(order, 'deliveredDate'))
-  const [paymentDate, setPaymentDate] = useState(order?.paymentType || "")
+  const [paymentDate, setPaymentDate] = useState(date(order, 'paymentDate'))
   const [price, setPrice] = useState(order?.price || 0)
-  const [paymentType, setPaymentType] = useState("")
+  const [paymentType, setPaymentType] = useState(order?.paymentType || "")
   const [checkNumber, setCheckNumber] = useState(order?.checkNumber || 0)
   const [rush, setRush] = useState(order?.rush || false)
   const [done, setDone] = useState(order?.done || false)
@@ -72,6 +72,12 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
   return (
     <Form title={title} onSubmit={onSubmit}>
       {
+        paymentDate &&
+          <div className="text-center my-3 bg-slate-200 p-3 rounded">
+            <h3 className="font-medium">This order was payed was payed on {moment(paymentDate).format(USA_DATE_FORMAT)}</h3>
+          </div>
+      }
+      {
         <>
           <div className="flex mb-7">
             <InputLabelContainer
@@ -82,6 +88,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               inputValue={name}
               setInputValue={setName}
               required={true}
+              readOnly={!!paymentDate}
             />
             <InputLabelContainer
               type="text"
@@ -92,10 +99,11 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               setInputValue={setClientJobName}
               css="ml-3"
               required={true}
+              readOnly={!!paymentDate}
             />
           </div>
           <div className="flex mb-7">
-            <ServiceOptions value={service} setValue={setService} />
+            <ServiceOptions value={service} setValue={setService} disabled={!!paymentDate} />
             <InputLabelContainer
               type="text"
               text="Description"
@@ -105,10 +113,11 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               setInputValue={setDescription}
               css="ml-3"
               required={true}
+              readOnly={!!paymentDate}
             />
           </div>
           <div className="flex mb-7">
-            <ItemOptions value={item} setValue={setItem} />
+            <ItemOptions value={item} setValue={setItem} disabled={!!paymentDate} />
             <InputLabelContainer
               type="text"
               text="CAD Number"
@@ -117,10 +126,11 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               inputValue={cadNumber}
               setInputValue={setCadNumber}
               css="ml-3"
+              readOnly={!!paymentDate}
             />
           </div>
           <div className="flex mb-7">
-            <ClientsOptions client={clientName} setClient={setClientName} />
+            <ClientsOptions client={clientName} setClient={setClientName} disabled={!!paymentDate} />
             <InputLabelContainer
               type="date"
               text="Due date"
@@ -128,6 +138,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               css="ml-3"
               inputValue={dueDate}
               setInputValue={setDueDate}
+              readOnly={!!paymentDate}
             />
           </div>
           <div className="flex mb-7">
@@ -136,14 +147,17 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               text="Status"
               value={status}
               setValue={setStatus}
+              disabled={!!paymentDate}
             >
               <option value="">-- Status --</option>
-              <option value="POllishing">Pollishing</option>
-              <option value="Desing">Desing</option>
+              <option value="Polishing">Polishing</option>
+              <option value="Design">Design</option>
               <option value="Casting">Casting</option>
               <option value="Setting">Setting</option>
               <option value="Jeweler">Jeweler</option>
               <option value="Done">Done</option>
+              <option value="Engraving">Engraving</option>
+              <option value="Hold">Hold</option>
             </SelectInputContainer>
             <InputLabelContainer
               type="date"
@@ -164,6 +178,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                   name="paymentDate"
                   inputValue={paymentDate}
                   setInputValue={setPaymentDate}
+                  readOnly={true}
                 />
                 <InputLabelContainer
                   type="text"
@@ -172,19 +187,18 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                   css="ml-3"
                   inputValue={price}
                   setInputValue={setPrice}
+                  readOnly={!!paymentDate}
                 />
               </div>
               <div className="flex mb-7">
-                <SelectInputContainer
+                <InputLabelContainer
+                  type="text"
                   name="payment_type"
                   text="Payment type"
-                  value={paymentType}
-                  setValue={setPaymentType}
-                >
-                  <option value="">-- payment type --</option>
-                  <option value="cash">Cash</option>
-                  <option value="check">Check</option>
-                </SelectInputContainer>
+                  inputValue={paymentType}
+                  setInputValue={setPaymentType}
+                  readOnly={!!paymentDate}
+                />
                 {
                   paymentType == 'check' && 
                     <InputLabelContainer
@@ -194,6 +208,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                       css="ml-3"
                       inputValue={checkNumber}
                       setInputValue={setCheckNumber}
+                      readOnly={!!paymentDate}
                     />
                 }
               </div>
@@ -249,7 +264,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
             </div>
           </div>
           <div className="px-4 py-3 flex justify-around sm:px-6">
-            <Button text={buttonText} icon={buttonIcon} />
+            <Button text={buttonText} icon={buttonIcon} disabled={!!paymentDate} />
           </div>
         </>
       }

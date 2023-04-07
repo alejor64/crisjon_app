@@ -3,7 +3,7 @@ import { getAllServices } from '../../../../api/orders/service'
 import { SelectInputContainer } from '../../../../components/form'
 import { SERVICES } from '../../../../utils/constants'
 
-export const ServiceOptions = ({value, setValue}) => {
+export const ServiceOptions = ({value, setValue, disabled}) => {
   const servicesInSS = JSON.parse(sessionStorage.getItem(SERVICES) || "[]")
   const [services, setServices] = useState(servicesInSS)
 
@@ -19,6 +19,7 @@ export const ServiceOptions = ({value, setValue}) => {
       required={true}
       value={value}
       setValue={setValue}
+      disabled={disabled}
     >
       <option value="">-- Service --</option>
       {

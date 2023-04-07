@@ -5,7 +5,7 @@ import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import { TdTable, TdTableInvoice } from "./index"
 import { useDeleteData } from "../../../hooks/useDeleteData"
 
-export const TrTable = ({row, odd, rowsToShow, withCheckbox = false, setOrdersChecked, ordersChecked, route}) => {
+export const TrTable = ({row, odd, rowsToShow, withCheckbox = false, setOrdersChecked, ordersChecked, route, showTrash}) => {
   const navigate = useNavigate()
 
   const onClick = (row) => {
@@ -45,15 +45,18 @@ export const TrTable = ({row, odd, rowsToShow, withCheckbox = false, setOrdersCh
           )
         ))
       }
-      <td
-        className={`text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap text-center`}
-      >
-        <FontAwesomeIcon
-          icon={faTrashAlt}
-          className="min-h-[25px] text-red-500 cursor-pointer"
-          onClick={() => handleDelete(row)}
-        />
-      </td>
+      {
+        showTrash &&
+          <td
+            className={`text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap text-center`}
+          >
+            <FontAwesomeIcon
+              icon={faTrashAlt}
+              className="min-h-[25px] text-red-500 cursor-pointer"
+              onClick={() => handleDelete(row)}
+            />
+          </td>
+      }
     </tr>
   )
 }

@@ -3,7 +3,7 @@ import { getAllItems } from '../../../../api/orders/items'
 import { SelectInputContainer } from '../../../../components/form'
 import { ITEMS } from '../../../../utils/constants'
 
-export const ItemOptions = ({value, setValue}) => {
+export const ItemOptions = ({value, setValue, disabled}) => {
   const itemsInSS = JSON.parse(sessionStorage.getItem(ITEMS) || "[]")
   const [items, setiItems] = useState(itemsInSS)
 
@@ -19,6 +19,7 @@ export const ItemOptions = ({value, setValue}) => {
       required={true}
       value={value}
       setValue={setValue}
+      disabled={disabled}
     >
       <option value="">-- Item --</option>
       {

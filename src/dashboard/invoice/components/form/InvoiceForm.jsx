@@ -4,11 +4,13 @@ import { Button, Form, InputLabelContainer, SelectInputContainer } from "../../.
 import { Table } from "../../../components/Table"
 import { editInvoiceById } from "../../../../api/invoice"
 import { formatCurrency } from "../../../../utils/functions"
+import { useParams } from "react-router-dom"
 
 const thList = ['Name', 'Client Job name', 'Item', 'Delivered Date', 'Price']
 const rowsToShow = ['id', 'name', 'clientName', 'item', 'deliveredDate', 'price']
 
 export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, startDate, endDate, orders, payed, paymentType, pricePayed, checkNumber, outstandingBalance, setPayed, setPaymentType, setPricePayed, setCheckNumber}) => {
+  const {invoiceId} = useParams()
 
   const onChange = (setValue, value) => {
     setValue(!value)
@@ -91,7 +93,7 @@ export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, star
               />
               <InputLabelContainer
                 type="text"
-                text="Price"
+                text="Total Price"
                 placeholder={0}
                 name="totalPrice"
                 css="ml-3"
@@ -100,7 +102,7 @@ export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, star
               />
               <InputLabelContainer
                 type="text"
-                text="Out Standing Balance"
+                text="Pending Balance"
                 placeholder={0}
                 name="outstandingBalance"
                 css="ml-3"

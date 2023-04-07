@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
+import moment from "moment"
 import Swal from 'sweetalert2'
 import { getInvoiceByClientName } from "../../../../api/invoice"
 import { getOrdersDelivered } from "../../../../api/orders"
 import { Filter } from "../../../../components/filter"
 import { ClientError, DateError } from "../../../../components/filter/errors"
 import { InputLabelContainer, Label } from "../../../../components/form"
-import { ToggleContainer } from "../../../../components/toggle"
 import { SelectClient } from "../../../clients/components"
 import { USA_DATE_FORMAT } from "../../../../utils/constants"
-import moment from "moment"
 
 export const InvoiceFilters = ({startDate, setStartDate, endDate, setEndDate, client, setClient, setOrders, setCreateInvoice, createInvoice, setInvoices}) => {
   const [errorMsn, setErrorMsn] = useState(<></>)
@@ -72,12 +71,27 @@ export const InvoiceFilters = ({startDate, setStartDate, endDate, setEndDate, cl
   return (
     <Filter errorMsn={errorMsn} onClick={onClick}>
       <div className="flex flex-col w-full">
-        <div className="mb-3">
-          <ToggleContainer
-            text={createInvoice ? 'Show invoice' : 'Create invoice'}
-            checkedValue={createInvoice}
-            setCheckedValue={setCreateInvoice}
-          />
+        <div className="mb-3 flex justify-around">
+          <div className="flex items-center">
+            <span className='mr-1'>Create invoice</span>
+            <input
+              type="checkbox"
+              id="createInvoice"
+              name="createInvoice"
+              checked={createInvoice}
+              onChange={() => setCreateInvoice(!createInvoice)}
+            />
+          </div>
+          <div className="flex items-center">
+            <span className='mr-1'>Show invoices</span>
+            <input
+              type="checkbox"
+              id="createInvoice"
+              name="createInvoice"
+              checked={!createInvoice}
+              onChange={() => setCreateInvoice(!createInvoice)}
+            />
+          </div>
         </div>
         <div className="flex justify-around">
           {
