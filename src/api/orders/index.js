@@ -19,9 +19,11 @@ export const getOrders = async () => {
       orders: deliveredDatePrepared,
     }
   } catch (error) {
+    console.log('Error getOrders', error)
+    const errorMsn =  error.response.data.errors
     return {
       ok: false,
-      msn: 'Bad Request',
+      msn: errorMsn,
     }
   }
 }
@@ -41,9 +43,11 @@ export const getOrdersById = async (id) => {
     order.paymentDate = prepareDatePropertyInObject(order, 'paymentDate')
     return order
   } catch (error) {
+    console.log('Error getOrdersById', error)
+    const errorMsn =  error.response.data.errors
     return {
       ok: false,
-      msn: 'Bad Request',
+      msn: errorMsn,
     }
   }
 }
@@ -64,9 +68,11 @@ export const getOrdersDelivered = async(clientName, startDate, endDate) => {
       orders: deliveredDatePrepared,
     }
   } catch (error) {
+    console.log('Error getOrdersDelivered', error)
+    const errorMsn =  error.response.data.errors
     return {
       ok: false,
-      msn: 'Bad Request',
+      msn: errorMsn,
     }
   }
 }
@@ -83,6 +89,7 @@ export const createOrder = async (body) => {
     return data
   } catch (error) {
     console.log('Error creating order', error)
+    return error.response.data.errors
   }
 }
 
@@ -97,9 +104,11 @@ export const updateOrder = async (id, order) => {
     const { data } = await apiInstance(config)
     return data
   } catch (error) {
+    console.log('Error updateOrder', error)
+    const errorMsn =  error.response.data.errors
     return {
       ok: false,
-      msn: 'Bad Request',
+      msn: errorMsn,
     }
   }
 }

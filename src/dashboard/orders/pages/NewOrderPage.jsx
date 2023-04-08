@@ -32,10 +32,10 @@ export const NewOrderPage = () => {
     }else {
       Swal.fire({
         title: 'Error!',
-        text: `The order was not created, please try again`,
+        text: response[0].msg,
         icon: 'error',
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
       })
     }
   }
