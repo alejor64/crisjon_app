@@ -128,7 +128,7 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
           role === ADMIN &&
             <InputLabelContainer
               type="text"
-              text="Out Standing Balance"
+              text="Pending Balance"
               placeholder="0"
               name="taxIdNumber"
               css='ml-3'
