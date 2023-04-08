@@ -37,7 +37,6 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
         clientName: client,
         number: invoiceNumber,
       }
-      console.log('data', data)
       createInvoice(data)
         .then(response => {
           if(response?.invoice){

@@ -15,18 +15,29 @@ export const NewOrderPage = () => {
   const onSubmit = async(e) => {
     e.preventDefault()
     const childState = formRef.current.getFormState()
-    const { order } = await createOrder(childState)
-    order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
-    order.dueDate = prepareDatePropertyInObject(order, 'dueDate')
-    order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')
-    addValueToSS(ORDERS, order)
-    Swal.fire({
-      title: 'Success!',
-      text: `Order ${order.name} was created successfully.`,
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    }).then((result) => navigate(-1))
+    const response = await createOrder(childState)
+    if(response?.order){
+      const { order } = response
+      order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
+      order.dueDate = prepareDatePropertyInObject(order, 'dueDate')
+      order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')
+      addValueToSS(ORDERS, order)
+      Swal.fire({
+        title: 'Success!',
+        text: `Order ${order.name} was created successfully.`,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500
+      }).then((result) => navigate(-1))
+    }else {
+      Swal.fire({
+        title: 'Error!',
+        text: `The order was not created, please try again`,
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   }
 
   return (

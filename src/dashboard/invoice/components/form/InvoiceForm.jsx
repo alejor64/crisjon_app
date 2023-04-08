@@ -138,6 +138,7 @@ export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, star
                 route='order'
                 rowsToShow={rowsToShow}
                 showInput={false}
+                showTrash={false}
               />
             </div>
             <div className="flex mb-7 justify-between items-center">

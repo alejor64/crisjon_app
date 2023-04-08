@@ -36,20 +36,31 @@ export const EditOrderPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault()
     const childState = formRef.current.getFormState()
-    const { msn, order } = await updateOrder(orderId, childState)
-    order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
-    order.deliveredDate = prepareDatePropertyInObject(order, 'deliveredDate')
-    order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')
-    order.dueDate = prepareDatePropertyInObject(order, 'dueDate')
-    order.paymentDate = prepareDatePropertyInObject(order, 'paymentDate')
-    updateValueInSS(ORDERS, order)
-    Swal.fire({
-      title: 'Success!',
-      text: msn,
-      icon: 'success',
-      showConfirmButton: false,
-      timer: 1500
-    }).then((result) => navigate(-1))
+    const response = await updateOrder(orderId, childState)
+    if(response?.order){
+      const { msn, order } = response
+      order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
+      order.deliveredDate = prepareDatePropertyInObject(order, 'deliveredDate')
+      order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')
+      order.dueDate = prepareDatePropertyInObject(order, 'dueDate')
+      order.paymentDate = prepareDatePropertyInObject(order, 'paymentDate')
+      updateValueInSS(ORDERS, order)
+      Swal.fire({
+        title: 'Success!',
+        text: msn,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500
+      }).then((result) => navigate(-1))
+    }else {
+      Swal.fire({
+        title: 'Error!',
+        text: response.msn,
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
   }
 
   return (
