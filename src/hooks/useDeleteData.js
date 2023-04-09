@@ -4,10 +4,12 @@ import { CLIENTS } from "../utils/constants"
 
 export const useDeleteData = async(route, id) => {
   const response = await deleteData(route, id)
-  if(response.ok){
+  console.log('response', response)
+  if(response?.ok && !response?.error){
+    const { msn } = response
     Swal.fire({
       title: 'Success!',
-      text: `The ${route} was deleted successfully`,
+      text: msn,
       icon: "success",
       showConfirmButton: false,
       timer: 2000
@@ -15,10 +17,19 @@ export const useDeleteData = async(route, id) => {
       removeDataFromSS(route, id)
       window.location.reload()
     })
+  }else if(response?.error){
+    const { msn } = response
+    Swal.fire({
+      title: 'Error!',
+      text: msn,
+      icon: "error",
+      showConfirmButton: false,
+      timer: 2000
+    })
   }else {
     Swal.fire({
       title: 'Error!',
-      text: response[0].msg,
+      text: response?.[0]?.msg,
       icon: "error",
       showConfirmButton: false,
       timer: 2000

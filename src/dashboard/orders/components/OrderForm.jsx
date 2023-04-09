@@ -166,6 +166,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               css="ml-3"
               inputValue={deliveredDate}
               setInputValue={setDeliveredDate}
+              required={!!price}
             />
           </div>
         {
@@ -188,6 +189,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                   inputValue={price}
                   setInputValue={setPrice}
                   readOnly={!!paymentDate}
+                  required={!!deliveredDate}
                 />
               </div>
               <div className="flex mb-7">
