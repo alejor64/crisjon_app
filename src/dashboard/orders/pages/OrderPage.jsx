@@ -9,16 +9,24 @@ import { DashboardLayout } from "../../layout"
 import { OrderFilters, SumOfPrice, Toggle } from "../components"
 import { DateError } from '../../../components/filter/errors'
 import { ToggleContainer } from '../../../components/toggle'
+import { formatCurrency } from '../../../utils/functions'
 
 const thList = ['Client', 'CAD Number', 'Name', 'Client Job name', 'Created Date', 'Service', 'Satus', 'Price']
 const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'clientJobName', 'createdAt', 'service', 'status', 'price']
+
+const prepareOrders = (orders) => {
+  return orders.map(order => ({
+    ...order,
+    price: formatCurrency(order.price),
+  }))
+};
 
 export const OrderPage = () => {
   const today = new Date()
   const previous = new Date()
   const lastMonth = new Date(previous.setDate(1))
 
-  const ordersInLS = JSON.parse(sessionStorage.getItem(ORDERS) || '[]')
+  const ordersInLS = prepareOrders(JSON.parse(sessionStorage.getItem(ORDERS) || '[]'))
   const [orders, setOrders] = useState(ordersInLS)
   const [endDateValue, setEndDateValue] = useState(today.toISOString().split("T")[0])
   const [startDate, setStartDate] = useState(lastMonth.toISOString().split("T")[0])
@@ -32,7 +40,7 @@ export const OrderPage = () => {
   useEffect(() => {
     if(!orders.length) {
       getOrders()
-        .then( response => setOrders(response.orders))
+        .then( response => setOrders(prepareOrders(response.orders)))
     }
   }, [])
   
@@ -64,7 +72,7 @@ export const OrderPage = () => {
         ordersFiltered = ordersFiltered.filter(order => order.clientName === clientValue)
       }
     }
-    setOrders(ordersFiltered)
+    setOrders(prepareOrders(ordersFiltered))
   }
 
   return (

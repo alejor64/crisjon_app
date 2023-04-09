@@ -242,16 +242,6 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                       />
                       <span className='ml-1'>Mark as done</span>
                     </div>
-                    <div className="flex mb-7">
-                      <input
-                        type="checkbox"
-                        id="returned"
-                        name="returned_value"
-                        checked={delivered}
-                        onChange={onChangedelivered}
-                      />
-                      <span className='ml-1'>Mark as delivered</span>
-                    </div>
                   </>
                 )
               }

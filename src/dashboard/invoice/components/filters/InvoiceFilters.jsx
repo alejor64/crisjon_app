@@ -15,14 +15,14 @@ export const InvoiceFilters = ({startDate, setStartDate, endDate, setEndDate, cl
   const onClick = () => {
     if(!client){
       setErrorMsn(<ClientError />)
+    }else if(startDate && endDate && startDate > endDate){
+      setErrorMsn(<DateError />)
     }else if(!createInvoice) {
       setErrorMsn(<></>)
       setInvoices([])
       const clientName = client.replaceAll(' ', '%20')
-      getInvoiceByClientName(clientName)
+      getInvoiceByClientName(clientName, startDate, endDate)
         .then(setInvoiceWithResponse)
-    }else if(startDate && endDate && startDate > endDate){
-      setErrorMsn(<DateError />)
     }else{
       setErrorMsn(<></>)
       setOrders([])
@@ -94,31 +94,26 @@ export const InvoiceFilters = ({startDate, setStartDate, endDate, setEndDate, cl
           </div>
         </div>
         <div className="flex justify-around">
-          {
-            createInvoice &&
-            <>
-              <div className="w-1/5">
-                <InputLabelContainer
-                  type="date"
-                  text="Start date"
-                  name="start_date"
-                  css="flex flex-col text-center px-2"
-                  inputValue={startDate}
-                  setInputValue={setStartDate}
-                />
-              </div>
-              <div className="w-1/5">
-                <InputLabelContainer
-                  type="date"
-                  text="End date"
-                  name="end_date"
-                  css="flex flex-col text-center px-2"
-                  inputValue={endDate}
-                  setInputValue={setEndDate}
-                />
-              </div>
-            </>
-          }
+          <div className="w-1/5">
+            <InputLabelContainer
+              type="date"
+              text="Start date"
+              name="start_date"
+              css="flex flex-col text-center px-2"
+              inputValue={startDate}
+              setInputValue={setStartDate}
+            />
+          </div>
+          <div className="w-1/5">
+            <InputLabelContainer
+              type="date"
+              text="End date"
+              name="end_date"
+              css="flex flex-col text-center px-2"
+              inputValue={endDate}
+              setInputValue={setEndDate}
+            />
+          </div>
           <div className="w-1/5 flex flex-col text-center">
             <Label htmlFor="clients" text="Client" />
             <SelectClient

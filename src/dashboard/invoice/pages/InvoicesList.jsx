@@ -3,8 +3,8 @@ import { Table } from "../../components/Table"
 import { USA_DATE_FORMAT } from "../../../utils/constants"
 import { formatCurrency } from "../../../utils/functions"
 
-const thList = ['Invoice', 'Client', 'Start Date', 'End Date', 'Total Price', 'Payed']
-const rowsToShow = ['id', 'number', 'clientName', 'startDate', 'endDate', 'totalPrice', 'payed']
+const thList = ['Invoice', 'Client', 'Start Date', 'End Date', 'Total Price', 'Created Date', 'Paid']
+const rowsToShow = ['id', 'number', 'clientName', 'startDate', 'endDate', 'totalPrice', 'createdAt', 'payed']
 
 const InvoicesList = ({invoices}) => {
 
@@ -14,7 +14,8 @@ const InvoicesList = ({invoices}) => {
     totalPrice: formatCurrency(invoice.totalPrice),
     payed: invoice.payed ? 'Yes' : 'No',
     startDate: moment(invoice.startDate).format(USA_DATE_FORMAT),
-    endDate: moment(invoice.endDate).format(USA_DATE_FORMAT)
+    endDate: moment(invoice.endDate).format(USA_DATE_FORMAT),
+    createdAt: moment(invoice.createdAt).format(USA_DATE_FORMAT),
   }))
 
   return (

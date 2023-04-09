@@ -17,11 +17,11 @@ export const createInvoice = async(body) => {
   }
 };
 
-export const getInvoiceByClientName = async(clientName) => {
+export const getInvoiceByClientName = async(clientName, startDate, endDate) => {
   try {
     const config = {
       method: 'get',
-      url: `/invoice/client/${clientName}`,
+      url: `/invoice/client/${clientName}?startDate=${startDate}&endDate=${endDate}`,
       headers: { 'Content-Type': 'application/json' },
     };
     const { data } = await apiInstance(config)

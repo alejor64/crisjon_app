@@ -66,6 +66,15 @@ export const searchValue = (property_value, array) => {
   return new_array;
 };
 
-export const numberWithDots = (x) => (x ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : x !== 0 ? '' : '0');
+const numberWithDots = (x) => {
+  if (x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.00';
+  } else if (x !== 0) {
+    return '';
+  } else {
+    return '0.00';
+  }
+}
+
 
 export const formatCurrency = (value) => (value ? `$${numberWithDots(Math.round(value))}` : `$ 0`);
