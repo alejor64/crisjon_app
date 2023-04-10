@@ -72,7 +72,7 @@ export const OrderPage = () => {
         ordersFiltered = ordersFiltered.filter(order => order.clientName === clientValue)
       }
     }
-    setOrders(prepareOrders(ordersFiltered))
+    setOrders(ordersFiltered)
   }
 
   return (

@@ -1,10 +1,15 @@
-import { Fragment, useState } from "react"
+import { useState } from "react"
 import { searchValue } from "../../../utils/functions"
 import { InputFilter } from "./InputFilter"
 import { ThTable, TrTable } from "./index"
+import { useEffect } from "react"
 
 export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true}) => {
-  const [rowsInTable, setRowsInTable] = useState(tdList)
+  const [rowsInTable, setRowsInTable] = useState([])
+
+  useEffect(() => {
+    setRowsInTable(tdList)
+  }, [tdList])
   
   const onKeyUp = (e) => {
     if(e.key === 'Enter'){

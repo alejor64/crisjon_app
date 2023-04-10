@@ -82,25 +82,28 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
           <div className="flex mb-7">
             <InputLabelContainer
               type="text"
-              text="Order Name"
-              placeholder="Ring"
-              name="name"
-              inputValue={name}
-              setInputValue={setName}
-              required={true}
-              readOnly={!!paymentDate}
-            />
-            <InputLabelContainer
-              type="text"
               text="Client job name"
               placeholder="Ring rolling"
               name="clientJobName"
               inputValue={clientJobName}
               setInputValue={setClientJobName}
-              css="ml-3"
               required={true}
               readOnly={!!paymentDate}
             />
+            {
+              edit &&
+                <InputLabelContainer
+                  type="text"
+                  text="Order Name"
+                  placeholder="Ring"
+                  name="name"
+                  inputValue={name}
+                  setInputValue={setName}
+                  required={true}
+                  css="ml-3"
+                  readOnly={!!paymentDate}
+                />
+            }
           </div>
           <div className="flex mb-7">
             <ServiceOptions value={service} setValue={setService} disabled={!!paymentDate} />
