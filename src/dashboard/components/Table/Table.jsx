@@ -3,9 +3,11 @@ import { searchValue } from "../../../utils/functions"
 import { InputFilter } from "./InputFilter"
 import { ThTable, TrTable } from "./index"
 import { useEffect } from "react"
+import { CLIENTS, ROW_TO_TABLE } from "../../../utils/constants"
 
 export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true}) => {
   const [rowsInTable, setRowsInTable] = useState([])
+  const sliceArray = route === CLIENTS ? rowsInTable.length : ROW_TO_TABLE
 
   useEffect(() => {
     setRowsInTable(tdList)
@@ -43,7 +45,7 @@ export const Table = ({thList, tdList, route, rowsToShow, showInput = true, show
             </thead>
             <tbody>
               {
-                rowsInTable.slice(0, 15).map((td, idx) => (
+                rowsInTable.slice(0, sliceArray).map((td, idx) => (
                   <TrTable
                     key={td._id}
                     row={td}

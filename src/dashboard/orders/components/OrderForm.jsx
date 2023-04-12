@@ -162,15 +162,18 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               <option value="Engraving">Engraving</option>
               <option value="Hold">Hold</option>
             </SelectInputContainer>
-            <InputLabelContainer
-              type="date"
-              text="Delivered date"
-              name="deliveredDate"
-              css="ml-3"
-              inputValue={deliveredDate}
-              setInputValue={setDeliveredDate}
-              required={!!price}
-            />
+            {
+              edit &&
+                <InputLabelContainer
+                  type="date"
+                  text="Delivered date"
+                  name="deliveredDate"
+                  css="ml-3"
+                  inputValue={deliveredDate}
+                  setInputValue={setDeliveredDate}
+                  required={!!price}
+                />
+            }
           </div>
         {
           edit && (

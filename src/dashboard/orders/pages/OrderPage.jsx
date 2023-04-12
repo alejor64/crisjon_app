@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { getOrders } from '../../../api/orders'
-import { ORDERS, USA_DATE_FORMAT } from '../../../utils/constants'
+import { DATA_PICKER_FORMAT, ORDERS, USA_DATE_FORMAT } from '../../../utils/constants'
 import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
@@ -22,14 +22,13 @@ const prepareOrders = (orders) => {
 };
 
 export const OrderPage = () => {
-  const today = new Date()
-  const previous = new Date()
-  const lastMonth = new Date(previous.setDate(1))
+  const today = moment()
+  const lastMonth = moment().startOf('month')
 
   const ordersInLS = prepareOrders(JSON.parse(sessionStorage.getItem(ORDERS) || '[]'))
   const [orders, setOrders] = useState(ordersInLS)
-  const [endDateValue, setEndDateValue] = useState(today.toISOString().split("T")[0])
-  const [startDate, setStartDate] = useState(lastMonth.toISOString().split("T")[0])
+  const [endDateValue, setEndDateValue] = useState(today.format(DATA_PICKER_FORMAT))
+  const [startDate, setStartDate] = useState(lastMonth.format(DATA_PICKER_FORMAT))
   const [checkedValue, setCheckedValue] = useState(false)
   const [doneCheckbox, setDoneCheckbox] = useState(false)
   const [returnedCheckbox, setReturnedCheckbox] = useState(false)
@@ -56,7 +55,7 @@ export const OrderPage = () => {
       }
       if(returnedCheckbox){
         setShowTotalPriceSum(true)
-        ordersFiltered = ordersFiltered.filter(order => order.delivered)
+        ordersFiltered = ordersFiltered.filter(order => order.deliveredDate)
       }else{
         setShowTotalPriceSum(false)
       }
