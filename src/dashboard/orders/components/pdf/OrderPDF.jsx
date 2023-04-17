@@ -3,6 +3,7 @@ import { useReactToPrint } from "react-to-print"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faDownload } from "@fortawesome/free-solid-svg-icons"
 import { CLIENTS } from "../../../../utils/constants";
+import { formatCurrency } from "../../../../utils/functions";
 
 export const OrderPDF = ({orderInfo}) => {
   const orderPDF = useRef()
@@ -94,16 +95,13 @@ export const OrderPDF = ({orderInfo}) => {
                 <div>
                   <strong>Item:</strong> {orderInfo?.item}
                 </div>
-                <div>
-                  <strong>Rush:</strong> {orderInfo?.rush ? "Yes" : "No"}
-                </div>
               </div>
               <div className="w-1/2 pl-[30px]">
                 <div>
                   <strong>Payment date:</strong> {orderInfo?.paymentDate}
                 </div>
                 <div>
-                  <strong>Price:</strong> {orderInfo?.price}
+                  <strong>Price:</strong> {formatCurrency(orderInfo?.price)}
                 </div>
                 <div>
                   <strong>Payment type: </strong> {orderInfo?.paymentType}

@@ -24,7 +24,7 @@ export const NewClientPage = () => {
       icon: 'success',
       showConfirmButton: false,
       timer: 1500
-    }).then((result) => navigate(-1))
+    })
   }
   return (
     <DashboardLayout>

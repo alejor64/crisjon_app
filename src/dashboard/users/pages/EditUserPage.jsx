@@ -39,7 +39,7 @@ export const EditUserPage = () => {
         icon: 'success',
         showConfirmButton: false,
         timer: 1500
-      }).then((result) => navigate(-1))
+      })
     }
   }
 

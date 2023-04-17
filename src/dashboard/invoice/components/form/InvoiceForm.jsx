@@ -150,7 +150,7 @@ export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, star
                   checked={payed}
                   onChange={() => onChange(setPayed, payed)}
                 />
-                <span className='ml-1'>Mark as payed</span>
+                <span className='ml-1'>Mark as paid</span>
               </div>
               <div className="w-[85%] grid gap-3 grid-cols-3">
                 {
@@ -159,7 +159,7 @@ export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, star
                       <div>
                         <InputLabelContainer
                           type="number"
-                          text="Price payed"
+                          text="Price paid"
                           name="pricePayed"
                           inputValue={pricePayed}
                           setInputValue={setPricePayed}

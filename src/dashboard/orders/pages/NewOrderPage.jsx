@@ -28,7 +28,7 @@ export const NewOrderPage = () => {
         icon: 'success',
         showConfirmButton: false,
         timer: 1500
-      }).then((result) => navigate(-1))
+      })
     }else {
       Swal.fire({
         title: 'Error!',
