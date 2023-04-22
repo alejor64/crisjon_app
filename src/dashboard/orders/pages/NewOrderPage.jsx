@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons'
 import Swal from 'sweetalert2'
 import { DashboardLayout } from '../../layout'
@@ -10,7 +10,6 @@ import { ORDERS } from '../../../utils/constants'
 
 export const NewOrderPage = () => {
   const formRef = useRef()
-  const navigate = useNavigate()
 
   const onSubmit = async(e) => {
     e.preventDefault()
@@ -32,7 +31,7 @@ export const NewOrderPage = () => {
     }else {
       Swal.fire({
         title: 'Error!',
-        text: response[0].msg,
+        text: response.msn,
         icon: 'error',
         showConfirmButton: false,
         timer: 2000

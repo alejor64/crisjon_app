@@ -16,6 +16,7 @@ export const EditOrderPage = () => {
   const [orderInfo, setOrderInfo] = useState({})
   const [order, setOrder] = useState({})
   const formRef = useRef()
+  const editBtnRef = useRef()
 
   useEffect(() => {
     getOrdersById(orderId)
@@ -24,17 +25,21 @@ export const EditOrderPage = () => {
   
 
   const goBackClic = () => {
-    navigate(-1)
+    if(showPDF){
+      setShowPDF(false)
+    }else {
+      navigate(-1)
+    }
   }
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     const childState = formRef.current.getFormState()
     setOrderInfo(childState)
-    setShowPDF(!showPDF)
+    await updateOrderInfo()
+    setShowPDF(true)
   }
 
-  const onSubmit = async (e) => {
-    e.preventDefault()
+  const updateOrderInfo = async () => {
     const childState = formRef.current.getFormState()
     const response = await updateOrder(orderId, childState)
     if(response?.order){
@@ -63,6 +68,11 @@ export const EditOrderPage = () => {
     }
   }
 
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    await updateOrderInfo()
+  }
+
   return (
     <DashboardLayout>
       <div className='container mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
@@ -76,6 +86,7 @@ export const EditOrderPage = () => {
           <p
             onClick={generatePDF}
             className='underline text-blue-700 cursor-pointer'
+            id="pdf"
           >
             Generate PDF
           </p>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { SelectInputContainer } from '../../../../components/form'
 import { CLIENTS } from '../../../../utils/constants'
 
-export const ClientsOptions = ({client, setClient, disabled}) => {
+export const ClientsOptions = ({client, setClient, disabled, required}) => {
   const clientsOPtions = JSON.parse(sessionStorage.getItem(CLIENTS) || "[]")
 
   useEffect(() => {
@@ -19,6 +19,7 @@ export const ClientsOptions = ({client, setClient, disabled}) => {
       value={client}
       setValue={setClient}
       disabled={disabled}
+      required={required}
     >
       <option value="">-- Client --</option>
       {

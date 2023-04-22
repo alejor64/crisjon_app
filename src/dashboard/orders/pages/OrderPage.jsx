@@ -31,10 +31,11 @@ export const OrderPage = () => {
   const [startDate, setStartDate] = useState(lastMonth.format(DATA_PICKER_FORMAT))
   const [checkedValue, setCheckedValue] = useState(false)
   const [doneCheckbox, setDoneCheckbox] = useState(false)
-  const [returnedCheckbox, setReturnedCheckbox] = useState(false)
+  const [paidOrders, setPaidOrders] = useState(false)
   const [showTotalPriceSum, setShowTotalPriceSum] = useState(false)
   const [clientValue, setClientValue] = useState("")
   const [errorMsn, setErrorMsn] = useState(<></>)
+  const [showAllRows, setShowAllRows] = useState(false)
 
   useEffect(() => {
     if(!orders.length) {
@@ -46,6 +47,7 @@ export const OrderPage = () => {
 
   const onClick = () => {
     let ordersFiltered = ordersInLS
+    setShowAllRows(false)
     if(startDate && endDateValue && startDate > endDateValue) {
       setErrorMsn(<DateError/>)
     }else{
@@ -53,15 +55,15 @@ export const OrderPage = () => {
       if(doneCheckbox){
         ordersFiltered = ordersFiltered.filter(order => order.done)
       }
-      if(returnedCheckbox){
+      if(paidOrders){
         setShowTotalPriceSum(true)
-        ordersFiltered = ordersFiltered.filter(order => order.deliveredDate)
+        ordersFiltered = ordersFiltered.filter(order => order.payed )
       }else{
         setShowTotalPriceSum(false)
       }
       if(startDate){
         const startDateFormatted = moment(startDate).format(USA_DATE_FORMAT)
-        ordersFiltered = ordersFiltered.filter(order => order.createdAt >= startDateFormatted)
+        ordersFiltered = ordersFiltered.filter(order => order.createdAt >= startDateFormatted )
       }
       if(endDateValue){
         const endDateFormatted = moment(endDateValue).format(USA_DATE_FORMAT)
@@ -70,6 +72,7 @@ export const OrderPage = () => {
       if(clientValue){
         ordersFiltered = ordersFiltered.filter(order => order.clientName === clientValue)
       }
+      setShowAllRows(true)
     }
     setOrders(ordersFiltered)
   }
@@ -91,8 +94,8 @@ export const OrderPage = () => {
               <OrderFilters
                 doneCheckbox={doneCheckbox}
                 setDoneCheckbox={setDoneCheckbox}
-                returnedCheckbox={returnedCheckbox}
-                setReturnedCheckbox={setReturnedCheckbox}
+                paidOrders={paidOrders}
+                setPaidOrders={setPaidOrders}
                 endDateValue={endDateValue}
                 setEndDateValue={setEndDateValue}
                 startDate={startDate}
@@ -122,7 +125,7 @@ export const OrderPage = () => {
             <div className="overflow-hidden">
               {
                 orders.length
-                ? <Table thList={thList} tdList={orders} route="order" rowsToShow={rowsToShow} />
+                ? <Table thList={thList} tdList={orders} route="order" rowsToShow={rowsToShow} showAllRows={showAllRows} />
                 : <NotItemsFound text="orders" />
               }
             </div>

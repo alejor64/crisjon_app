@@ -3,11 +3,11 @@ import { searchValue } from "../../../utils/functions"
 import { InputFilter } from "./InputFilter"
 import { ThTable, TrTable } from "./index"
 import { useEffect } from "react"
-import { CLIENTS, ROW_TO_TABLE } from "../../../utils/constants"
+import { ROW_TO_TABLE } from "../../../utils/constants"
 
-export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true}) => {
+export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true, showAllRows = true}) => {
   const [rowsInTable, setRowsInTable] = useState([])
-  const sliceArray = route === CLIENTS ? rowsInTable.length : ROW_TO_TABLE
+  const sliceArray = showAllRows ? rowsInTable.length : ROW_TO_TABLE
 
   useEffect(() => {
     setRowsInTable(tdList)

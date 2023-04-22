@@ -89,7 +89,7 @@ export const createOrder = async (body) => {
     return data
   } catch (error) {
     console.log('Error creating order', error)
-    return error.response.data.errors
+    return error.response.data
   }
 }
 

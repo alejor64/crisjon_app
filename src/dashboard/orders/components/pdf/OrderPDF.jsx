@@ -2,7 +2,8 @@ import { useRef, useState } from "react"
 import { useReactToPrint } from "react-to-print"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileArrowDown, faDownload } from "@fortawesome/free-solid-svg-icons"
-import { CLIENTS } from "../../../../utils/constants";
+import moment from "moment";
+import { CLIENTS, USA_DATE_FORMAT } from "../../../../utils/constants";
 import { formatCurrency } from "../../../../utils/functions";
 
 export const OrderPDF = ({orderInfo}) => {
@@ -98,7 +99,7 @@ export const OrderPDF = ({orderInfo}) => {
               </div>
               <div className="w-1/2 pl-[30px]">
                 <div>
-                  <strong>Payment date:</strong> {orderInfo?.paymentDate}
+                  <strong>Payment date:</strong> {orderInfo?.paymentDate ? moment(orderInfo?.paymentDate).format(USA_DATE_FORMAT) : ''}
                 </div>
                 <div>
                   <strong>Price:</strong> {formatCurrency(orderInfo?.price)}
@@ -113,7 +114,7 @@ export const OrderPDF = ({orderInfo}) => {
                     </div>
                 }
                 <div>
-                  <strong>Delivered date:</strong> {orderInfo?.deliveredDate}
+                  <strong>Delivered date:</strong> {orderInfo?.deliveredDate ? moment(orderInfo?.deliveredDate).format(USA_DATE_FORMAT) : ''}
                 </div>
               </div>
             </div>

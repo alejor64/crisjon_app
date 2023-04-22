@@ -62,7 +62,11 @@ export const EditInvoicePage = () => {
 
 
   const goBackClic = () => {
-    navigate(-1)
+    if(showInvoicePdf){
+      setShowInvoicePdf(false)
+    }else {
+      navigate(-1)
+    }
   }
 
   const generatePDF = () => {

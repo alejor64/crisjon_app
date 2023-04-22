@@ -2,7 +2,7 @@ import { Filter } from "../../../../components/filter"
 import { Checkbox, InputLabelContainer, Label } from "../../../../components/form"
 import { SelectClient } from "../../../clients/components"
 
-export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, setReturnedCheckbox, startDate, setStartDate, endDateValue, setEndDateValue, clientValue, setClientValue, onClick, errorMsn}) => {
+export const OrderFilters = ({doneCheckbox, setDoneCheckbox, paidOrders, setPaidOrders, startDate, setStartDate, endDateValue, setEndDateValue, clientValue, setClientValue, onClick, errorMsn}) => {
 
   return (
     <Filter onClick={onClick} errorMsn={errorMsn}>
@@ -41,10 +41,10 @@ export const OrderFilters = ({doneCheckbox, setDoneCheckbox, returnedCheckbox, s
       </div>
       <div>
         <Checkbox
-          checked={returnedCheckbox}
-          setChecked={setReturnedCheckbox}
+          checked={paidOrders}
+          setChecked={setPaidOrders}
           inputCss="flex flex-col-reverse"
-          text="Delivered orders"
+          text="Paid orders"
           textCss="mb-1"
         />
       </div>

@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { formatCurrency } from "../../../../utils/functions"
 
 export const SumOfPrice = ({orderList}) => {
-  const totalOrders = orderList.filter(item => !item.paymentDate)
+  const totalOrders = orderList.filter(item => item.paymentDate)
   const totalOrdersPrice = totalOrders.reduce((accumulator, currentValue) => {
-    const price = parseFloat(currentValue.price) || 0
+    const price = parseFloat(currentValue.price.replaceAll('$', '')) || 0
     return accumulator + price
   }, 0)
 
@@ -15,7 +15,7 @@ export const SumOfPrice = ({orderList}) => {
         </h2>
         <div className="flex justify-around py-2">
           <p>Quantity: {totalOrders.length}</p>
-          <p>Debt: ${totalOrdersPrice}</p>
+          <p>Debt: {formatCurrency(totalOrdersPrice)}</p>
         </div>
       </div>
     </div>

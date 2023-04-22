@@ -133,7 +133,12 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
             />
           </div>
           <div className="flex mb-7">
-            <ClientsOptions client={clientName} setClient={setClientName} disabled={!!paymentDate} />
+            <ClientsOptions
+              client={clientName}
+              setClient={setClientName}
+              disabled={!!paymentDate}
+              required={true}
+            />
             <InputLabelContainer
               type="date"
               text="Due date"
