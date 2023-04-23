@@ -7,9 +7,8 @@ export const navigation = (role = USER) => {
     { name: 'Order', route: '/order', icon: faCreditCard },
     // { name: 'Estimate', route: '/estimate', icon: faMoneyBill1 },
     { name: 'Users', route: '/user', icon: faUser },
+    { name: 'Invoice', route: '/invoice', icon: faMoneyBill1 }
   ]
-
-  if(role === ADMIN) tabs.push({ name: 'Invoice', route: '/invoice', icon: faMoneyBill1 })
 
   return tabs
 }
