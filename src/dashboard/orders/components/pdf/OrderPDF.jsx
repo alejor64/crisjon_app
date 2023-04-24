@@ -28,6 +28,10 @@ export const OrderPDF = ({orderInfo}) => {
     setIsMouseHover(false)
   }
 
+  const showBreakDownSectin =() => {
+    return orderInfo?.breakDown?.length > 0 && orderInfo?.breakDown[0].amount
+  }
+
   return (
     <>
       <div
@@ -128,7 +132,7 @@ export const OrderPDF = ({orderInfo}) => {
             </div>
           </div>
           {
-            orderInfo?.breakDown?.length > 0 && 
+            showBreakDownSectin() && 
               <BreakDownSection breakDown={orderInfo?.breakDown} />
           }
           <div className="flex mt-[70px] justify-between">
