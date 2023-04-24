@@ -60,17 +60,17 @@ export const InvoicePdf = ({invoice}) => {
         }
         <div
           ref={invoicePDF}
-          className="p-[80px] flex flex-col h-full w-full relative"
+          className="p-[50px] pt-[60px] flex flex-col h-full w-full relative"
         >
-          <div className="absolute top-[20px] right-[350px]">
+          <div className="absolute top-[20px] right-[360px]">
             <img
-              className="h-[60px] w-auto"
+              className="h-[50px] w-auto"
               src="https://crisjon.com/img/Nav/L1%20with%20nb3.png"
             />
           </div>
-          <div className="mt-[25px] mb-[40px]">
-            <h3 className="text-2xl mb-2">CRISJON FINE JEWELRY INC.</h3>
-            <div className="flex justify-between">
+          <div className="mt-[10px] mb-[30px]">
+            <h3 className="text-xl mb-2">CRISJON FINE JEWELRY INC.</h3>
+            <div className="flex justify-between text-sm">
               <div>
                 <p>5 South Wabash Avenue - Suite 1312</p>
                 <p>Chicago, Illinois, 60603</p>
@@ -85,9 +85,9 @@ export const InvoicePdf = ({invoice}) => {
               </div>
             </div>
           </div>
-          <div className="mb-[40px]">
-            <h3 className="text-2xl mb-2">{invoice.clientName}</h3>
-            <div>
+          <div className="mb-[30px]">
+            <h3 className="text-xl mb-2">{invoice.clientName}</h3>
+            <div className="text-sm">
               <p>{client?.address}</p>
               <p>{client?.city} - {client?.zipCode || 'NOT INFO'}</p>
               {/* - IBT {client?.ibt || 'NOT INFO'} */}
@@ -95,8 +95,8 @@ export const InvoicePdf = ({invoice}) => {
               <p>STATE SALES TAX: {client?.sst || 'NOT INFO'}</p>
             </div>
           </div>
-          <div className="mb-[170px]">
-            <h3 className="text-2xl mb-3">Orders</h3>
+          <div className="mb-[50px]">
+            <h3 className="text-xl mb-2">Orders</h3>
             <div className="w-full">
               <Table
                 thList={thList}

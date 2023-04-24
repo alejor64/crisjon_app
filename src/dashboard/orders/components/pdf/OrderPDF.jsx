@@ -55,16 +55,16 @@ export const OrderPDF = ({orderInfo}) => {
         }
         <div
           ref={orderPDF}
-          className="p-[80px] flex flex-col h-full w-full relative"
+          className="p-[50px] pt-[70px] flex flex-col h-full w-full relative"
         >
-          <div className="absolute top-[20px] right-[350px]">
+          <div className="absolute top-[20px] right-[360px]">
             <img
-              className="h-[60px] w-auto"
+              className="h-[50px] w-auto"
               src="https://crisjon.com/img/Nav/L1%20with%20nb3.png"
             />
           </div>
-          <div className="mt-[20px] mb-[40px]">
-            <h3 className="text-2xl mb-3">Crisjon</h3>
+          <div className="mt-[10px] mb-[30px]">
+            <h3 className="text-xl mb-2">Crisjon</h3>
             <div className="flex justify-between text-sm">
               <div>
                 <p>5 South Wabash Avenue - Suite 1312</p>
@@ -78,8 +78,8 @@ export const OrderPDF = ({orderInfo}) => {
               </div>
             </div>
           </div>
-          <div className="mb-[40px]">
-            <h3 className="text-2xl mb-3">
+          <div className="mb-[30px]">
+            <h3 className="text-xl mb-2">
               {client.name}
               {orderInfo.shipTo && ` - ${orderInfo.shipTo}`}
             </h3>
@@ -89,8 +89,8 @@ export const OrderPDF = ({orderInfo}) => {
               <p>Phone: {client.phone}</p>
             </div>
           </div>
-          <div className="mb-[40px]">
-            <h3 className="text-2xl mb-3">Order</h3>
+          <div className="mb-[30px]">
+            <h3 className="text-xl mb-2">Order</h3>
             <div className="flex justify-between text-sm">
               <div className="w-1/2">
                 <div>
@@ -135,7 +135,7 @@ export const OrderPDF = ({orderInfo}) => {
             showBreakDownSectin() && 
               <BreakDownSection breakDown={orderInfo?.breakDown} />
           }
-          <div className="flex mt-[70px] justify-between">
+          <div className="flex mt-[80px] justify-between">
             <div className="text-sm">
               <p>___________________________________</p>
               <p>Crisjon</p>
