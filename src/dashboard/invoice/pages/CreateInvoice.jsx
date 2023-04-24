@@ -13,7 +13,7 @@ const rowsToShow = ['id', 'clientName', 'name', 'clientJobName', 'item', 'delive
 export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceNumber, setInvoiceNumber, client, startDate, endDate}) => {
   const [error, setError] = useState(false)
   const clients = JSON.parse(sessionStorage.getItem(CLIENTS) || '[]')
-  const clientOutstandingBalance = clients.find(clientInfo => clientInfo.name === client)?.outstandingBalance
+  const clientOutstandingBalance = clients.find(clientInfo => clientInfo.name === client)?.outstandingBalance || 0
 
   const prepareOrdersTable = (orders) => {
     return orders.map(order => ({
@@ -32,6 +32,7 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
       console.log('ordersPayed', ordersPayed)
       const totalPrice = ordersPayed.reduce((totalPrice, order) => totalPrice + order.price, 0)
       console.log('totalPrice', totalPrice)
+      console.log('totalPrice SUM', totalPrice + clientOutstandingBalance)
       const data = {
         totalPrice: totalPrice + clientOutstandingBalance,
         ordersPayed,
@@ -40,6 +41,7 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
         clientName: client,
         number: invoiceNumber,
       }
+      console.log('data', data)
       createInvoice(data)
         .then(response => {
           if(response?.invoice){
