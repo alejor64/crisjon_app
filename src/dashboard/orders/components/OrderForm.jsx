@@ -242,22 +242,16 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                 />
                 <span className='ml-1'>Mark as rush</span>
               </div>
-              {
-                edit && (
-                  <>
-                    <div className="flex mb-7">
-                      <input
-                        type="checkbox"
-                        id="done"
-                        name="done_value"
-                        checked={done}
-                        onChange={onChangeDone}
-                      />
-                      <span className='ml-1'>Mark as done</span>
-                    </div>
-                  </>
-                )
-              }
+              <div className="flex mb-7">
+                <input
+                  type="checkbox"
+                  id="done"
+                  name="done_value"
+                  checked={done}
+                  onChange={onChangeDone}
+                />
+                <span className='ml-1'>Mark as done</span>
+              </div>
             </div>
             <div className="w-1/2">
               <TextareaContainer
