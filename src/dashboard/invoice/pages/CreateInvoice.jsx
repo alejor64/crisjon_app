@@ -27,8 +27,11 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
       setError(true)
     }else{
       setError(false)
+      console.log('ordersChecked', ordersChecked)
       const ordersPayed = orders.filter(order => ordersChecked.includes(order._id))
+      console.log('ordersPayed', ordersPayed)
       const totalPrice = ordersPayed.reduce((totalPrice, order) => totalPrice + order.price, 0)
+      console.log('totalPrice', totalPrice)
       const data = {
         totalPrice: totalPrice + clientOutstandingBalance,
         ordersPayed,
