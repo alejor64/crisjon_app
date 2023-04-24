@@ -1,10 +1,11 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import moment from "moment"
 import { Form, InputLabelContainer, SelectInputContainer, Button, TextareaContainer } from "../../../components/form"
 import { ClientsOptions } from "./formComponents/ClientsOptions"
 import { ItemOptions } from "./formComponents/ItemOptions"
 import { ServiceOptions } from "./formComponents/ServiceOptions"
 import { DATA_PICKER_FORMAT, USA_DATE_FORMAT } from "../../../utils/constants"
+import { BreakDown } from "./breakDown/BreakDown"
 
 const date = (order, key) => {
   if(order?.[key]) return moment(order?.[key]).format(DATA_PICKER_FORMAT)
@@ -12,6 +13,9 @@ const date = (order, key) => {
 }
 
 export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = false, order, onSubmit}, _ref) => {
+  const orderBreakdown = order?.breakDown || []
+  if(!orderBreakdown?.length) orderBreakdown.push({quantity: '', service: '', priceEach: '', amount: ''})
+  const [breakDown, setbreakDown] = useState(orderBreakdown)
   const [name, setName] = useState(order?.name ||"")
   const [clientJobName, setClientJobName] = useState(order?.clientJobName || "")
   const [service, setService] = useState(order?.service || "")
@@ -28,8 +32,8 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
   const [checkNumber, setCheckNumber] = useState(order?.checkNumber || 0)
   const [rush, setRush] = useState(order?.rush || false)
   const [done, setDone] = useState(order?.done || false)
-  const [delivered, setDelivered] = useState(order?.delivered || false)
   const [note, setNote] = useState(order?.note || "")
+  const [shipTo, setShipTo] = useState(order?.shipTo || "")
 
   const onChangeRush = () => {
     setRush(!rush)
@@ -37,10 +41,6 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
 
   const onChangeDone = () => {
     setDone(!done)
-  }
-  
-  const onChangedelivered = () => {
-    setDelivered(!delivered)
   }
 
   useImperativeHandle(_ref, () => ({
@@ -58,11 +58,12 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
         deliveredDate,
         paymentDate,
         price,
+        breakDown,
         paymentType,
+        shipTo,
         checkNumber,
         rush,
         done,
-        delivered,
         jobId: order?.jobId,
         note,
       }
@@ -99,9 +100,8 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                   name="name"
                   inputValue={name}
                   setInputValue={setName}
-                  required={true}
                   css="ml-3"
-                  readOnly={!!paymentDate}
+                  readOnly={true}
                 />
             }
           </div>
@@ -140,6 +140,15 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               required={true}
             />
             <InputLabelContainer
+              type="text"
+              text="Ship to"
+              name="shipTO"
+              css="ml-3"
+              inputValue={shipTo}
+              setInputValue={setShipTo}
+              readOnly={!!paymentDate}
+            />
+            <InputLabelContainer
               type="date"
               text="Due date"
               name="dueDate"
@@ -156,6 +165,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               value={status}
               setValue={setStatus}
               disabled={!!paymentDate}
+              required={true}
             >
               <option value="">-- Status --</option>
               <option value="Polishing">Polishing</option>
@@ -180,6 +190,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                 />
             }
           </div>
+          <BreakDown inputs={breakDown} setInputs={setbreakDown} />
         {
           edit && (
             <>
@@ -210,7 +221,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
                   text="Payment type"
                   inputValue={paymentType}
                   setInputValue={setPaymentType}
-                  readOnly={!!paymentDate}
+                  readOnly={true}
                 />
                 {
                   paymentType == 'check' && 

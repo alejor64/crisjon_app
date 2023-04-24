@@ -67,7 +67,7 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
           <OrdersTable
             thList={thList}
             tdList={prepareOrdersTable(orders)}
-            route="invoice"
+            route="order"
             rowsToShow={rowsToShow}
             setOrdersChecked={setOrdersChecked}
             ordersChecked={ordersChecked}

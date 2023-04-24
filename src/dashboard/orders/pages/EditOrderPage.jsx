@@ -16,7 +16,6 @@ export const EditOrderPage = () => {
   const [orderInfo, setOrderInfo] = useState({})
   const [order, setOrder] = useState({})
   const formRef = useRef()
-  const editBtnRef = useRef()
 
   useEffect(() => {
     getOrdersById(orderId)
@@ -41,6 +40,7 @@ export const EditOrderPage = () => {
 
   const updateOrderInfo = async () => {
     const childState = formRef.current.getFormState()
+    console.log('childState', childState)
     const response = await updateOrder(orderId, childState)
     if(response?.order){
       const { msn, order } = response

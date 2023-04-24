@@ -68,7 +68,8 @@ export const searchValue = (property_value, array) => {
 
 const numberWithDots = (x) => {
   if (x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '.00';
+    const formattedNumber = parseFloat(x).toFixed(2);
+    return formattedNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   } else if (x !== 0) {
     return '';
   } else {
@@ -77,4 +78,4 @@ const numberWithDots = (x) => {
 }
 
 
-export const formatCurrency = (value) => (value ? `$${numberWithDots(Math.round(value))}` : `$ 0`);
+export const formatCurrency = (value) => (value ? `$${numberWithDots(value)}` : `$ 0`);

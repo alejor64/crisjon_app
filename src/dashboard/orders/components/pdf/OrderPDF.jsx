@@ -5,8 +5,10 @@ import { faFileArrowDown, faDownload } from "@fortawesome/free-solid-svg-icons"
 import moment from "moment";
 import { CLIENTS, USA_DATE_FORMAT } from "../../../../utils/constants";
 import { formatCurrency } from "../../../../utils/functions";
+import { BreakDownSection } from "./BreakDownSection";
 
 export const OrderPDF = ({orderInfo}) => {
+  console.log('orderInfo', orderInfo)
   const orderPDF = useRef()
   const [isMouseHover, setIsMouseHover] = useState(false)
 
@@ -57,35 +59,38 @@ export const OrderPDF = ({orderInfo}) => {
               src="https://crisjon.com/img/Nav/L1%20with%20nb3.png"
             />
           </div>
-          <div className="mt-[20px] mb-[60px]">
-            <h3 className="text-3xl mb-3">Crisjon</h3>
-            <div className="flex justify-between">
+          <div className="mt-[20px] mb-[40px]">
+            <h3 className="text-2xl mb-3">Crisjon</h3>
+            <div className="flex justify-between text-sm">
               <div>
                 <p>5 South Wabash Avenue - Suite 1312</p>
                 <p>Chicago, Illinois, 60603</p>
                 <p>Phone: +1(312)7959303 - +1(312)7950018</p>
               </div>
-              <div className="text-end">
+              <div className="text-end text-sm">
                 <p>Order info</p>
                 <p>Date: {new Date().toDateString()}</p>
                 <p>ID: {orderInfo.jobId}</p>
               </div>
             </div>
           </div>
-          <div className="mb-[90px]">
-            <h3 className="text-3xl mb-3">{client.name}</h3>
-            <div>
+          <div className="mb-[40px]">
+            <h3 className="text-2xl mb-3">
+              {client.name}
+              {orderInfo.shipTo && ` - ${orderInfo.shipTo}`}
+            </h3>
+            <div className="text-sm">
               <p>{client.address}</p>
               <p>{`${client.city}, ${client.state}, ${client.zipCode}`}</p>
               <p>Phone: {client.phone}</p>
             </div>
           </div>
-          <div className="mb-[170px]">
-            <h3 className="text-3xl mb-3">Order</h3>
-            <div className="flex justify-between">
+          <div className="mb-[40px]">
+            <h3 className="text-2xl mb-3">Order</h3>
+            <div className="flex justify-between text-sm">
               <div className="w-1/2">
                 <div>
-                  <strong>Job Name:</strong> {orderInfo?.name}
+                  <strong>Client Job Name:</strong> {orderInfo?.clientJobName}
                 </div>
                 <div>
                   <strong>CAD Number:</strong> {orderInfo?.cadNumber}
@@ -122,13 +127,17 @@ export const OrderPDF = ({orderInfo}) => {
               <strong>Description:</strong> {orderInfo?.description}
             </div>
           </div>
-          <div className="flex justify-between">
-            <div>
+          {
+            orderInfo?.breakDown?.length > 0 && 
+              <BreakDownSection breakDown={orderInfo?.breakDown} />
+          }
+          <div className="flex mt-[70px] justify-between">
+            <div className="text-sm">
               <p>___________________________________</p>
               <p>Crisjon</p>
               <p>https://www.crisjon.com</p>
             </div>
-            <div>
+            <div className="text-sm">
               <p>___________________________________</p>
               <p>Client: {client.name}</p>
               <p>Phone: {client.phone}</p>
