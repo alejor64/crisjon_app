@@ -177,68 +177,59 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
               <option value="Engraving">Engraving</option>
               <option value="Hold">Hold</option>
             </SelectInputContainer>
+            <InputLabelContainer
+              type="date"
+              text="Delivered date"
+              name="deliveredDate"
+              css="ml-3"
+              inputValue={deliveredDate}
+              setInputValue={setDeliveredDate}
+              required={!!price}
+            />
+          </div>
+          <BreakDown inputs={breakDown} setInputs={setbreakDown} />
+          <div className="flex mb-7">
+            <InputLabelContainer
+              type="date"
+              text="Payment date"
+              name="paymentDate"
+              inputValue={paymentDate}
+              setInputValue={setPaymentDate}
+              readOnly={true}
+            />
+            <InputLabelContainer
+              type="text"
+              text="Price"
+              name="price"
+              css="ml-3"
+              inputValue={price}
+              setInputValue={setPrice}
+              readOnly={!!paymentDate}
+              required={!!deliveredDate}
+            />
+          </div>
+          <div className="flex mb-7">
+            <InputLabelContainer
+              type="text"
+              name="payment_type"
+              text="Payment type"
+              inputValue={paymentType}
+              setInputValue={setPaymentType}
+              readOnly={true}
+            />
             {
-              edit &&
+              paymentType == 'check' && 
                 <InputLabelContainer
-                  type="date"
-                  text="Delivered date"
-                  name="deliveredDate"
+                  type="number"
+                  text="Check Number"
+                  name="checkNumber"
                   css="ml-3"
-                  inputValue={deliveredDate}
-                  setInputValue={setDeliveredDate}
-                  required={!!price}
+                  inputValue={checkNumber}
+                  setInputValue={setCheckNumber}
+                  readOnly={!!paymentDate}
                 />
             }
           </div>
-          <BreakDown inputs={breakDown} setInputs={setbreakDown} />
-        {
-          edit && (
-            <>
-              <div className="flex mb-7">
-                <InputLabelContainer
-                  type="date"
-                  text="Payment date"
-                  name="paymentDate"
-                  inputValue={paymentDate}
-                  setInputValue={setPaymentDate}
-                  readOnly={true}
-                />
-                <InputLabelContainer
-                  type="text"
-                  text="Price"
-                  name="price"
-                  css="ml-3"
-                  inputValue={price}
-                  setInputValue={setPrice}
-                  readOnly={!!paymentDate}
-                  required={!!deliveredDate}
-                />
-              </div>
-              <div className="flex mb-7">
-                <InputLabelContainer
-                  type="text"
-                  name="payment_type"
-                  text="Payment type"
-                  inputValue={paymentType}
-                  setInputValue={setPaymentType}
-                  readOnly={true}
-                />
-                {
-                  paymentType == 'check' && 
-                    <InputLabelContainer
-                      type="number"
-                      text="Check Number"
-                      name="checkNumber"
-                      css="ml-3"
-                      inputValue={checkNumber}
-                      setInputValue={setCheckNumber}
-                      readOnly={!!paymentDate}
-                    />
-                }
-              </div>
-            </>
-          )
-        }
           <div className="flex">
             <div className="w-1/2">
               <div className="flex mb-7">
