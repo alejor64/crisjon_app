@@ -7,8 +7,8 @@ import { formatCurrency } from "../../../../utils/functions"
 import { Table } from "../../../components/Table"
 import { useReactToPrint } from "react-to-print"
 
-const thList = ['Id', 'Item', 'Service', 'Delivered Date', 'Price']
-const rowsToShow = ['id', 'jobId', 'item', 'service', 'deliveredDate', 'price']
+const thList = ['Client Id', 'Item', 'Service', 'Delivered Date', 'Price']
+const rowsToShow = ['id', 'clientJobName', 'item', 'service', 'deliveredDate', 'price']
 
 export const InvoicePdf = ({invoice}) => {
   const clients = JSON.parse(sessionStorage.getItem(CLIENTS) || '[]')
@@ -60,7 +60,7 @@ export const InvoicePdf = ({invoice}) => {
         }
         <div
           ref={invoicePDF}
-          className="p-[50px] pt-[60px] flex flex-col h-full w-full relative"
+          className="p-[40px] pt-[60px] flex flex-col h-full w-full relative"
         >
           <div className="absolute top-[20px] right-[360px]">
             <img
