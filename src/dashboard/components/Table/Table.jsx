@@ -7,7 +7,8 @@ import { ROW_TO_TABLE } from "../../../utils/constants"
 
 export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true, showAllRows = true}) => {
   const [rowsInTable, setRowsInTable] = useState([])
-  const sliceArray = showAllRows ? rowsInTable.length : ROW_TO_TABLE
+  const [showAllRowsInTable, setShowAllRowsInTable] = useState(showAllRows)
+  const sliceArray = showAllRowsInTable ? rowsInTable.length : ROW_TO_TABLE
 
   useEffect(() => {
     setRowsInTable(tdList)
@@ -16,8 +17,10 @@ export const Table = ({thList, tdList, route, rowsToShow, showInput = true, show
   const onKeyUp = (e) => {
     if(e.key === 'Enter'){
       if(e.target.value){
+        setShowAllRowsInTable(true)
         setRowsInTable(searchValue(e.target.value, tdList));
       }else {
+        setShowAllRowsInTable(false)
         setRowsInTable(tdList)
       }
     }
