@@ -7,8 +7,8 @@ import { InvoiceContainer } from '../components/invoiceContainer'
 import { CLIENTS, DATA_PICKER_FORMAT } from '../../../utils/constants'
 import { formatCurrency } from '../../../utils/functions'
 
-const thList = ['Checked', 'Client', 'Name', 'Client Job name', 'Item', 'Delivered date', 'Price']
-const rowsToShow = ['id', 'clientName', 'name', 'clientJobName', 'item', 'deliveredDate', 'price']
+const thList = ['Checked', 'Client', 'Client Job name', 'Item', 'Delivered date', 'Price']
+const rowsToShow = ['id', 'clientName', 'clientJobName', 'item', 'deliveredDate', 'price']
 
 export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceNumber, setInvoiceNumber, client, startDate, endDate}) => {
   const [error, setError] = useState(false)
@@ -16,7 +16,11 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
   const clientOutstandingBalance = clients.find(clientInfo => clientInfo.name === client)?.outstandingBalance || 0
 
   const prepareOrdersTable = (orders) => {
-    return orders.map(order => ({
+    return orders.sort((a, b) => {
+      if(a.deliveredDate < b.deliveredDate) return -1
+      if(a.deliveredDate > b.deliveredDate) return 1
+      return 0
+      }).map(order => ({
       ...order,
       price: formatCurrency(order?.price)
     }))
@@ -37,7 +41,6 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
         clientName: client,
         number: invoiceNumber,
       }
-      console.log('data', data)
       createInvoice(data)
         .then(response => {
           if(response?.invoice){

@@ -4,7 +4,6 @@ import { CLIENTS } from "../utils/constants"
 
 export const useDeleteData = async(route, id) => {
   const response = await deleteData(route, id)
-  console.log('response', response)
   if(response?.ok && !response?.error){
     const { msn } = response
     Swal.fire({

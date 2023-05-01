@@ -11,8 +11,8 @@ import { DateError } from '../../../components/filter/errors'
 import { ToggleContainer } from '../../../components/toggle'
 import { formatCurrency } from '../../../utils/functions'
 
-const thList = ['Client', 'CAD Number', 'Name', 'Client Job name', 'Created Date', 'Service', 'Satus', 'Price']
-const rowsToShow = ['id', 'clientName', 'cadNumber', 'name', 'clientJobName', 'createdAt', 'service', 'status', 'price']
+const thList = ['Client', 'CAD Number', 'Client Job name', 'Created Date', 'Service', 'Satus', 'Price']
+const rowsToShow = ['id', 'clientName', 'cadNumber', 'clientJobName', 'createdAt', 'service', 'status', 'price']
 
 const prepareOrders = (orders) => {
   return orders.map(order => ({

@@ -6,8 +6,8 @@ import { editInvoiceById } from "../../../../api/invoice"
 import { formatCurrency } from "../../../../utils/functions"
 import { useParams } from "react-router-dom"
 
-const thList = ['Name', 'Client Job name', 'Item', 'Delivered Date', 'Price']
-const rowsToShow = ['id', 'name', 'clientName', 'item', 'deliveredDate', 'price']
+const thList = ['Client Job name', 'Item', 'Delivered Date', 'Price']
+const rowsToShow = ['id', 'clientName', 'item', 'deliveredDate', 'price']
 
 export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, startDate, endDate, orders, payed, paymentType, pricePayed, checkNumber, outstandingBalance, setPayed, setPaymentType, setPricePayed, setCheckNumber}) => {
   const {invoiceId} = useParams()
