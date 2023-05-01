@@ -6,12 +6,14 @@ import { OrdersTable } from '../components'
 import { InvoiceContainer } from '../components/invoiceContainer'
 import { CLIENTS, DATA_PICKER_FORMAT } from '../../../utils/constants'
 import { formatCurrency } from '../../../utils/functions'
+import { useNavigate } from 'react-router-dom'
 
 const thList = ['Checked', 'Client', 'Client Job name', 'Item', 'Delivered date', 'Price']
 const rowsToShow = ['id', 'clientName', 'clientJobName', 'item', 'deliveredDate', 'price']
 
 export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceNumber, setInvoiceNumber, client, startDate, endDate}) => {
   const [error, setError] = useState(false)
+  const navigate = useNavigate()
   const clients = JSON.parse(sessionStorage.getItem(CLIENTS) || '[]')
   const clientOutstandingBalance = clients.find(clientInfo => clientInfo.name === client)?.outstandingBalance || 0
 
@@ -50,7 +52,7 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
               icon: 'success',
               showConfirmButton: false,
               timer: 1500
-            })
+            }).then(result => navigate(`/invoice/edit/${response.invoice._id}`))
           }else {
             Swal.fire({
               title: 'Error!',
