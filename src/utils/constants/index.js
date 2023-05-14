@@ -13,6 +13,8 @@ export const ORDERS = 'order'
 export const USERS = 'user'
 export const SERVICES = 'service'
 export const ITEMS = 'item'
+export const ESTIMATED_PRICES = 'estimatedPrices'
+export const GOLDEN_PRICE = 'XAU'
 
 //TABEL
 export const ROW_TO_TABLE = 15

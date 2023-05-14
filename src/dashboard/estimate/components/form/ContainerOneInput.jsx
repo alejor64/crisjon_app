@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export const ContainerOneInput = ({name, clearAll, setclearAll}) => {
-  const [value, setValue] = useState(0)
+export const ContainerOneInput = ({name, clearAll, setclearAll, value, setValue}) => {
 
   useEffect(() => {
     if(clearAll){

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react"
 
-export const ContainerInputs = ({name, clearAll = false, setclearAll}) => {
-  const [valuePrice, setValuePrice] = useState(0)
-  const [valueQuantity, setValueQuantity] = useState(0)
+export const ContainerInputs = ({name, clearAll = false, setclearAll, valuePrice, setValuePrice, valueQuantity, setValueQuantity}) => {
   const [total, setTotal] = useState(`$${valuePrice*valueQuantity}`)
 
   useEffect(() => {

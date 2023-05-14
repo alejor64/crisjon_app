@@ -1,18 +1,33 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
+import { ESTIMATED_PRICES } from '../../../utils/constants'
+import { getEstimatedPrices } from '../../../api/estimatedPrice/estimatedPrice'
+import { formatCurrency } from '../../../utils/functions'
+
+const thList = ['Created at', 'Name', 'Client Name', 'Price', 'Golden Price']
+const rowsToShow = ['id', 'createdAt', 'name', 'clientName', 'totalPrice', 'goldenPrice']
+
+const prepareEstimatedPrices = (estimatePrices) => {
+  return estimatePrices.map(ep => ({
+      ...ep,
+      goldenPrice: formatCurrency(ep.goldenPrice),
+      totalPrice: formatCurrency(ep.totalPrice),
+    }
+  ))
+}
 
 export const EstimatePage = () => {
-  const thList = ['Created at', 'Client', 'Order', 'Price']
-const tdList = [
-  {
-    id: '1a2b',
-    createdAt: new Date().toLocaleDateString(),
-    client: 'Crisjon',
-    order: 'Something',
-    price: '3146'
-  },
-]
+  const estimatedPricesInSS = JSON.parse(sessionStorage.getItem(ESTIMATED_PRICES) || '[]')
+  const [estimatePrices, setestimatePrices] = useState(estimatedPricesInSS)
+
+  useEffect(() => {
+    if(!estimatePrices.length) {
+      getEstimatedPrices()
+        .then( response => setestimatePrices(prepareEstimatedPrices(response.estimatedPrices)))
+    }
+  }, [])
 
   return (
     <DashboardLayout>
@@ -20,15 +35,12 @@ const tdList = [
         <h2 className="text-3xl text-center my-2">
           ESTIMATES
         </h2>
-        <h2 className="text-3xl text-center my-2">
-          CUADRAR EL PRECIO DEL ORO EN LA DB DE LA API
-        </h2>
         <div className="mt-2">
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               {
-                tdList.length
-                ? <Table thList={thList} tdList={tdList} route="estimate" />
+                estimatePrices.length
+                ? <Table thList={thList} tdList={estimatePrices} rowsToShow={rowsToShow} route="estimate" />
                 : <h2>No hay estimaciones</h2>
               }
             </div>
