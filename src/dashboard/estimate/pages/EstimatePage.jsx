@@ -5,6 +5,7 @@ import { DashboardLayout } from "../../layout"
 import { ESTIMATED_PRICES } from '../../../utils/constants'
 import { getEstimatedPrices } from '../../../api/estimatedPrice/estimatedPrice'
 import { formatCurrency } from '../../../utils/functions'
+import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 
 const thList = ['Created at', 'Name', 'Client Name', 'Price', 'Golden Price']
 const rowsToShow = ['id', 'createdAt', 'name', 'clientName', 'totalPrice', 'goldenPrice']
@@ -41,7 +42,7 @@ export const EstimatePage = () => {
               {
                 estimatePrices.length
                 ? <Table thList={thList} tdList={estimatePrices} rowsToShow={rowsToShow} route="estimate" />
-                : <h2>No hay estimaciones</h2>
+                : <NotItemsFound text="estimates" />
               }
             </div>
           </div>
