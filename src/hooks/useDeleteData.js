@@ -1,6 +1,6 @@
 import Swal from "sweetalert2"
 import { deleteData } from "../api/general"
-import { CLIENTS } from "../utils/constants"
+import { CLIENTS, ESTIMATED_PRICES, ORDERS } from "../utils/constants"
 
 export const useDeleteData = async(route, id) => {
   const response = await deleteData(route, id)
@@ -13,7 +13,8 @@ export const useDeleteData = async(route, id) => {
       showConfirmButton: false,
       timer: 2000
     }).then(result => {
-      removeDataFromSS(route, id)
+      sessionStorage.removeItem(ESTIMATED_PRICES)
+      sessionStorage.removeItem(ORDERS)
       window.location.reload()
     })
   }else if(response?.error){
