@@ -8,7 +8,6 @@ import { formatCurrency } from "../../../../utils/functions";
 import { BreakDownSection } from "./BreakDownSection";
 
 export const OrderPDF = ({orderInfo}) => {
-  console.log('orderInfo', orderInfo)
   const orderPDF = useRef()
   const [isMouseHover, setIsMouseHover] = useState(false)
 

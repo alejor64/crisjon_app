@@ -56,7 +56,7 @@ export const InvoiceForm = ({title,invoice, number, clientName, totalPrice, star
 
   const validatePrices = async() => {
     if(totalPrice < pricePayed){
-      const text = `Price payed ${pricePayed} should not be grater than price ${totalPrice}`
+      const text = `Price paid ${pricePayed} should not be grater than price ${totalPrice}`
       shootSwal('Error!', text, 'error')
     }else {
       await updateInvoice()

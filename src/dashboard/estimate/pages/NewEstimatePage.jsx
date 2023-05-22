@@ -7,11 +7,11 @@ import { GOLDEN_PRICE } from '../../../utils/constants'
 import { getMetalPrice } from '../../../api/estimatedPrice/estimatedPrice'
 
 export const NewEstimatePage = () => {
-  const goldenPriceInSS = sessionStorage.getItem(GOLDEN_PRICE) || 0
-  const [goldenPrice, setGoldenPrice] = useState(goldenPriceInSS)
+  const goldenInSS = JSON.parse(sessionStorage.getItem(GOLDEN_PRICE)) || {price: 0}
+  const [goldenPrice, setGoldenPrice] = useState(goldenInSS.price)
 
   useEffect(() => {
-    if(!goldenPrice) {
+    if(!goldenPrice.price) {
       getMetalPrice()
         .then(response => setGoldenPrice(response.gold.price))
     }
@@ -31,8 +31,9 @@ export const NewEstimatePage = () => {
           <MetalPrice metal="Gold" rate={goldenPrice} />
         </div>
         <EstimateForms
-          title="Add new order"
-          buttonText="Save new order"
+          title="Create new estimate"
+          buttonText="Save new estimate"
+          goldenPriceInDB={goldenPrice}
           buttonIcon={faFloppyDisk}
         />
       </div>

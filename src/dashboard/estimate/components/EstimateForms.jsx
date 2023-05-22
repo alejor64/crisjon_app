@@ -2,6 +2,11 @@ import { useState } from "react"
 import { Form, Button } from "../../../components/form"
 import { ContainerInputs, ContainerOneInput, ContainerSelect } from "./form"
 import { SelectClient } from "../../clients/components"
+import { createEstimate, updateEstimate } from "../../../api/estimatedPrice/estimatedPrice"
+import Swal from "sweetalert2"
+import { ESTIMATED_PRICES } from "../../../utils/constants"
+import { addValueToSS, prepareDatePropertyInObject, updateValueInSS } from "../../../utils/functions"
+import { useNavigate } from "react-router-dom"
 
 const Total = ({totalPrice}) => {
   return (
@@ -11,7 +16,9 @@ const Total = ({totalPrice}) => {
   )
 }
 
-export const EstimateForms = ({ title, estimate }) => {
+export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, updateOrder = false }) => {
+  const navigate = useNavigate();
+  const goldenPrice = estimate?.goldenPrice || goldenPriceInDB
   const [clearAll, setclearAll] = useState(false)
   const [name, setName] = useState(estimate?.name || "")
   const [clientName, setClientName] = useState(estimate?.clientName || "")
@@ -47,13 +54,14 @@ export const EstimateForms = ({ title, estimate }) => {
 
   const getAllStates = () => {
     return {
-     name, clientName, cadPrice, waxPrice, waxQuantity, castingPrice, castingQuantity, metalType, metalPrice, metalQuantity, stonePrice, stoneQuantity, centerStonePrice, cleaningPrice, cleaningQuantity, diamondPrice, diamondQuantity, colorStone, polishingPrice, polishingQuantity, assemblingPrice, assemblingQuantity, findingsPrice, findingsQuantity, rhodioumPrice, rhodioumQuantity, engravingPrice, engravingQuantity, picturePrice, pictureQuantity, totalPrice,
+     name, clientName, cadPrice, goldenPrice, waxPrice, waxQuantity, castingPrice, castingQuantity, metalType, metalPrice, metalQuantity, stonePrice, stoneQuantity, centerStonePrice, cleaningPrice, cleaningQuantity, diamondPrice, diamondQuantity, colorStone, polishingPrice, polishingQuantity, assemblingPrice, assemblingQuantity, findingsPrice, findingsQuantity, rhodioumPrice, rhodioumQuantity, engravingPrice, engravingQuantity, picturePrice, pictureQuantity, totalPrice,
     }
   }
 
   const calculateTotal = () => {
     const total = cadPrice + (waxPrice * waxQuantity) + (castingPrice * castingQuantity) + (metalPrice * metalQuantity) + (stonePrice * stoneQuantity) + (centerStonePrice) * (diamondPrice * diamondQuantity) + (cleaningPrice * cleaningQuantity) + (colorStone) + (polishingPrice * polishingQuantity) + (assemblingPrice * assemblingQuantity) + (findingsPrice * findingsQuantity) + (rhodioumPrice * rhodioumQuantity) + (engravingPrice * engravingQuantity) + (picturePrice * pictureQuantity)
     setTotalPrice(total)
+    return total
   }
 
   const handleClearAll = () => {
@@ -63,12 +71,50 @@ export const EstimateForms = ({ title, estimate }) => {
   }
 
   const onChangeName = (e) => {
-    setName(e.target.value)
+    setName(e.target.value);
   }
 
-  const onSubmit = (e) => {
+  const createOrUpdate = async () => {
+    const total = calculateTotal()
+    const body = getAllStates()
+    body.totalPrice = total
+    let response
+    if(updateOrder){
+      response = await updateEstimate(estimate._id, body)
+      const { estimatedPrice } = response
+      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
+      updateValueInSS(ESTIMATED_PRICES, estimatedPrice)
+    }else {
+      response = await createEstimate(body)
+      const { estimatedPrice } = response
+      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
+      addValueToSS(ESTIMATED_PRICES, estimatedPrice)
+    }
+    return response
+  }
+
+  const onSubmit = async(e) => {
     e.preventDefault()
-    const body = getAllStates();
+    const {ok, estimatedPrice, msn} = await createOrUpdate()
+    if(ok){
+      Swal.fire({
+        title: 'Success!',
+        text: msn,
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 2000
+      }).then(resp => {
+        navigate(`/estimate/edit/${estimatedPrice._id}`)
+      })
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: response.msg,
+        icon: 'error',
+        showConfirmButton: false,
+        timer: 2000
+      })
+    }
   }
 
   return (
@@ -89,7 +135,15 @@ export const EstimateForms = ({ title, estimate }) => {
         </div>
         <div className="flex items-center w-1/2 pl-5">
           <span className="w-[120px]">Client</span>
-          <SelectClient name="client" client={clientName} setClient={setClientName} />
+          <SelectClient name="client" required={true} client={clientName} setClient={setClientName} />
+        </div>
+      </div>
+      <div className="flex mb-7 items-center">
+        <span className="w-[120px] font-semibold">ITEMS</span>
+        <div className="flex w-full">
+          <span className="w-full mt-1 ml-2 text-center font-semibold">PRICE</span>
+          <span className="w-full mt-1 text-center font-semibold">QUANTITY</span>
+          <span className="w-full mt-1 text-center font-semibold">TOTAL</span>
         </div>
       </div>
       <div className="flex mb-7 items-center">
@@ -108,8 +162,8 @@ export const EstimateForms = ({ title, estimate }) => {
         <span>METAL</span>
       </div>
       <div className="flex mb-7 items-center">
-        <ContainerSelect selectValue={metalType} setselectValue={setMetalType} />
-        <ContainerInputs name="metal" clearAll={clearAll} setclearAll={setclearAll} valuePrice={metalPrice} setValuePrice={setMetalPrice} valueQuantity={metalQuantity} setValueQuantity={setMetalQuantity} />
+        <ContainerSelect required={true} selectValue={metalType} setselectValue={setMetalType} />
+        <ContainerInputs required={false} name="metal" clearAll={clearAll} setclearAll={setclearAll} valuePrice={metalPrice} setValuePrice={setMetalPrice} valueQuantity={metalQuantity} setValueQuantity={setMetalQuantity} />
       </div>
       <div className="flex mb-7 justify-center">
         <span>LABOR</span>
@@ -168,13 +222,16 @@ export const EstimateForms = ({ title, estimate }) => {
         >
           Calculate
         </span>
-        <span
-          className="flex justify-center items-center rounded-md py-2 px-4 text-sm font-medium text-white shadow-sm bg-red-700 focus:ring-red-500 hover:bg-red-800 cursor-pointer"
-          onClick={handleClearAll}
-        >
-          Clear all
-        </span>
-        <Button text="Create Estimate"/>
+        {
+          !updateOrder &&
+            <span
+              className="flex justify-center items-center rounded-md py-2 px-4 text-sm font-medium text-white shadow-sm bg-red-700 focus:ring-red-500 hover:bg-red-800 cursor-pointer"
+              onClick={handleClearAll}
+            >
+              Clear all
+            </span>
+        }
+        <Button text={buttonText}/>
       </div>
     </Form>
   )

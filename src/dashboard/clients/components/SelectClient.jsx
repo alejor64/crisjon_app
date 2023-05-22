@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { Select } from "../../../components/form"
 import { CLIENTS } from "../../../utils/constants"
 
-export const SelectClient = ({name, client, setClient}) => {
+export const SelectClient = ({name, client, setClient, required = false}) => {
   const clientsOptions = JSON.parse(sessionStorage.getItem(CLIENTS) || "[]")
 
   useEffect(() => {
@@ -17,6 +17,7 @@ export const SelectClient = ({name, client, setClient}) => {
       name={name}
       value={client}
       setValue={setClient}
+      required={required}
     >
       <option value="">-- Client --</option>
       {

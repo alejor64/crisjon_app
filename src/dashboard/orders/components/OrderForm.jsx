@@ -75,7 +75,7 @@ export const OrderForm = forwardRef(({title, buttonText, buttonIcon, edit = fals
       {
         paymentDate &&
           <div className="text-center my-3 bg-slate-200 p-3 rounded">
-            <h3 className="font-medium">This order was payed was payed on {moment(paymentDate).format(USA_DATE_FORMAT)}</h3>
+            <h3 className="font-medium">This order was paid on {moment(paymentDate).format(USA_DATE_FORMAT)}</h3>
           </div>
       }
       {

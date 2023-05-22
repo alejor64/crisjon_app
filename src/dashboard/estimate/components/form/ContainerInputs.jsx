@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export const ContainerInputs = ({name, clearAll = false, setclearAll, valuePrice, setValuePrice, valueQuantity, setValueQuantity}) => {
+export const ContainerInputs = ({name, clearAll = false, required = false, setclearAll, valuePrice, setValuePrice, valueQuantity, setValueQuantity}) => {
   const [total, setTotal] = useState(`$${valuePrice*valueQuantity}`)
 
   useEffect(() => {
@@ -13,13 +13,15 @@ export const ContainerInputs = ({name, clearAll = false, setclearAll, valuePrice
   }, [clearAll])
 
   const onChagePrice = (event) => {
-    setValuePrice(event.target.value)
+    const price = parseInt(event.target.value)
+    setValuePrice(price)
     const totalValue = parseFloat(event.target.value * valueQuantity).toFixed(2)
     setTotal(`$${totalValue}`)
   }
   
   const onChageQuantity = (event) => {
-    setValueQuantity(event.target.value)
+    const quantity = parseInt(event.target.value)
+    setValueQuantity(quantity)
     const totalValue = parseFloat(valuePrice * event.target.value).toFixed(2)
     setTotal(`$${totalValue}`)
   }
@@ -33,6 +35,7 @@ export const ContainerInputs = ({name, clearAll = false, setclearAll, valuePrice
             name={`${name}Price`}
             className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
             placeholder="price"
+            required={required}
             value={valuePrice}
             onChange={onChagePrice}
           />
@@ -41,6 +44,7 @@ export const ContainerInputs = ({name, clearAll = false, setclearAll, valuePrice
           type="number"
           name={`${name}Quantity`}
           placeholder="quantity"
+          required={required}
           className="mt-1 pl-2 py-1.5 md:py-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none sm:text-sm ml-2"
           value={valueQuantity}
           onChange={onChageQuantity}

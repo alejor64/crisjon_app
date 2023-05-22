@@ -13,7 +13,7 @@ const rowsToShow = ['id', 'createdAt', 'name', 'clientName', 'totalPrice', 'gold
 const prepareEstimatedPrices = (estimatePrices) => {
   return estimatePrices.map(ep => ({
       ...ep,
-      goldenPrice: formatCurrency(ep.goldenPrice),
+      goldenPrice: formatCurrency(parseFloat(1 / ep.goldenPrice).toFixed(2)),
       totalPrice: formatCurrency(ep.totalPrice),
     }
   ))
@@ -21,7 +21,7 @@ const prepareEstimatedPrices = (estimatePrices) => {
 
 export const EstimatePage = () => {
   const estimatedPricesInSS = JSON.parse(sessionStorage.getItem(ESTIMATED_PRICES) || '[]')
-  const [estimatePrices, setestimatePrices] = useState(estimatedPricesInSS)
+  const [estimatePrices, setestimatePrices] = useState(prepareEstimatedPrices(estimatedPricesInSS))
 
   useEffect(() => {
     if(!estimatePrices.length) {

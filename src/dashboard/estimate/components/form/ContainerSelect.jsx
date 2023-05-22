@@ -1,11 +1,12 @@
 
-export const ContainerSelect = ({selectValue, setselectValue}) => {
+export const ContainerSelect = ({selectValue, setselectValue, required = false}) => {
   const onChange = (e) => {
     setselectValue(e.target.value)
   }
 
   return (
     <select
+      required={required}
       className="mt-1 pl-2 py-1.5 md:py-2 block w-[120px] rounded-md shadow border border-slate-200 sm:text-sm"
       value={selectValue}
       onChange={onChange}

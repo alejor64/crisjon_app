@@ -8,12 +8,14 @@ export const CHECKING = 'checking'
 
 //LOCAL_STORAGE
 export const TOKEN = 'crisjon_token'
+
+//SESSION STORAGE
 export const CLIENTS = 'client'
 export const ORDERS = 'order'
 export const USERS = 'user'
 export const SERVICES = 'service'
 export const ITEMS = 'item'
-export const ESTIMATED_PRICES = 'estimatedPrices'
+export const ESTIMATED_PRICES = 'estimate'
 export const GOLDEN_PRICE = 'XAU'
 
 //TABEL

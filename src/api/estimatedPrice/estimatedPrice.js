@@ -26,6 +26,53 @@ export const getEstimatedPrices = async() => {
   }
 }
 
+export const createEstimate = async (body) => {
+  try {    
+    const config = {
+      method: 'post',
+      url: '/estimate/create',
+      headers: { 'Content-Type': 'application/json' },
+      data : JSON.stringify(body)
+    };
+    const { data } = await apiInstance(config)
+    return data
+  } catch (error) {
+    console.log('Error creating estimate', error)
+    return error.response.data.errors[0]
+  }
+}
+
+export const updateEstimate = async (estimateId, body) => {
+  try {    
+    const config = {
+      method: 'put',
+      url: `/estimate/edit/${estimateId}`,
+      headers: { 'Content-Type': 'application/json' },
+      data : JSON.stringify(body)
+    };
+    const { data } = await apiInstance(config)
+    return data
+  } catch (error) {
+    console.log('Error updating estimate', error)
+    return error.response.data.errors[0]
+  }
+}
+
+export const getEstimatePriceById = async (id = '') => {
+  try {    
+    const config = {
+      method: 'get',
+      url: `/estimate/${id}`,
+      headers: { 'Content-Type': 'application/json' },
+    };
+    const { data: { estimatedPrice } } = await apiInstance(config)
+    return estimatedPrice
+  } catch (error) {
+    console.log('Error creating estimate', error)
+    return error.response.data.errors[0]
+  }
+}
+
 export const getMetalPrice = async() => {
   try {
     const config = {

@@ -10,7 +10,8 @@ export const ContainerOneInput = ({name, clearAll, setclearAll, value, setValue}
   }, [clearAll])
 
   const onChange = (e) => {
-    setValue(e.target.value)
+    const valueNumber = parseInt(e.target.value)
+    setValue(valueNumber)
   }
 
   return (
