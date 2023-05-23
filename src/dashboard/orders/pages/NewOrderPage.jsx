@@ -19,6 +19,7 @@ export const NewOrderPage = () => {
     if(response?.order){
       const { order } = response
       order.createdAt = prepareDatePropertyInObject(order, 'createdAt')
+      order.deliveredDate = prepareDatePropertyInObject(order, 'deliveredDate')
       order.dueDate = prepareDatePropertyInObject(order, 'dueDate')
       order.lastModificatedAt = prepareDatePropertyInObject(order, 'lastModificatedAt')
       addValueToSS(ORDERS, order)
