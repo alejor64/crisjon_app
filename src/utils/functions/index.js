@@ -1,10 +1,10 @@
-import moment from 'moment'
-import { USA_DATE_FORMAT } from '../constants'
+import momentTz from 'moment-timezone'
+import { USA_DATE_FORMAT, LONDON_TIME_ZONE } from '../constants'
 
 export const prepareDatePropertyInArray = (array, property) => {
   const clientsPrepared = array.map(item => {
     if(item[property]){
-      const datePrepared = moment(item[property]).format(USA_DATE_FORMAT);
+      const datePrepared = momentTz(item[property]).tz(LONDON_TIME_ZONE).format(USA_DATE_FORMAT);
       item[property] = datePrepared
       return item
     }
@@ -15,7 +15,7 @@ export const prepareDatePropertyInArray = (array, property) => {
 
 export const prepareDatePropertyInObject = (object, property) => {
   if(object[property]){
-    return moment(object[property]).format(USA_DATE_FORMAT)
+    return momentTz(object[property]).tz(LONDON_TIME_ZONE).format(USA_DATE_FORMAT)
   }
 }
 

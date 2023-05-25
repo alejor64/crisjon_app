@@ -23,6 +23,7 @@ export const ROW_TO_TABLE = 15
 
 //DATE FORMAT
 export const USA_DATE_FORMAT = 'MM-DD-YYYY'
+export const LONDON_TIME_ZONE = 'Europe/London'
 export const DATA_PICKER_FORMAT = 'YYYY-MM-DD'
 export const MONTH = 'month'
 
