@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 export const ContainerInputs = ({name, clearAll = false, required = false, setclearAll, valuePrice, setValuePrice, valueQuantity, setValueQuantity}) => {
   const [total, setTotal] = useState(`$${valuePrice*valueQuantity}`)
+  const [quantityInput, setQuantityInput] = useState(valueQuantity.toString().replaceAll('.', ','));
 
   useEffect(() => {
     if(clearAll){
@@ -20,44 +21,49 @@ export const ContainerInputs = ({name, clearAll = false, required = false, setcl
   }
   
   const onChageQuantity = (event) => {
-    const quantity = parseInt(event.target.value)
-    setValueQuantity(quantity)
-    const totalValue = parseFloat(valuePrice * event.target.value).toFixed(2)
-    setTotal(`$${totalValue}`)
+    const { value } = event.target;
+    const decimalRegex = /^\d*\,?\d*$/;
+    if (decimalRegex.test(value)) {
+      setQuantityInput(value);
+      const quantity = parseFloat(value.replaceAll(',', '.') || 0);
+      setValueQuantity(quantity)
+      const totalValue = parseFloat(valuePrice * quantity).toFixed(2);
+      setTotal(`$${totalValue.replaceAll('.', ',')}`)
+    }
   }
 
   return (
     <div className="flex w-full">
-        <span className="mt-1 ml-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none">
-          <span className="ml-1">$</span>
-          <input
-            type="number"
-            name={`${name}Price`}
-            className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
-            placeholder="price"
-            required={required}
-            value={valuePrice}
-            onChange={onChagePrice}
-          />
-        </span> 
+      <span className="mt-1 ml-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none">
+        <span className="ml-1">$</span>
         <input
           type="number"
-          name={`${name}Quantity`}
-          placeholder="quantity"
+          name={`${name}Price`}
+          className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
+          placeholder="price"
           required={required}
-          className="mt-1 pl-2 py-1.5 md:py-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none sm:text-sm ml-2"
-          value={valueQuantity}
-          onChange={onChageQuantity}
-          min="0"
+          value={valuePrice}
+          onChange={onChagePrice}
         />
-        <input
-          type="text"
-          name={`${name}Total`}
-          placeholder="$0"
-          className="mt-1 pl-2 py-1.5 md:py-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none sm:text-sm ml-2"
-          value={total}
-          disabled
-        />
+      </span> 
+      <input
+        type="text"
+        name={`${name}Quantity`}
+        placeholder="quantity"
+        required={required}
+        className="mt-1 pl-2 py-1.5 md:py-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none sm:text-sm ml-2"
+        value={quantityInput}
+        onChange={onChageQuantity}
+        min="0"
+      />
+      <input
+        type="text"
+        name={`${name}Total`}
+        placeholder="$0"
+        className="mt-1 pl-2 py-1.5 md:py-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none sm:text-sm ml-2"
+        value={total}
+        disabled
+      />
     </div>
   )
 }

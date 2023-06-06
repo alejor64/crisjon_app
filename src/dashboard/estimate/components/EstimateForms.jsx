@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Form, Button } from "../../../components/form"
-import { ContainerInputs, ContainerOneInput, ContainerSelect } from "./form"
+import { ContainerInputs, ContainerMetalInputs, ContainerOneInput, ContainerSelect } from "./form"
 import { SelectClient } from "../../clients/components"
 import { createEstimate, updateEstimate } from "../../../api/estimatedPrice/estimatedPrice"
 import Swal from "sweetalert2"
@@ -24,32 +24,32 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
   const [clientName, setClientName] = useState(estimate?.clientName || "")
   const [cadPrice, setCadPrice] = useState(estimate?.cadPrice || 0)
   const [waxPrice, setWaxPrice] = useState(estimate?.waxPrice || 0)
-  const [waxQuantity, setWaxQuantity] = useState(estimate?.waxQuantity || 0)
+  const [waxQuantity, setWaxQuantity] = useState(estimate?.waxQuantity || 1)
   const [castingPrice, setCastingPrice] = useState(estimate?.castingPrice || 0)
-  const [castingQuantity, setCastingQuantity] = useState(estimate?.castingQuantity || 0)
+  const [castingQuantity, setCastingQuantity] = useState(estimate?.castingQuantity || 1)
   const [metalType, setMetalType] = useState(estimate?.metalType || "")
   const [metalPrice, setMetalPrice] = useState(estimate?.metalPrice || 0)
   const [metalQuantity, setMetalQuantity] = useState(estimate?.metalQuantity || 0)
   const [stonePrice, setStonePrice] = useState(estimate?.stonePrice || 0)
-  const [stoneQuantity, setStoneQuantity] = useState(estimate?.stoneQuantity || 0)
+  const [stoneQuantity, setStoneQuantity] = useState(estimate?.stoneQuantity || 1)
   const [centerStonePrice, setCenterStonePrice] = useState(estimate?.centerStonePrice || 0)
   const [cleaningPrice, setCleaningPrice] = useState(estimate?.cleaningPrice || 0)
-  const [cleaningQuantity, setCleaningQuantity] = useState(estimate?.cleaningQuantity || 0)
+  const [cleaningQuantity, setCleaningQuantity] = useState(estimate?.cleaningQuantity || 1)
   const [diamondPrice, setDiamondPrice] = useState(estimate?.diamondPrice || 0)
   const [diamondQuantity, setDiamondQuantity] = useState(estimate?.diamondQuantity || 0)
   const [colorStone, setColorStone] = useState(estimate?.colorStone || 0)
   const [polishingPrice, setPolishingPrice] = useState(estimate?.polishingPrice || 0)
-  const [polishingQuantity, setPolishingQuantity] = useState(estimate?.polishingQuantity || 0)
+  const [polishingQuantity, setPolishingQuantity] = useState(estimate?.polishingQuantity || 1)
   const [assemblingPrice, setAssemblingPrice] = useState(estimate?.assemblingPrice || 0)
-  const [assemblingQuantity, setAssemblingQuantity] = useState(estimate?.assemblingQuantity || 0)
+  const [assemblingQuantity, setAssemblingQuantity] = useState(estimate?.assemblingQuantity || 1)
   const [findingsPrice, setFindingsPrice] = useState(estimate?.findingsPrice || 0)
-  const [findingsQuantity, setFindingsQuantity] = useState(estimate?.findingsQuantity || 0)
+  const [findingsQuantity, setFindingsQuantity] = useState(estimate?.findingsQuantity || 1)
   const [rhodioumPrice, setRhodioumPrice] = useState(estimate?.rhodioumPrice || 0)
-  const [rhodioumQuantity, setRhodioumQuantity] = useState(estimate?.rhodioumQuantity || 0)
+  const [rhodioumQuantity, setRhodioumQuantity] = useState(estimate?.rhodioumQuantity || 1)
   const [engravingPrice, setEngravingPrice] = useState(estimate?.engravingPrice || 0)
-  const [engravingQuantity, setEngravingQuantity] = useState(estimate?.engravingQuantity || 0)
+  const [engravingQuantity, setEngravingQuantity] = useState(estimate?.engravingQuantity || 1)
   const [picturePrice, setPicturePrice] = useState(estimate?.picturePrice || 0)
-  const [pictureQuantity, setPictureQuantity] = useState(estimate?.pictureQuantity || 0)
+  const [pictureQuantity, setPictureQuantity] = useState(estimate?.pictureQuantity || 1)
   const [totalPrice, setTotalPrice] = useState(estimate?.totalPrice || 0)
 
   const getAllStates = () => {
@@ -59,14 +59,16 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
   }
 
   const calculateTotal = () => {
-    const total = cadPrice + (waxPrice * waxQuantity) + (castingPrice * castingQuantity) + (metalPrice * metalQuantity) + (stonePrice * stoneQuantity) + (centerStonePrice) * (diamondPrice * diamondQuantity) + (cleaningPrice * cleaningQuantity) + (colorStone) + (polishingPrice * polishingQuantity) + (assemblingPrice * assemblingQuantity) + (findingsPrice * findingsQuantity) + (rhodioumPrice * rhodioumQuantity) + (engravingPrice * engravingQuantity) + (picturePrice * pictureQuantity)
-    setTotalPrice(total)
+    const total = cadPrice + (waxPrice * waxQuantity) + (castingPrice * castingQuantity) + (metalPrice * metalQuantity) + (stonePrice * stoneQuantity) + (centerStonePrice) + (diamondPrice * diamondQuantity) + (cleaningPrice * cleaningQuantity) + (colorStone) + (polishingPrice * polishingQuantity) + (assemblingPrice * assemblingQuantity) + (findingsPrice * findingsQuantity) + (rhodioumPrice * rhodioumQuantity) + (engravingPrice * engravingQuantity) + (picturePrice * pictureQuantity)
+    setTotalPrice(total.toFixed(2))
     return total
   }
 
   const handleClearAll = () => {
     setclearAll(true)
     setMetalType("")
+    calculateMetalPrice(0);
+    setMetalQuantity(0);
     setTotalPrice(0)
   }
 
@@ -117,6 +119,34 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
     }
   }
 
+  const calculateMetalPrice = (metal = metalType) => {
+    let metalConstant = 0;
+    const goldPrice = parseFloat(1 / goldenPrice).toFixed(2);
+    switch (metal) {
+      case '10k':
+        metalConstant = 0.4166;
+        break;
+      case '14k':
+        metalConstant = 0.585;
+        break;
+      case '18k':
+        metalConstant = 0.75;
+        break;
+      default:
+        metalConstant = 0;
+        break;
+    }
+    const finalMetalPrice = (((goldPrice + 60) * 1.25)/20) * metalConstant;
+    setMetalPrice(finalMetalPrice.toFixed(2));
+    return finalMetalPrice;
+  }
+
+  const onChange = (e) => {
+    const { value } = e.target;
+    setMetalType(value);
+    calculateMetalPrice(value);
+  }
+
   return (
     <Form title={title} onSubmit={onSubmit}>
       <div className="flex mb-7 items-center">
@@ -159,11 +189,10 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
         <ContainerInputs name="casting" clearAll={clearAll} setclearAll={setclearAll} valuePrice={castingPrice} setValuePrice={setCastingPrice} valueQuantity={castingQuantity} setValueQuantity={setCastingQuantity} />
       </div>
       <div className="flex mb-7 justify-center">
-        <span>METAL</span>
+        <span>METAL (Weight - dwt)</span>
       </div>
       <div className="flex mb-7 items-center">
-        <ContainerSelect required={true} selectValue={metalType} setselectValue={setMetalType} />
-        <ContainerInputs required={false} name="metal" clearAll={clearAll} setclearAll={setclearAll} valuePrice={metalPrice} setValuePrice={setMetalPrice} valueQuantity={metalQuantity} setValueQuantity={setMetalQuantity} />
+        <ContainerMetalInputs onChange={onChange} metalType={metalType} clearAll={clearAll} setclearAll={setclearAll} metalPrice={metalPrice} metalQuantity={metalQuantity} setMetalQuantity={setMetalQuantity} />
       </div>
       <div className="flex mb-7 justify-center">
         <span>LABOR</span>
@@ -179,6 +208,9 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
       <div className="flex mb-7 items-center">
         <span className="w-[120px]">Cleaning</span>
         <ContainerInputs name="cleaning" clearAll={clearAll} setclearAll={setclearAll} valuePrice={cleaningPrice} setValuePrice={setCleaningPrice} valueQuantity={cleaningQuantity} setValueQuantity={setCleaningQuantity} />
+      </div>
+      <div className="flex mb-7 justify-center">
+        <span>DIAMONDS (Weight - Carats)</span>
       </div>
       <div className="flex mb-7 items-center">
         <span className="w-[120px]">Diamonds</span>
@@ -201,7 +233,7 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
         <ContainerInputs name="findings" clearAll={clearAll} setclearAll={setclearAll} valuePrice={findingsPrice} setValuePrice={setFindingsPrice} valueQuantity={findingsQuantity} setValueQuantity={setFindingsQuantity} />
       </div>
       <div className="flex mb-7 items-center">
-        <span className="w-[120px]">Rhodioum</span>
+        <span className="w-[120px]">Rhodium</span>
         <ContainerInputs name="rhodioum" clearAll={clearAll} setclearAll={setclearAll} valuePrice={rhodioumPrice} setValuePrice={setRhodioumPrice} valueQuantity={rhodioumQuantity} setValueQuantity={setRhodioumQuantity} />
       </div>
       <div className="flex mb-7 items-center">

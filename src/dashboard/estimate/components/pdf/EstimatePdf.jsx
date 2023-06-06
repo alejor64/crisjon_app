@@ -60,7 +60,6 @@ export const EstimatePdf = ({estimateId}) => {
               <div className="text-end text-sm">
                 <p>Estimate info</p>
                 <p>Name: {estimate.name}</p>
-                <p className="font-semibold">Gold Price: {formatCurrency(goldPrice)}</p>
               </div>
             </div>
           </div>
