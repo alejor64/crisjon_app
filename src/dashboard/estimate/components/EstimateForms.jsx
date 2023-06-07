@@ -1,12 +1,9 @@
 import { useState } from "react"
-import { Form, Button } from "../../../components/form"
-import { ContainerInputs, ContainerMetalInputs, ContainerOneInput, ContainerSelect } from "./form"
-import { SelectClient } from "../../clients/components"
-import { createEstimate, updateEstimate } from "../../../api/estimatedPrice/estimatedPrice"
-import Swal from "sweetalert2"
-import { ESTIMATED_PRICES } from "../../../utils/constants"
-import { addValueToSS, prepareDatePropertyInObject, updateValueInSS } from "../../../utils/functions"
 import { useNavigate } from "react-router-dom"
+import Swal from "sweetalert2"
+import { Form, Button } from "../../../components/form"
+import { ContainerInputs, ContainerMetalInputs, ContainerOneInput } from "./form"
+import { SelectClient } from "../../clients/components"
 
 const Total = ({totalPrice}) => {
   return (
@@ -16,7 +13,7 @@ const Total = ({totalPrice}) => {
   )
 }
 
-export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, updateOrder = false }) => {
+export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, updateOrder = false, createOrUpdate }) => {
   const navigate = useNavigate();
   const goldenPrice = estimate?.goldenPrice || goldenPriceInDB
   const [clearAll, setclearAll] = useState(false)
@@ -76,28 +73,18 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
     setName(e.target.value);
   }
 
-  const createOrUpdate = async () => {
+  const apiCall = async () => {
     const total = calculateTotal()
     const body = getAllStates()
     body.totalPrice = total
-    let response
-    if(updateOrder){
-      response = await updateEstimate(estimate._id, body)
-      const { estimatedPrice } = response
-      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
-      updateValueInSS(ESTIMATED_PRICES, estimatedPrice)
-    }else {
-      response = await createEstimate(body)
-      const { estimatedPrice } = response
-      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
-      addValueToSS(ESTIMATED_PRICES, estimatedPrice)
-    }
+    const estimateId = estimate?._id
+    const response = await createOrUpdate({body, updateOrder, estimateId})
     return response
   }
 
   const onSubmit = async(e) => {
     e.preventDefault()
-    const {ok, estimatedPrice, msn} = await createOrUpdate()
+    const {ok, estimatedPrice, msn} = await apiCall()
     if(ok){
       Swal.fire({
         title: 'Success!',
@@ -121,7 +108,7 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
 
   const calculateMetalPrice = (metal = metalType) => {
     let metalConstant = 0;
-    const goldPrice = parseFloat(1 / goldenPrice).toFixed(2);
+    const goldPrice = parseFloat((1 / goldenPrice).toFixed(2));
     switch (metal) {
       case '10k':
         metalConstant = 0.4166;

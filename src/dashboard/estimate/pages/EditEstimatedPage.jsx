@@ -2,9 +2,10 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons'
 import { DashboardLayout } from "../../layout"
-import { getEstimatePriceById, getMetalPrice } from "../../../api/estimatedPrice/estimatedPrice"
+import { createEstimate, getEstimatePriceById, getMetalPrice, updateEstimate } from "../../../api/estimatedPrice/estimatedPrice"
 import { EstimateForms, EstimatePdf, MetalPrice } from "../components"
-import { GOLDEN_PRICE } from "../../../utils/constants"
+import { ESTIMATED_PRICES, GOLDEN_PRICE } from "../../../utils/constants"
+import { addValueToSS, prepareDatePropertyInObject, updateValueInSS } from "../../../utils/functions"
 
 export const EditEstimatedPage = () => {
   const { estimateId } = useParams()
@@ -44,6 +45,24 @@ export const EditEstimatedPage = () => {
     }else {
       navigate(-1)
     }
+  }
+
+  const createOrUpdate = async ({body, updateOrder, estimateId}) => {
+    let response;
+    if(updateOrder){
+      response = await updateEstimate(estimateId, body)
+      const { estimatedPrice } = response
+      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
+      setEstimatePrice({...estimatedPrice})
+      updateValueInSS(ESTIMATED_PRICES, estimatedPrice)
+    }else {
+      response = await createEstimate(body)
+      const { estimatedPrice } = response
+      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
+      setEstimatePrice({...estimatedPrice})
+      addValueToSS(ESTIMATED_PRICES, estimatedPrice)
+    }
+    return response
   }
   
   return (
@@ -87,6 +106,7 @@ export const EditEstimatedPage = () => {
                   updateOrder={true}
                   goldenPriceInDB={estimatePrice.goldenPrice}
                   buttonIcon={faFloppyDisk}
+                  createOrUpdate={createOrUpdate}
                 />
             }
           </div>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export const ContainerMetalInputs = ({onChange, metalType, metalPrice, metalQuantity, setMetalQuantity}) => {
   const [total, setTotal] = useState(`$${metalPrice*metalQuantity}`);
-  const [quantityInput, setQuantityInput] = useState(metalQuantity.toString().replaceAll('.', ','));
+  const [quantityInput, setQuantityInput] = useState(metalQuantity);
 
   useEffect(() => {
     const totalValue = parseFloat(metalPrice * metalQuantity).toFixed(2)
@@ -11,10 +11,10 @@ export const ContainerMetalInputs = ({onChange, metalType, metalPrice, metalQuan
 
   const onChangeMetalQuantity = (event) => {
     const { value } = event.target;
-    const decimalRegex = /^\d*\,?\d*$/;
+    const decimalRegex = /^\d*\.?\d*$/;
     if (decimalRegex.test(value)) {
+      const quantity = parseFloat(value);
       setQuantityInput(value);
-      const quantity = parseFloat(value.replaceAll(',', '.') || 0);
       setMetalQuantity(quantity);
       const totalValue = parseFloat(metalPrice * quantity).toFixed(2);
       setTotal(`$${totalValue.replaceAll('.', ',')}`)
@@ -24,7 +24,6 @@ export const ContainerMetalInputs = ({onChange, metalType, metalPrice, metalQuan
   return (
     <>
       <select
-        required
         className="mt-1 pl-2 py-1.5 md:py-2 block w-[120px] rounded-md shadow border border-slate-200 sm:text-sm"
         value={metalType}
         onChange={onChange}
@@ -50,9 +49,8 @@ export const ContainerMetalInputs = ({onChange, metalType, metalPrice, metalQuan
           type="text"
           name={`metalQuantity`}
           placeholder="quantity"
-          required
           className="mt-1 pl-2 py-1.5 md:py-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none sm:text-sm ml-2"
-          value={quantityInput.replace('.', ',')}
+          value={quantityInput}
           onChange={onChangeMetalQuantity}
           min="0"
         />
