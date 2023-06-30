@@ -3,8 +3,9 @@ import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons'
 import { DashboardLayout } from '../../layout'
 import { EstimateForms, MetalPrice } from '../components'
 import { useEffect, useState } from 'react'
-import { GOLDEN_PRICE } from '../../../utils/constants'
-import { getMetalPrice } from '../../../api/estimatedPrice/estimatedPrice'
+import { ESTIMATED_PRICES, GOLDEN_PRICE } from '../../../utils/constants'
+import { createEstimate, getMetalPrice } from '../../../api/estimatedPrice/estimatedPrice'
+import { addValueToSS, prepareDatePropertyInObject } from '../../../utils/functions'
 
 export const NewEstimatePage = () => {
   const goldenInSS = JSON.parse(sessionStorage.getItem(GOLDEN_PRICE)) || {price: 0}
@@ -17,6 +18,15 @@ export const NewEstimatePage = () => {
     }
   }, [])
   
+  const createOrUpdate = async ({body}) => {
+    let response = await createEstimate(body)
+    const { estimatedPrice } = response
+    if(estimatedPrice?.createdAt){
+      estimatedPrice.createdAt = prepareDatePropertyInObject(estimatedPrice, 'createdAt')
+      addValueToSS(ESTIMATED_PRICES, estimatedPrice)
+    }
+    return response
+  }
   
   return (
     <DashboardLayout>
@@ -34,6 +44,7 @@ export const NewEstimatePage = () => {
           title="Create new estimate"
           buttonText="Save new estimate"
           goldenPriceInDB={goldenPrice}
+          createOrUpdate={createOrUpdate}
           buttonIcon={faFloppyDisk}
         />
       </div>

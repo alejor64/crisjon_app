@@ -84,16 +84,16 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
 
   const onSubmit = async(e) => {
     e.preventDefault()
-    const {ok, estimatedPrice, msn} = await apiCall()
-    if(ok){
+    const response = await apiCall()
+    if(response?.ok){
       Swal.fire({
         title: 'Success!',
-        text: msn,
+        text: response.msn,
         icon: 'success',
         showConfirmButton: false,
         timer: 2000
       }).then(resp => {
-        navigate(`/estimate/edit/${estimatedPrice._id}`)
+        navigate(`/estimate/edit/${response.estimatedPrice._id}`)
       })
     } else {
       Swal.fire({

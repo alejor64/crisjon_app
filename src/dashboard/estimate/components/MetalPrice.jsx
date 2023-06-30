@@ -2,7 +2,8 @@ import { Tooltip } from 'react-tooltip'
 
 export const MetalPrice = ({metal, rate, onClick, todayRatePrice = 0}) => {
   const price = parseFloat(1 / rate).toFixed(2);
-  const todayMetalPrice = parseFloat(1 / todayRatePrice).toFixed(2);
+  // const todayMetalPrice = parseFloat(1 / todayRatePrice).toFixed(2);
+
   return (
     <div className="flex">
       <p className="font-semibold">{metal}:</p>
@@ -12,14 +13,14 @@ export const MetalPrice = ({metal, rate, onClick, todayRatePrice = 0}) => {
       {
         todayRatePrice > 0 &&
         <>
-          <span
+          {/* <span
             className="ml-1 text-blue-700 cursor-pointer"
             data-tooltip-id="metal-price-tooltip"
             data-tooltip-content={`Today ${metal} price is $${todayMetalPrice} USD`}
             onClick={onClick}
           >
             Update price
-          </span>
+          </span> */}
           <Tooltip
             id="metal-price-tooltip"
             place="right"
