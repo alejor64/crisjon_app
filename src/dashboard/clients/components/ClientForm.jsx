@@ -1,11 +1,8 @@
 import { useImperativeHandle, forwardRef, useState } from "react"
 import { Form, InputLabelContainer, Button } from "../../../components/form"
 import { formatCurrency } from "../../../utils/functions"
-import { useSelector } from "react-redux"
-import { ADMIN } from "../../../utils/constants"
 
 export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, onSubmit }, _ref) => {
-  const { role } = useSelector( state => state?.auth )
   const createdAtDefaultValue = new Date().toISOString().split('T')[0]
   const [favorite, setFavorite] = useState(client?.favorite || false)
   const [name, setName] = useState(client?.name || "")
@@ -18,6 +15,7 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
   const [sst, setSst] = useState(client?.sst || "")
   const [taxtIdNumber, setTaxtIdNumber] = useState(client?.taxIdNumber || "")
   const [outStandingBalance, setOutStandingBalance] = useState(client?.outstandingBalance || 0)
+  const [outStandingBalanceInput, setOutStandingBalanceInput] = useState(outStandingBalance)
   const [zipCode, setZipCode] = useState(client?.zipCode || "")
   const [createdAt, setCreatedAt] = useState(client?.createdAt || createdAtDefaultValue)
   
@@ -25,9 +23,19 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
     setFavorite(!favorite)
   }
 
+  const onChageBalance = (event) => {
+    const { value } = event.target;
+    const decimalRegex = /^\d*\,?\d*$/
+    if (decimalRegex.test(value)) {
+      setOutStandingBalanceInput(value);
+      const balance = parseFloat(value.replaceAll(',', '.'));
+      setOutStandingBalance(balance);
+    }
+  }
+
   useImperativeHandle(_ref, () => ({
     getFormState: () => {
-      return { name, phone, address, email, city, state, fein, sst, favorite, taxtIdNumber, zipCode, createdAt }
+      return { name, phone, address, email, city, state, fein, sst, favorite, taxtIdNumber, zipCode, createdAt, outStandingBalance }
     }
   }))
 
@@ -124,19 +132,21 @@ export const ClientForm = forwardRef(({ buttonIcon, buttonText, title, client, o
           inputValue={taxtIdNumber}
           setInputValue={setTaxtIdNumber}
         />
-        {
-          role === ADMIN &&
-            <InputLabelContainer
+        <div className="w-full ml-3">
+          <label htmlFor="outstandingBalance" className={`block text-sm font-medium text-gray-700`}>
+            Pending Balance
+          </label>
+          <span className="mt-1 ml-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none">
+            <span className="ml-1">$</span>
+            <input
               type="text"
-              text="Pending Balance"
-              placeholder="0"
-              name="taxIdNumber"
-              css='ml-3'
-              readOnly={true}
-              inputValue={formatCurrency(outStandingBalance)}
-              setInputValue={setOutStandingBalance}
+              name="outstandingBalance"
+              className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
+              value={outStandingBalanceInput}
+              onChange={onChageBalance}
             />
-        }
+          </span>
+        </div>
       </div>
       <div className="flex mb-7">
         <InputLabelContainer

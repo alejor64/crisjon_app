@@ -85,6 +85,7 @@ export const updateClient = async (id, client) => {
       sst: client.sst,
       taxIdNumber: client.taxtIdNumber,
       createdAt: client.createdAt,
+      outstandingBalance: client.outStandingBalance,
     });
     
     const config = {
