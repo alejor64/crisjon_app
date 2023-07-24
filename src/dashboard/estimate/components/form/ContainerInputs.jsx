@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 
 export const ContainerInputs = ({name, clearAll = false, required = false, setclearAll, valuePrice, setValuePrice, valueQuantity, setValueQuantity}) => {
-  const [total, setTotal] = useState(`$${valuePrice*valueQuantity}`)
+  const [total, setTotal] = useState(`$${valuePrice*valueQuantity}`);
   const [quantityInput, setQuantityInput] = useState(valueQuantity.toString().replaceAll('.', ','));
+  const [priceInput, setPriceInput] = useState(valuePrice.toString().replaceAll('.', ','));
+  const decimalRegex = /^\d*\,?\d*$/;
 
   useEffect(() => {
     if(clearAll){
@@ -14,15 +16,18 @@ export const ContainerInputs = ({name, clearAll = false, required = false, setcl
   }, [clearAll])
 
   const onChagePrice = (event) => {
-    const price = parseInt(event.target.value)
-    setValuePrice(price)
-    const totalValue = parseFloat(event.target.value * valueQuantity).toFixed(2)
-    setTotal(`$${totalValue}`)
+    const { value } = event.target
+    if (decimalRegex.test(value)) {
+      setPriceInput(value);
+      const total = parseFloat(value.replaceAll(',', '.'));
+      setValuePrice(total);
+      const totalValue = parseFloat(total * valueQuantity).toFixed(2)
+      setTotal(`$${totalValue}`)
+    }
   }
   
   const onChageQuantity = (event) => {
     const { value } = event.target;
-    const decimalRegex = /^\d*\,?\d*$/;
     if (decimalRegex.test(value)) {
       setQuantityInput(value);
       const quantity = parseFloat(value.replaceAll(',', '.') || 0);
@@ -37,12 +42,12 @@ export const ContainerInputs = ({name, clearAll = false, required = false, setcl
       <span className="mt-1 ml-2 block w-full rounded-md shadow border border-slate-200 focus:outline-none">
         <span className="ml-1">$</span>
         <input
-          type="number"
+          type="text"
           name={`${name}Price`}
           className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
           placeholder="price"
           required={required}
-          value={valuePrice}
+          value={priceInput}
           onChange={onChagePrice}
         />
       </span> 
