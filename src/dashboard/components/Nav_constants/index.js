@@ -4,6 +4,7 @@ import { ADMIN, USER } from '../../../utils/constants'
 export const navigation = (role = USER) => {
   const tabs = [
     { name: 'Clients', route: '/client', icon: faAddressCard },
+    { name: 'Book', route: '/client-book', icon: faAddressCard },
     { name: 'Order', route: '/order', icon: faCreditCard },
     { name: 'Estimate', route: '/estimate', icon: faMoneyBill1 },
     { name: 'Users', route: '/user', icon: faUser },

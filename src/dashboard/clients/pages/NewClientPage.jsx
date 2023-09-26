@@ -1,5 +1,5 @@
 import {useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons'
 import Swal from 'sweetalert2'
 import { ClientForm } from '../components'
@@ -10,7 +10,6 @@ import { CLIENTS } from '../../../utils/constants'
 
 export const NewClientPage = () => {
   const formRef = useRef()
-  const navigate = useNavigate()
 
   const onSubmit = async (e) => {
     e.preventDefault()

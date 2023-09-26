@@ -26,11 +26,8 @@ export const EditClientPage = () => {
   const onSubmit = async(e) => {
     e.preventDefault()
     const formData = formRef.current.getFormState()
-    console.log('formData', formData)
     const { _id, __v, ...rest } = clientInfo
-    console.log('REST', rest)
     const differenceObjs = difference(formData, rest)
-    console.log('differenceObjs', differenceObjs)
     if(differenceObjs){
       const { msn, client } = await updateClient(clientId, formData)
       client.createdAt = prepareDatePropertyInObject(client, 'createdAt')
