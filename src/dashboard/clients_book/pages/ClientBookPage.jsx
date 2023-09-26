@@ -31,7 +31,7 @@ export const ClientBookPage = () => {
           <div className="py-2 flex justify-around sm:px-6">
             <Link
               className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
-              to="/book/new"
+              to="/client-book/new"
             >
               Add new client book
             </Link>
