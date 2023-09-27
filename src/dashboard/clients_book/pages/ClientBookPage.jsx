@@ -40,7 +40,7 @@ export const ClientBookPage = () => {
             <div className="overflow-hidden">
               {
                 clients.length
-                ? <Table thList={thList} tdList={clients} route="client-book" rowsToShow={rowsToShow} />
+                ? <Table thList={thList} tdList={clients} route={CLIENTS_BOOK} rowsToShow={rowsToShow} />
                 : <NotItemsFound text="clients" />
               }
             </div>

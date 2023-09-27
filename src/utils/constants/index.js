@@ -11,7 +11,7 @@ export const TOKEN = 'crisjon_token'
 
 //SESSION STORAGE
 export const CLIENTS = 'client'
-export const CLIENTS_BOOK = 'client_book'
+export const CLIENTS_BOOK = 'client-book'
 export const ORDERS = 'order'
 export const USERS = 'user'
 export const SERVICES = 'service'
