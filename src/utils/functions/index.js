@@ -79,3 +79,11 @@ const numberWithDots = (x) => {
 
 
 export const formatCurrency = (value) => (value ? `$${numberWithDots(value)}` : `$ 0`);
+
+export const sortArray = (array, property) => {
+  return array.sort((a, b) => {
+    if (a?.[property]?.toLowerCase() < b?.[property]?.toLowerCase()) return -1;
+    if (a?.[property]?.toLowerCase() > b?.[property]?.toLowerCase()) return 1;
+    return 0;
+})
+}

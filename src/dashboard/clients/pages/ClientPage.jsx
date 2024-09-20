@@ -5,6 +5,7 @@ import { CLIENTS } from '../../../utils/constants'
 import { NotItemsFound } from '../../components/NotItemsFound/NotItemsFound'
 import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
+import { sortArray } from '../../../utils/functions'
 
 export const ClientPage = () => {
   const thList = ['Name', 'Address', 'City', 'Phone', 'Created Date']
@@ -41,7 +42,7 @@ export const ClientPage = () => {
             <div className="overflow-hidden">
               {
                 clients.length
-                ? <Table thList={thList} tdList={clients} route="client" rowsToShow={rowsToShow} />
+                ? <Table thList={thList} tdList={sortArray(clients, "name")} route="client" rowsToShow={rowsToShow} />
                 : <NotItemsFound text="clients" />
               }
             </div>
