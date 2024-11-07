@@ -55,7 +55,7 @@ export const InvoiceForm = ({title}) => {
 
   const bodyToUpdate = () => {
     return {
-      number: 0,
+      number: invoice.number,
       id: invoiceIdValue,
       clientName: invoice.clientName,
       totalPrice: invoice.totalPrice,
@@ -73,7 +73,7 @@ export const InvoiceForm = ({title}) => {
     const response = await editInvoiceById(invoiceId, bodyToUpdate())
     if(response.invoice) {
       navigate(`/invoice/list`)
-      const text = `The invoice ${invoice.number} was successfully updated`
+      const text = `The invoice ${invoice?.id || invoice?.number} was successfully updated`
       shootSwal('Success!', text, 'success')
     }else{
       const text = response[0].msg
@@ -102,8 +102,6 @@ export const InvoiceForm = ({title}) => {
     e.preventDefault()
     await validatePrices()
   }
-
-  console.log("invoice", invoice)
 
   return (
     <Form title={title} onSubmit={onSubmit}>

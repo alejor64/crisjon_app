@@ -7,7 +7,7 @@ export const InvoiceContainer = ({invoiceNumber, setInvoiceNumber, onClick, erro
       <div className='w-1/2 flex items-end'>
         <InputLabelContainer
           type="text"
-          text="Invoice number"
+          text="Invoice Id"
           css="w-2/3 mr-3"
           inputValue={invoiceNumber}
           setInputValue={setInvoiceNumber}
@@ -21,7 +21,7 @@ export const InvoiceContainer = ({invoiceNumber, setInvoiceNumber, onClick, erro
       {
         error &&
           <div className='w-1/2'>
-            <p className='text-red-500'>Invoice number is required</p>
+            <p className='text-red-500'>Invoice Id is required</p>
           </div>
       }
     </div>
