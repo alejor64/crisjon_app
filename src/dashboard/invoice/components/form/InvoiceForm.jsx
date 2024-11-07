@@ -26,8 +26,11 @@ export const InvoiceForm = ({title}) => {
   useEffect(() => {
     getInvoiceById(invoiceId)
       .then(({invoice}) => {
-        setInvoice(invoice)
-        setInvoiceIdValue(invoice.id)
+        setInvoice({
+          ...invoice,
+          id: invoice?.id || invoice.number,
+        })
+        setInvoiceIdValue(invoice.id || invoice.number)
         setPaid(invoice.payed)
         setPricePayed(invoice.pricePayed || 0)
         setPaymentType(invoice.paymentType || "")
@@ -100,10 +103,12 @@ export const InvoiceForm = ({title}) => {
     await validatePrices()
   }
 
+  console.log("invoice", invoice)
+
   return (
     <Form title={title} onSubmit={onSubmit}>
       {
-        invoice?.id &&
+        (invoice?.id) &&
           <>
             <div className="flex mb-7">
               <InputLabelContainer
