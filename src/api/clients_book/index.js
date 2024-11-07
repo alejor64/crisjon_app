@@ -89,7 +89,7 @@ export const updateClientBook = async (id, client) => {
     const { data } = await apiInstance(config)
     return data
   } catch (error) {
-    console.log('ERROR in updateClientBook', error)
+    console.log('Error in updateClientBook', error)
     return {
       ok: false,
       msn: 'Bad Request',

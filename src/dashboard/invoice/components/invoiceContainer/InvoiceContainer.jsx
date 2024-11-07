@@ -6,7 +6,7 @@ export const InvoiceContainer = ({invoiceNumber, setInvoiceNumber, onClick, erro
       
       <div className='w-1/2 flex items-end'>
         <InputLabelContainer
-          type="number"
+          type="text"
           text="Invoice number"
           css="w-2/3 mr-3"
           inputValue={invoiceNumber}

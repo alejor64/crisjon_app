@@ -41,7 +41,8 @@ export const CreateInvoice = ({orders, setOrdersChecked, ordersChecked, invoiceN
         startDate: moment(startDate).format(DATA_PICKER_FORMAT),
         endDate: moment(endDate).format(DATA_PICKER_FORMAT),
         clientName: client,
-        number: invoiceNumber,
+        number: 0,
+        id: invoiceNumber,
       }
       createInvoice(data)
         .then(response => {

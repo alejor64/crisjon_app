@@ -5,7 +5,7 @@ import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import { TdTable, TdTableInvoice } from "./index"
 import { useDeleteData } from "../../../hooks/useDeleteData"
 
-export const TrTable = ({row, odd, rowsToShow, withCheckbox = false, setOrdersChecked, ordersChecked, route, showTrash}) => {
+export const TrTable = ({row, odd, rowsToShow, withCheckbox = false, setOrdersChecked, ordersChecked, route, showTrash, showId}) => {
   const navigate = useNavigate()
 
   const onClick = (row) => {
@@ -34,16 +34,25 @@ export const TrTable = ({row, odd, rowsToShow, withCheckbox = false, setOrdersCh
           <TdTableInvoice row={row} setOrdersChecked={setOrdersChecked} ordersChecked={ordersChecked} />
       }
       {
-        rowsToShow.map(key => (
-          key !== 'id' && (
-            <TdTable
-              text={row[key]}
+        rowsToShow.map(key => {
+          if (key !== 'id') {
+            return (<TdTable
+              text={row[key] || "N/A"}
               key={`${key}-${row.id}`}
               css={!withCheckbox ? 'cursor-pointer' : ''}
               onClick={() => onClick(row)} 
-            />
-          )
-        ))
+            />)
+          }
+          if (key === 'id' && showId) {
+            return (<TdTable
+              text={row[key] || row.number}
+              key={`${key}-${row.id}`}
+              css={!withCheckbox ? 'cursor-pointer' : ''}
+              onClick={() => onClick(row)} 
+            />)
+          }
+        }
+        )
       }
       {
         showTrash &&

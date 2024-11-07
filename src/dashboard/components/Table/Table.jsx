@@ -5,7 +5,7 @@ import { ThTable, TrTable } from "./index"
 import { useEffect } from "react"
 import { ROW_TO_TABLE } from "../../../utils/constants"
 
-export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true, showAllRows = true}) => {
+export const Table = ({thList, tdList, route, rowsToShow, showInput = true, showTrash = true, showAllRows = true, showId = false}) => {
   const [rowsInTable, setRowsInTable] = useState([])
   const [showAllRowsInTable, setShowAllRowsInTable] = useState(showAllRows)
   const sliceArray = showAllRowsInTable ? rowsInTable.length : ROW_TO_TABLE
@@ -56,6 +56,7 @@ export const Table = ({thList, tdList, route, rowsToShow, showInput = true, show
                     route={route}
                     rowsToShow={rowsToShow}
                     showTrash={showTrash}
+                    showId={showId}
                   />
                 ))
               }

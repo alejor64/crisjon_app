@@ -21,11 +21,13 @@ export const InvoiceForm = ({title}) => {
   const [pricePayed, setPricePayed] = useState(0)
   const [checkNumber, setCheckNumber] = useState("")
   const [outstandingBalance, setOutstandingBalance] = useState(0)
+  const [invoiceIdValue, setInvoiceIdValue] = useState("")
 
   useEffect(() => {
     getInvoiceById(invoiceId)
       .then(({invoice}) => {
         setInvoice(invoice)
+        setInvoiceIdValue(invoice.id)
         setPaid(invoice.payed)
         setPricePayed(invoice.pricePayed || 0)
         setPaymentType(invoice.paymentType || "")
@@ -50,7 +52,8 @@ export const InvoiceForm = ({title}) => {
 
   const bodyToUpdate = () => {
     return {
-      number: invoice.number,
+      number: 0,
+      id: invoiceIdValue,
       clientName: invoice.clientName,
       totalPrice: invoice.totalPrice,
       startDate: invoice.startDate,
@@ -100,16 +103,16 @@ export const InvoiceForm = ({title}) => {
   return (
     <Form title={title} onSubmit={onSubmit}>
       {
-        invoice?.number &&
+        invoice?.id &&
           <>
             <div className="flex mb-7">
               <InputLabelContainer
-                type="number"
+                type="text"
                 text="Invoice Number"
                 placeholder="123456"
-                name="number"
-                readOnly={true}
-                inputValue={invoice.number}
+                name="id"
+                inputValue={invoiceIdValue}
+                setInputValue={setInvoiceIdValue}
               />
               <InputLabelContainer
                 type="text"

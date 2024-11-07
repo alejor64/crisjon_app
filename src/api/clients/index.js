@@ -97,6 +97,6 @@ export const updateClient = async (id, client) => {
     const { data } = await apiInstance(config)
     return data
   } catch (error) {
-    console.log('ERROR', error)
+    console.log('Error in updateClient', error)
   }
 }

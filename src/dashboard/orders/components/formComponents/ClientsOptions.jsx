@@ -6,8 +6,6 @@ import { sortArray } from '../../../../utils/functions'
 export const ClientsOptions = ({client, setClient, disabled, required}) => {
   const clientsOPtions = JSON.parse(sessionStorage.getItem(CLIENTS) || "[]")
 
-  console.log("clientsOPtions", sortArray(clientsOPtions, "name"))
-
   useEffect(() => {
     if(client){
       setClient(client)
