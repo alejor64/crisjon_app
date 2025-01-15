@@ -6,7 +6,7 @@ import { SelectClient } from "../../../clients/components"
 import { DATA_PICKER_FORMAT, USA_DATE_FORMAT } from "../../../../utils/constants"
 import { DateError } from "../../../../components/filter/errors"
 
-export const EstimateFilters = ({estimatePrices, setestimatePrices, setShowAllRows, prepareEstimatedPrices}) => {
+export const EstimateFilters = ({estimatePrices, setestimatePrices, prepareEstimatedPrices}) => {
   const today = moment()
   const lastMonth = moment().startOf('month')
   const [endDateValue, setEndDateValue] = useState(today.format(DATA_PICKER_FORMAT))
@@ -18,7 +18,6 @@ export const EstimateFilters = ({estimatePrices, setestimatePrices, setShowAllRo
     let estimatesFiltered = estimatePrices
     if(startDate && endDateValue && startDate > endDateValue) {
       setErrorMsn(<DateError />)
-      setShowAllRows(false)
     }else {
       setErrorMsn(<></>)
       if(startDate){
@@ -32,7 +31,6 @@ export const EstimateFilters = ({estimatePrices, setestimatePrices, setShowAllRo
       if(clientValue){
         estimatesFiltered = estimatesFiltered.filter(estimatePrice => estimatePrice.clientName === clientValue)
       }
-      setShowAllRows(true)
     }
     setestimatePrices(prepareEstimatedPrices(estimatesFiltered))
   }

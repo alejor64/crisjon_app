@@ -4,10 +4,11 @@ import { EditUserPage, NewUserPage, UserPage } from "../pages"
 export const UserRoutes = () => {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="list" replace />} />
       <Route path="list" element={<UserPage />} />
       <Route path="new" element={<NewUserPage />} />
       <Route path="edit/:userId" element={<EditUserPage />} />
-      <Route path="/*" element={<Navigate to="/user/list" />} />
+      <Route path="*" element={<Navigate to="list" replace />} />
     </Routes>
   )
 }

@@ -1,6 +1,6 @@
 import Swal from "sweetalert2"
 import { deleteData } from "../api/general"
-import { CLIENTS, CLIENTS_BOOK, ESTIMATED_PRICES, ORDERS } from "../utils/constants"
+import { ESTIMATED_PRICES, ORDERS } from "../utils/constants"
 
 export const useDeleteData = async(route, id) => {
   const response = await deleteData(route, id)

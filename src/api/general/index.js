@@ -11,7 +11,7 @@ export const deleteData = async (route, id) => {
     return data
   } catch (error) {
     const {errors} = error.response.data
-    console.log('Error creating invoice', errors)
+    console.log('Error', errors)
     return errors
   }
 }
