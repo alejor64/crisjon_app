@@ -32,7 +32,7 @@ export const AppRouter = () => {
           <Route path="order/*" element={<OrderRoutes />} />
           <Route path="estimate/*" element={<EstimateRoutes />} />
           <Route path="invoice/*" element={<InvoiceRoutes />} />
-          <Route path="/" element={<Navigate to="client/list" replace />} />
+          <Route path="/*" element={<Navigate to="client/list" replace />} />
         </>
       )}
     </Routes>

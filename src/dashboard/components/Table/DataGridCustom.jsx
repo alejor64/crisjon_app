@@ -1,12 +1,17 @@
 import { Box, Container, TextField, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const DataGridCustom = ({columns, rows, filterKeys, sortProperty, route, ...rest}) => {
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState('');
   const [filteredRows, setFilteredRows] = useState(rows);
+
+  useEffect(() => {
+    setFilteredRows(rows)
+  }, [rows])
+  
 
   const handleSearch = (searchValue) => {
     setSearchText(searchValue);
