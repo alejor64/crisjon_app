@@ -85,7 +85,7 @@ export const EstimatePdf = ({estimateId}) => {
                     <td className="border-t">{estimate.metalQuantity}</td>
                     <td className="border-t">{formatCurrency(estimate.metalPrice * estimate.metalQuantity)}</td>
                   </tr>
-                  <TrTable item='Stone' estimate={estimate} />
+                  <TrTable item='Setting' estimate={estimate} />
                   <tr className="text-center">
                     <td className="border-t">Center Stone</td>
                     <td className="border-t">{formatCurrency(estimate.centerStonePrice)}</td>
