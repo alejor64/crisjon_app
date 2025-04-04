@@ -232,7 +232,7 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
         <ContainerInputs name="picture" clearAll={clearAll} setclearAll={setclearAll} valuePrice={picturePrice} setValuePrice={setPicturePrice} valueQuantity={pictureQuantity} setValueQuantity={setPictureQuantity} />
       </div>
       <div className="flex mb-7 justify-center">
-        <Total totalPrice={totalPrice.toFixed(2)} />
+        <Total totalPrice={parseInt(totalPrice).toFixed(2)} />
       </div>
       <div className="flex mb-7 justify-around">
         <span
