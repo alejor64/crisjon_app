@@ -1,5 +1,3 @@
-import { useRef } from "react"
-import { useReactToPrint } from "react-to-print"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faDownload } from "@fortawesome/free-solid-svg-icons"
 import { PDFViewer, Page, Document as DocumentPDF, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
@@ -20,8 +18,6 @@ const styles = StyleSheet.create({
 export const EstimatePdf = ({estimateId}) => {
   const estimateInSS = JSON.parse(sessionStorage.getItem(ESTIMATED_PRICES))
   const estimate = estimateInSS.find(client => client._id === estimateId)
-  const estimatePDF = useRef()
-  const goldPrice = parseFloat(1 / estimate.goldenPrice).toFixed(2)
 
   const EstimatePdf = () => (
     <DocumentPDF>
@@ -35,12 +31,12 @@ export const EstimatePdf = ({estimateId}) => {
 
   return (
     <>
-      <Grid2 fullWidth style={{border: "1px solid black", height: "90vh", marginTop: "10px"}}>
+      <Grid2 style={{border: "1px solid black", height: "90vh", marginTop: "10px"}}>
         <PDFViewer height="100%" width="100%" >
           <EstimatePdf />
         </PDFViewer>
       </Grid2>
-      <Grid2 fullWidth sx={{textAlign: "center", marginY: "30px"}}>
+      <Grid2 sx={{textAlign: "center", marginY: "30px"}}>
         <PDFDownloadLink document={<EstimatePdf />} fileName={`${estimate.name}.pdf`}>
           <Button variant="contained">
             <FontAwesomeIcon icon={faDownload} />
