@@ -1,3 +1,4 @@
+import { InputLabel } from "@mui/material";
 import { useEffect, useState } from "react"
 
 export const ContainerInputs = ({name, clearAll = false, required = false, setclearAll, valuePrice, setValuePrice, valueQuantity, setValueQuantity}) => {
@@ -44,7 +45,7 @@ export const ContainerInputs = ({name, clearAll = false, required = false, setcl
         <input
           type="text"
           name={`${name}Price`}
-          className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
+          className="ml- w-[90%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
           placeholder="price"
           required={required}
           value={priceInput}

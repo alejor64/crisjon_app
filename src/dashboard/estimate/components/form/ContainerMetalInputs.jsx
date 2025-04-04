@@ -39,7 +39,7 @@ export const ContainerMetalInputs = ({onChange, metalType, metalPrice, metalQuan
           <input
             type="number"
             name={`metalPrice`}
-            className="ml- w-[96%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
+            className="ml- w-[90%] pl-0 py-1.5 md:py-2 sm:text-sm focus:outline-none"
             placeholder="price"
             value={metalPrice}
             readOnly
