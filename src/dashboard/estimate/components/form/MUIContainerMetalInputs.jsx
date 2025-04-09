@@ -67,10 +67,6 @@ export const MUIContainerMetalInputs = ({form, label, metal, goldenPrice, quiant
           label={`${label} Quantity`}
           size="small"
           allowNegative={false}
-          isAllowed={(values) => {
-            const { floatValue } = values;
-            return floatValue === undefined || (Number.isInteger(floatValue) && floatValue >= 0);
-          }}
           fullWidth
           onValueChange ={handleQuantitychange}
           slotProps={{
