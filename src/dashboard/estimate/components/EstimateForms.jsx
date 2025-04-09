@@ -168,8 +168,8 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
               <MUIContainerMetalInputs form={form} label="10K" metal={METAL_10_PRICE} goldenPrice={goldenPrice} quiantityName={METAL_10_QUANTITY} />
               <MUIContainerMetalInputs form={form} label="14K" metal={METAL_14_PRICE} goldenPrice={goldenPrice} quiantityName={METAL_14_QUANTITY} />
               <MUIContainerMetalInputs form={form} label="18K" metal={METAL_18_PRICE} goldenPrice={goldenPrice} quiantityName={METAL_18_QUANTITY} />
-              <MUIContainerInputs form={form} priceName={METAL_PLATINUM_PRICE} quiantityName={METAL_PLATINUM_QUANTITY} label="Platinum" />
-              <MUIContainerInputs form={form} priceName={METAL_SILVER_PRICE} quiantityName={METAL_SILVER_QUANTITY} label="Silver" />
+              <MUIContainerInputs form={form} priceName={METAL_PLATINUM_PRICE} quiantityName={METAL_PLATINUM_QUANTITY} label="Platinum" allowDecimal={true} />
+              <MUIContainerInputs form={form} priceName={METAL_SILVER_PRICE} quiantityName={METAL_SILVER_QUANTITY} label="Silver" allowDecimal={true} />
               <Box sx={{display: "flex", justifyContent: "center", mt: 5, mb: 2}}>
                 <Typography>LABOR</Typography>
               </Box>

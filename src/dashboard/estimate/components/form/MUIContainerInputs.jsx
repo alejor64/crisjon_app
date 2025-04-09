@@ -2,7 +2,7 @@ import { Box, TextField, Typography } from "@mui/material"
 import { useState } from "react";
 import { NumericFormat } from "react-number-format"
 
-export const MUIContainerInputs = ({form, priceName, quiantityName, label}) => {
+export const MUIContainerInputs = ({form, priceName, quiantityName, label, allowDecimal = false}) => {
   const currentPrice = form.values[priceName] ?? 0;
   const currentQuantity = form.values[quiantityName] ?? 0;
   const [total, setTotal] = useState(currentPrice * currentQuantity);
@@ -58,8 +58,11 @@ export const MUIContainerInputs = ({form, priceName, quiantityName, label}) => {
           size="small"
           allowNegative={false}
           isAllowed={(values) => {
-            const { floatValue } = values;
-            return floatValue === undefined || (Number.isInteger(floatValue) && floatValue >= 0);
+            if (!allowDecimal) {
+              const { floatValue } = values;
+              return floatValue === undefined || (Number.isInteger(floatValue) && floatValue >= 0);
+            }
+            return true;
           }}
           fullWidth
           value={form.values[quiantityName]}
