@@ -1,5 +1,7 @@
 import { Text, View } from '@react-pdf/renderer';
 import { formatCurrency } from '../../../../utils/functions';
+import { numericFormatter } from 'react-number-format';
+import { FIXED_FIELDS, METAL_TYPES, MULTIPLIED_FIELDS } from '../../helpers/constants';
 
 const style = {
   width: "25%",
@@ -51,7 +53,37 @@ const Th = ({header}) => (
   </Text>
 )
 
-export const TablePdf = ({estimate}) => {
+const calculateMUITotal = (estimate, rawMetal) => {
+  let total = 0;
+
+  FIXED_FIELDS.forEach(field => {
+    total += Number(estimate[field]) || 0;
+  });
+
+  MULTIPLIED_FIELDS.forEach(([priceKey, qtyKey]) => {
+    total += ((Number(estimate[priceKey]) || 0) * (Number(estimate[qtyKey]) || 0));
+  });
+
+  METAL_TYPES(rawMetal).forEach(([priceKey, qtyKey]) => {
+    total += ((Number(estimate[priceKey]) || 0) * (Number(estimate[qtyKey]) || 0));
+  });
+
+  const totalFormatted = numericFormatter(String(total), {
+    decimalScale: 2,
+    thousandSeparator: true,
+    prefix: '$',
+    allowNegative: false,
+  });
+
+  return { total, totalFormatted };
+}
+
+export const TablePdf = ({estimate, metalType, isOld}) => {
+  const rawMetal = metalType.replace("K", "");
+  const price = isOld ? estimate.metalPrice : estimate[`metal${rawMetal}Price`];
+  const quantity = isOld ? estimate.metalQuantity : estimate[`metal${rawMetal}Quantity`]
+  const metalPrice = price * quantity;
+
   return (
     <View>
       <Text style={{textAlign: "center", fontSize: "14px", marginTop: "30px", marginBottom: "10px"}}>Estimated price</Text>
@@ -72,12 +104,12 @@ export const TablePdf = ({estimate}) => {
       <TableRow item='Wax' estimate={estimate} />
       <TableRow item='Casting' estimate={estimate} />
       {
-        !!(estimate.metalPrice * estimate.metalQuantity) &&
+        !!(metalPrice) &&
           <TableRowDefault
-            first={`Metal ${estimate.metalType}`}
-            second={formatCurrency(estimate.metalPrice)}
-            third={estimate.metalQuantity}
-            fourth={formatCurrency(estimate.metalPrice * estimate.metalQuantity)}
+            first={`Metal ${isOld ? estimate.metalType : metalType}`}
+            second={formatCurrency(price)}
+            third={quantity}
+            fourth={formatCurrency(metalPrice)}
           />
       }
       <TableRow label='Setting' item='Stone' estimate={estimate} />
@@ -106,7 +138,7 @@ export const TablePdf = ({estimate}) => {
       <TableRow item='Engraving' estimate={estimate} />
       <TableRow item='Picture' estimate={estimate} />
       <TableRowDefault/>
-      <TableRowDefault first="TOTAL" fourth={formatCurrency(estimate.totalPrice)} />
+      <TableRowDefault first="TOTAL" fourth={calculateMUITotal(estimate, rawMetal).totalFormatted} />
     </View>
   )
 }

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import Swal from 'sweetalert2'
 import { useDeleteData } from '../../../hooks/useDeleteData'
+import { Typography } from '@mui/material'
 
 const prepareEstimatedPrices = (estimatePrices) => {
   return estimatePrices.map(ep => ({
@@ -68,7 +69,8 @@ export const EstimatePage = () => {
     {
       field: 'totalPrice',
       headerName: 'Price',
-      flex: 1
+      description: "Metal price no included",
+      flex: 1,
     },
     {
       field: 'goldenPrice',

@@ -13,7 +13,7 @@ export const EditEstimatedPage = () => {
   const [showPDF, setShowPDF] = useState(false)
   const [estimatePrice, setEstimatePrice] = useState({})
   const goldInSS = JSON.parse(sessionStorage.getItem(GOLDEN_PRICE)) || {price: 0}
-  const [goldTodayPrice, setgoldTodayPrice] = useState(goldInSS.price)
+  const [goldTodayPrice, setgoldTodayPrice] = useState(goldInSS.price);
 
   useEffect(() => {
     getEstimatePriceById(estimateId)
@@ -98,7 +98,7 @@ export const EditEstimatedPage = () => {
             </div>
             {
               showPDF
-              ? <EstimatePdf estimateId={estimateId} />
+              ? <EstimatePdf estimateId={estimateId} estimate={estimatePrice} />
               : <EstimateForms
                   title="Edit estimate"
                   estimate={estimatePrice}
