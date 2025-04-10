@@ -6,15 +6,19 @@ import { useEffect, useState } from 'react'
 import { ESTIMATED_PRICES, GOLDEN_PRICE } from '../../../utils/constants'
 import { createEstimate, getMetalPrice } from '../../../api/estimatedPrice/estimatedPrice'
 import { addValueToSS, prepareDatePropertyInObject } from '../../../utils/functions'
+import { CircularProgress } from '@mui/material'
 
 export const NewEstimatePage = () => {
   const goldenInSS = JSON.parse(sessionStorage.getItem(GOLDEN_PRICE)) || {price: 0}
   const [goldenPrice, setGoldenPrice] = useState(goldenInSS.price)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if(!goldenPrice.price) {
+      setLoading(true);
       getMetalPrice()
         .then(response => setGoldenPrice(response.gold.price))
+        .finally(() => setLoading(false));
     }
   }, [])
   
@@ -40,13 +44,18 @@ export const NewEstimatePage = () => {
           </Link>
           <MetalPrice metal="Gold" rate={goldenPrice} />
         </div>
-        <EstimateForms
-          title="Create new estimate"
-          buttonText="Save new estimate"
-          goldenPriceInDB={goldenPrice}
-          createOrUpdate={createOrUpdate}
-          buttonIcon={faFloppyDisk}
-        />
+        {
+          loading ?
+            <CircularProgress />
+          :
+            <EstimateForms
+              title="Create new estimate"
+              buttonText="Save new estimate"
+              goldenPriceInDB={goldenPrice}
+              createOrUpdate={createOrUpdate}
+              buttonIcon={faFloppyDisk}
+            />
+        }
       </div>
     </DashboardLayout>
   )

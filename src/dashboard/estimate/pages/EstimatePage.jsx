@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Table } from "../../components/Table/Table"
 import { DashboardLayout } from "../../layout"
 import { ESTIMATED_PRICES } from '../../../utils/constants'
 import { getEstimatedPrices } from '../../../api/estimatedPrice/estimatedPrice'
@@ -12,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import Swal from 'sweetalert2'
 import { useDeleteData } from '../../../hooks/useDeleteData'
-import { Typography } from '@mui/material'
+import { CircularProgress } from '@mui/material'
 
 const prepareEstimatedPrices = (estimatePrices) => {
   return estimatePrices.map(ep => ({
@@ -25,13 +24,16 @@ const prepareEstimatedPrices = (estimatePrices) => {
 }
 
 export const EstimatePage = () => {
-  const estimatedPricesInSS = JSON.parse(sessionStorage.getItem(ESTIMATED_PRICES) || '[]')
-  const [estimatePrices, setestimatePrices] = useState(prepareEstimatedPrices(estimatedPricesInSS))
+  const estimatedPricesInSS = JSON.parse(sessionStorage.getItem(ESTIMATED_PRICES) || '[]');
+  const [estimatePrices, setestimatePrices] = useState(prepareEstimatedPrices(estimatedPricesInSS));
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if(!estimatePrices.length) {
+      setLoading(true);
       getEstimatedPrices()
         .then( response => setestimatePrices(prepareEstimatedPrices(response.estimatedPrices)))
+        .finally(() => setLoading(false));
     }
   }, [])
 
@@ -100,12 +102,17 @@ export const EstimatePage = () => {
         </h2>
         <EstimateFilters estimatePrices={estimatedPricesInSS} setestimatePrices={setestimatePrices} prepareEstimatedPrices={prepareEstimatedPrices} />
         <div className="px-4 py-3 flex justify-around sm:px-6">
-          <Link
-            className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
-            to="/estimate/new"
-          >
-            Make an estimate
-          </Link>
+          {
+            loading ?
+            <CircularProgress />
+            :
+            <Link
+              className="border-2 p-2 rounded-lg border-blue-700 bg-blue-700 text-white w-[300px] hover:bg-blue-800 hover:shadow-md text-center"
+              to="/estimate/new"
+            >
+              Make an estimate
+            </Link>
+          }
         </div>
         <div className="mt-2">
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">

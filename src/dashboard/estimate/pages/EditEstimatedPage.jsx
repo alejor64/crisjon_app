@@ -12,7 +12,7 @@ export const EditEstimatedPage = () => {
   const navigate = useNavigate()
   const [showPDF, setShowPDF] = useState(false)
   const [estimatePrice, setEstimatePrice] = useState({})
-  const goldInSS = JSON.parse(sessionStorage.getItem(GOLDEN_PRICE)) || {price: 0}
+  const goldInSS = JSON.parse(sessionStorage.getItem(GOLDEN_PRICE)) || {price: 0};
   const [goldTodayPrice, setgoldTodayPrice] = useState(goldInSS.price);
 
   useEffect(() => {

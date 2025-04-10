@@ -4,6 +4,7 @@ import { Box, TextField, Typography } from "@mui/material"
 import { METAL_10_PRICE, METAL_14_PRICE, METAL_18_PRICE } from "../../helpers/constants";
 
 export const MUIContainerMetalInputs = ({form, label, metal, goldenPrice, quiantityName}) => {
+  console.log("goldenPrice", goldenPrice)
   const [metalPrice, setMetalPrice] = useState(0);
   const [total, setTotal] = useState(0);
 
