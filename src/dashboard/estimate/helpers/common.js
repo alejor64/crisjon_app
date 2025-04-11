@@ -1,5 +1,5 @@
 import { numericFormatter } from "react-number-format";
-import { FIXED_FIELDS, MULTIPLIED_FIELDS } from "./constants";
+import { FIXED_FIELDS, MULTIPLIED_FIELDS, OLD_METAL_TYPE } from "./constants";
 
 /**
  * 
@@ -17,9 +17,16 @@ export const calculateMUITotal = (values, metalType = []) => {
     total += ((Number(values[priceKey]) || 0) * (Number(values[qtyKey]) || 0));
   });
 
-  metalType.forEach(([priceKey, qtyKey]) => {
-    total += ((Number(values[priceKey]) || 0) * (Number(values[qtyKey]) || 0));
-  });
+  if (metalType.length) {
+    metalType.forEach(([priceKey, qtyKey]) => {
+      total += ((Number(values[priceKey]) || 0) * (Number(values[qtyKey]) || 0));
+    });
+  } else {
+    OLD_METAL_TYPE.forEach(([priceKey, qtyKey]) => {
+      total += ((Number(values[priceKey]) || 0) * (Number(values[qtyKey]) || 0));
+    });
+  }
+
 
   const totalFormatted = numericFormatter(String(total), {
     decimalScale: 2,
