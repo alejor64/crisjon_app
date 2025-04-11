@@ -179,7 +179,7 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
               <Box sx={{display: "flex", justifyContent: "center", mt: 5, mb: 2}}>
                 <Typography>DIAMONDS (Weight - Carats)</Typography>
               </Box>
-              <MUIContainerInputs form={form} priceName={DIAMOND_PRICE} quiantityName={DIAMOND_QUANTITY} label="Diamond" />
+              <MUIContainerInputs form={form} priceName={DIAMOND_PRICE} quiantityName={DIAMOND_QUANTITY} label="Diamond" allowDecimal={true} />
               <MUIContainerOneInput form={form} priceName={COLOR_STONES} label="Color Stones" />
               <MUIContainerInputs form={form} priceName={POLISHING_PRICE} quiantityName={POLISHING_QUANTITY} label="Polishing" />
               <MUIContainerInputs form={form} priceName={ASSEMBLING_PRICE} quiantityName={ASSEMBLING_QUANTITY} label="Assembling" />

@@ -1,44 +1,38 @@
 import { Box, Container, TextField, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const DataGridCustom = ({columns, rows, filterKeys, sortProperty, route, ...rest}) => {
   const navigate = useNavigate()
-  const [searchText, setSearchText] = useState('');
-  const [filteredRows, setFilteredRows] = useState(rows);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filter = searchParams.get('filter') || '';
+  const [searchText, setSearchText] = useState(filter);
 
-  useEffect(() => {
-    setFilteredRows(rows)
-  }, [rows])
-  
+  const filteredRows = useMemo(() => {
+    if (!filter) return rows;
+    const lowerCaseValue = filter.toLowerCase();
 
-  const handleSearch = (searchValue) => {
-    setSearchText(searchValue);
-    const lowerCaseValue = searchValue.toLowerCase();
+    return rows.filter((row) =>
+      filterKeys.some((key) =>
+        row[key]?.toString().toLowerCase().includes(lowerCaseValue)
+      )
+    );
+  }, [rows, filter, filterKeys]);
 
-    if(lowerCaseValue) {
-      setFilteredRows(
-        rows.filter((row) =>
-          filterKeys.some((key) =>
-            row[key]?.toString().toLowerCase().includes(lowerCaseValue)
-          )
-        )
-      );
-    } else {
-      setFilteredRows(rows);
-    }
-
+  const handleSearch = (value) => {
+    setSearchText(value);
+    setSearchParams(value ? { filter: value } : {});
   };
 
   const onClick = (id) => {
-    navigate(`/${route}/edit/${id}`)
-  }
+    navigate(`/${route}/edit/${id}?filter=${filter}`);
+  };
 
   return (
     <Container sx={{ width: '90%', maxWidth: "90%", minWidth: "90%", marginBottom: 5 }}>
       <Box>
-        <Box sx={{display: "flex", justifyContent: "center", gap: 2, alignItems: "center", marginY: 2}}>
+        <Box sx={{ display: "flex", justifyContent: "center", gap: 2, alignItems: "center", marginY: 2 }}>
           <Typography>Filter value</Typography>
           <TextField
             label="Search"

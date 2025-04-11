@@ -69,12 +69,6 @@ export const EstimatePage = () => {
       flex: 1
     },
     {
-      field: 'totalPrice',
-      headerName: 'Price',
-      description: "Metal price no included",
-      flex: 1,
-    },
-    {
       field: 'goldenPrice',
       headerName: 'Golden Price',
       flex: 1
