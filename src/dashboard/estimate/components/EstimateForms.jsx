@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
-import { MUIContainerInputs, MUIContainerMetalInputs, MUIContainerOneInput } from "./form"
 import { Formik,Form } from "formik"
+import { Alert, Box, Grid2, Button as MUIButton, Typography, useTheme } from "@mui/material"
+import { MUIContainerInputs, MUIContainerMetalInputs, MUIContainerOneInput } from "./form"
 import { estimateSchema } from "./form/schema"
 import {
   ASSEMBLING_PRICE,
@@ -18,7 +19,6 @@ import {
   ENGRAVING_QUANTITY,
   FINDINGS_PRICE,
   FINDINGS_QUANTITY,
-  FIXED_FIELDS,
   INITIAL_VALUES,
   METAL_10_PRICE,
   METAL_10_QUANTITY,
@@ -31,7 +31,6 @@ import {
   METAL_QUANTITY,
   METAL_SILVER_PRICE,
   METAL_SILVER_QUANTITY,
-  MULTIPLIED_FIELDS,
   PICTURE_PRICE,
   PICTURE_QUANTITY,
   POLISHING_PRICE,
@@ -44,11 +43,10 @@ import {
   WAX_PRICE,
   WAX_QUANTITY
 } from "../helpers/constants"
-import { Alert, Box, Grid2, Button as MUIButton, Typography, useTheme } from "@mui/material"
 import { Header } from "./form/Header"
-import { numericFormatter } from "react-number-format"
 import MUIContainerMetalInputsOld from "./form/MUIContainerMetalInputsOld"
 import MUITotalContainer from "./form/MUITotalContainer"
+import { calculateMUITotal } from "../helpers/common"
 
 export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, updateOrder = false, createOrUpdate }) => {
   const navigate = useNavigate();
@@ -62,41 +60,10 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
     && !estimate?.[METAL_18_QUANTITY]
     && !estimate?.[METAL_PLATINUM_QUANTITY]
     && !estimate?.[METAL_SILVER_QUANTITY];
-
-  /**
-   * 
-   * Se estableció el metalType como opcional porque al calcular el estimado total no se quería guardar un total por cada metal
-   * Cuando se quiera saber el total, se debe sumar el tipo de metal que desea calcular, así se hizo en el pdf
-   */
-  const calculateMUITotal = (values, metalType = []) => {
-    let total = 0;
-
-    FIXED_FIELDS.forEach(field => {
-      total += Number(values[field]) || 0;
-    });
-  
-    MULTIPLIED_FIELDS.forEach(([priceKey, qtyKey]) => {
-      total += ((Number(values[priceKey]) || 0) * (Number(values[qtyKey]) || 0));
-    });
-
-    metalType.forEach(([priceKey, qtyKey]) => {
-      total += ((Number(values[priceKey]) || 0) * (Number(values[qtyKey]) || 0));
-    });
-
-    const totalFormatted = numericFormatter(String(total), {
-      decimalScale: 2,
-      thousandSeparator: true,
-      prefix: '$',
-      allowNegative: false,
-    });
-  
-    return { total, totalFormatted };
-  }
  
   const handleClearAll = (form) => {
     form.handleReset();
   }
-
 
   const onSubmit = async (values) => {
     try {
@@ -188,7 +155,7 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
               <MUIContainerInputs form={form} priceName={ENGRAVING_PRICE} quiantityName={ENGRAVING_QUANTITY} label="Engraving" />
               <MUIContainerInputs form={form} priceName={PICTURE_PRICE} quiantityName={PICTURE_QUANTITY} label="Picture" />
               <Box>
-                <MUITotalContainer form={form} calculateMUITotal={calculateMUITotal} />
+                <MUITotalContainer form={form} />
                 <Box sx={{display: "flex", justifyContent: "space-evenly", my: 3}}>
                   <MUIButton
                     variant="contained"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Autocomplete, Box, CircularProgress, TextField } from '@mui/material'
 import { DashboardLayout } from "../../layout"
 import { ESTIMATED_PRICES } from '../../../utils/constants'
 import { getEstimatedPrices } from '../../../api/estimatedPrice/estimatedPrice'
@@ -11,7 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import Swal from 'sweetalert2'
 import { useDeleteData } from '../../../hooks/useDeleteData'
-import { CircularProgress } from '@mui/material'
+import { calculateMUITotal } from '../helpers/common';
+import { METAL_TYPES } from '../helpers/constants';
 
 const prepareEstimatedPrices = (estimatePrices) => {
   return estimatePrices.map(ep => ({
@@ -23,19 +25,36 @@ const prepareEstimatedPrices = (estimatePrices) => {
   ))
 }
 
+const metalOptions = ["10K", "14K", "18K", "Silver", "Platinum"];
+
 export const EstimatePage = () => {
   const estimatedPricesInSS = JSON.parse(sessionStorage.getItem(ESTIMATED_PRICES) || '[]');
-  const [estimatePrices, setestimatePrices] = useState(prepareEstimatedPrices(estimatedPricesInSS));
+  const [estimatePrices, setEstimatePrices] = useState(prepareEstimatedPrices(estimatedPricesInSS));
   const [loading, setLoading] = useState(false);
+  const [selectedMetal, setSelectedMetal] = useState("10K");
 
   useEffect(() => {
     if(!estimatePrices.length) {
       setLoading(true);
       getEstimatedPrices()
-        .then( response => setestimatePrices(prepareEstimatedPrices(response.estimatedPrices)))
+        .then( response => setEstimatePrices(prepareEstimatedPrices(response.estimatedPrices)))
         .finally(() => setLoading(false));
     }
   }, [])
+
+  useEffect(() => {
+    if (selectedMetal) {
+      setEstimatePrices(prev => prev.map(estimate => ({
+        ...estimate,
+        totalPrice: calculateMUITotal(estimate, METAL_TYPES(selectedMetal.replace("K", ""))).totalFormatted,
+      })))
+    } else {
+      setEstimatePrices(prev => prev.map(estimate => ({
+        ...estimate,
+        totalPrice: calculateMUITotal(estimate).totalFormatted,
+      })))
+    }
+  }, [selectedMetal]);
 
   const handleDelete = (row) => {
     Swal.fire({
@@ -69,6 +88,12 @@ export const EstimatePage = () => {
       flex: 1
     },
     {
+      field: 'totalPrice',
+      headerName: `Price ${selectedMetal ?? ""}`,
+      description: "Metal price no included",
+      flex: 1,
+    },
+    {
       field: 'goldenPrice',
       headerName: 'Golden Price',
       flex: 1
@@ -94,7 +119,7 @@ export const EstimatePage = () => {
         <h2 className="text-3xl text-center my-2">
           ESTIMATES
         </h2>
-        <EstimateFilters estimatePrices={estimatedPricesInSS} setestimatePrices={setestimatePrices} prepareEstimatedPrices={prepareEstimatedPrices} />
+        <EstimateFilters estimatePrices={estimatedPricesInSS} setEstimatePrices={setEstimatePrices} prepareEstimatedPrices={prepareEstimatedPrices} />
         <div className="px-4 py-3 flex justify-around sm:px-6">
           {
             loading ?
@@ -110,6 +135,15 @@ export const EstimatePage = () => {
         </div>
         <div className="mt-2">
           <div className="py-2 inline-block min-w-full max-w-full sm:px-6 lg:px-8">
+            <Box>
+              <Autocomplete
+                options={metalOptions}
+                value={selectedMetal}
+                onChange={(_, newValue) => setSelectedMetal(newValue)}
+                sx={{ width: 250, margin: "0 auto", marginBottom: 2 }}
+                renderInput={(params) => <TextField {...params} label="Metal Price to show" size="small" />}
+              />
+            </Box>
             <div className="overflow-hidden">
               {
                 estimatePrices.length ?

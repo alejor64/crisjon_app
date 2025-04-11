@@ -12,8 +12,9 @@ import {
   METAL_SILVER_QUANTITY,
   METAL_TYPES,
 } from "../../helpers/constants";
+import { calculateMUITotal } from "../../helpers/common";
 
-export default function MUITotalContainer({ form, calculateMUITotal }) {
+export default function MUITotalContainer({ form }) {
   const is10K = !!(form.values[METAL_10_PRICE] * form.values[METAL_10_QUANTITY]);
   const is14K = !!(form.values[METAL_14_PRICE] * form.values[METAL_14_QUANTITY]);
   const is18K = !!(form.values[METAL_18_PRICE] * form.values[METAL_18_QUANTITY]);

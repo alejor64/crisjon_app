@@ -6,7 +6,7 @@ import { SelectClient } from "../../../clients/components"
 import { DATA_PICKER_FORMAT, USA_DATE_FORMAT } from "../../../../utils/constants"
 import { DateError } from "../../../../components/filter/errors"
 
-export const EstimateFilters = ({estimatePrices, setestimatePrices, prepareEstimatedPrices}) => {
+export const EstimateFilters = ({estimatePrices, setEstimatePrices, prepareEstimatedPrices}) => {
   const today = moment()
   const lastMonth = moment().startOf('month')
   const [endDateValue, setEndDateValue] = useState(today.format(DATA_PICKER_FORMAT))
@@ -32,7 +32,7 @@ export const EstimateFilters = ({estimatePrices, setestimatePrices, prepareEstim
         estimatesFiltered = estimatesFiltered.filter(estimatePrice => estimatePrice.clientName === clientValue)
       }
     }
-    setestimatePrices(prepareEstimatedPrices(estimatesFiltered))
+    setEstimatePrices(prepareEstimatedPrices(estimatesFiltered))
   }
 
   return (
