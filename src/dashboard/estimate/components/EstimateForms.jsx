@@ -99,6 +99,7 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
         initialValues={{
           ...INITIAL_VALUES,
           ...rest,
+          goldenPrice: parseFloat(goldenPrice),
         }}
         validationSchema={estimateSchema}
         onSubmit={async (values) => {
