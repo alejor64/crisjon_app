@@ -16,9 +16,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const EstimatePdf = ({estimate, isOld}) => {
+export const EstimatePdf = ({estimate}) => {
+  console.log("EstimatePdf", estimate)
   const metalTypeOld =
-        !!estimate[METAL_QUANTITY]
+        !estimate[METAL_QUANTITY]
         && !estimate[METAL_10_QUANTITY]
         && !estimate[METAL_14_QUANTITY]
         && !estimate[METAL_18_QUANTITY]
@@ -41,7 +42,7 @@ export const EstimatePdf = ({estimate, isOld}) => {
     const quantity = isOld ? estimate.metalQuantity : estimate[`metal${rawMetal}Quantity`]
     const metalPrice = price * quantity;
 
-    if(!metalPrice) return null;
+    if(!metalPrice && !isOld) return null;
     
     return (
       <>

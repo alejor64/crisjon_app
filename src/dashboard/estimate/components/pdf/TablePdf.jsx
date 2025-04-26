@@ -84,6 +84,8 @@ export const TablePdf = ({estimate, metalType, isOld}) => {
   const quantity = isOld ? estimate.metalQuantity : estimate[`metal${rawMetal}Quantity`]
   const metalPrice = price * quantity;
 
+  console.log("estimate", estimate)
+
   return (
     <View>
       <Text style={{textAlign: "center", fontSize: "14px", marginTop: "30px", marginBottom: "10px"}}>Estimated price</Text>
