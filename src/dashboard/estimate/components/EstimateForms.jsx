@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Formik,Form } from "formik"
@@ -106,7 +107,12 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
           onSubmit(values);
         }}
       >
-        {form => (
+        {form => {
+          useEffect(() => {
+            form.setFieldValue('goldenPrice', parseFloat(goldenPrice));
+          }, [goldenPrice]);
+
+          return (
           <Form>
             <Grid2 sx={{my: 4}}>
               <Header form={form} title={title} />
@@ -177,7 +183,8 @@ export const EstimateForms = ({ title, estimate, goldenPriceInDB, buttonText, up
               </Box>
             </Grid2>
           </Form>
-        )}
+          );
+        }}
       </Formik>
     </>
   )

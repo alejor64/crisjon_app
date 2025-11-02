@@ -34,7 +34,7 @@ export const MUIContainerMetalInputs = ({form, label, metal, goldenPrice, quiant
     const quantity = form.values[quiantityName] ?? 0;
     setMetalPrice(price);
     setTotal(price * quantity);
-  }, []);
+  }, [goldenPrice]);
 
   const handleQuantitychange = (values) => {
     const { floatValue } = values;

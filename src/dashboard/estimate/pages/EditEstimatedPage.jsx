@@ -30,7 +30,7 @@ export const EditEstimatedPage = () => {
   const updateGoldPrice = () => {
     const estimatePriceUpdated = {
       ...estimatePrice,
-      goldenPrice: goldTodayPrice
+      goldenPrice: parseFloat(goldTodayPrice)
     }
     setEstimatePrice({...estimatePriceUpdated})
   }
